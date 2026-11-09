@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 750" width="100%" height="100%" style="background:#efeae2; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
+  <!-- Dimmed Background -->
+  <rect x="0" y="0" width="400" height="750" fill="#000000" opacity="0.45"/>
+
+  <!-- WhatsApp Bottom Sheet Popup (Light Mode) -->
+  <path d="M 0 420 Q 0 400 20 400 L 380 400 Q 400 400 400 420 L 400 750 L 0 750 Z" fill="#ffffff" filter="drop-shadow(0 -4px 12px rgba(0,0,0,0.15))"/>
+
+  <!-- Row 1 of Attachment Icons -->
+  <!-- Document (Purple) -->
+  <circle cx="80" cy="465" r="28" fill="#7f66ff"/>
+  <rect x="68" y="452" width="24" height="26" rx="3" fill="#ffffff"/>
+  <text x="80" y="512" fill="#54656f" font-size="13" font-weight="600" text-anchor="middle">Document</text>
+
+  <!-- Camera (Pink) -->
+  <circle cx="200" cy="465" r="28" fill="#ec407a"/>
+  <path d="M 191 458 L 194 454 L 206 454 L 209 458 Z" fill="#ffffff"/>
+  <circle cx="200" cy="465" r="7" stroke="#ffffff" stroke-width="2.2" fill="none"/>
+  <text x="200" y="512" fill="#54656f" font-size="13" font-weight="600" text-anchor="middle">Camera</text>
+
+  <!-- Gallery (Purple/Violet) -->
+  <circle cx="320" cy="465" r="28" fill="#ab47bc"/>
+  <rect x="308" y="453" width="24" height="24" rx="3" fill="#ffffff"/>
+  <circle cx="315" cy="460" r="3" fill="#ab47bc"/>
+  <polygon points="310,474 322,464 330,474" fill="#ab47bc"/>
+  <text x="320" y="512" fill="#54656f" font-size="13" font-weight="600" text-anchor="middle">Gallery</text>
+
+  <!-- Row 2 of Attachment Icons -->
+  <!-- Audio (Orange) -->
+  <circle cx="80" cy="575" r="28" fill="#ff7043"/>
+  <path d="M 72 575 A 8 8 0 0 1 88 575 L 88 584 L 84 584 L 84 577 L 76 577 L 76 584 L 72 584 Z" fill="#ffffff"/>
+  <circle cx="72" cy="580" r="4" fill="#ffffff"/>
+  <circle cx="88" cy="580" r="4" fill="#ffffff"/>
+  <text x="80" y="622" fill="#54656f" font-size="13" font-weight="600" text-anchor="middle">Audio</text>
+
+  <!-- Location (Green) -->
+  <circle cx="200" cy="575" r="28" fill="#26a69a"/>
+  <path d="M 200 558 C 193 558 188 563 188 570 C 188 580 200 592 200 592 C 200 592 212 580 212 570 C 212 563 207 558 200 558 Z" fill="#ffffff"/>
+  <circle cx="200" cy="569" r="4" fill="#26a69a"/>
+  <text x="200" y="622" fill="#54656f" font-size="13" font-weight="600" text-anchor="middle">Location</text>
+
+  <!-- CONTACT (BLUE) - TARGET FOR STEP 3 -->
+  <g id="contact_target_btn">
+    <circle cx="320" cy="575" r="28" fill="#007aff"/>
+    <circle cx="320" cy="566" r="7" fill="#ffffff"/>
+    <path d="M 307 588 C 307 579 313 577 320 577 C 327 577 333 579 333 588 Z" fill="#ffffff"/>
+    <text x="320" y="622" fill="#007aff" font-size="14" font-weight="800" text-anchor="middle">Contact</text>
+  </g>
+
+  <!-- Bottom drag handle -->
+  <rect x="170" y="410" width="60" height="5" rx="2.5" fill="#e9edef"/>
+</svg>
+

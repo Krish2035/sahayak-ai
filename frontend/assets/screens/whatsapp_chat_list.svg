@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 750" width="100%" height="100%" style="background:#111b21; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
+  <!-- WhatsApp Top Header -->
+  <rect x="0" y="0" width="400" height="90" fill="#202c33"/>
+  <text x="24" y="52" fill="#e9edef" font-size="22" font-weight="700">WhatsApp</text>
+  <circle cx="310" cy="46" r="14" fill="#202c33"/>
+  <!-- Camera icon -->
+  <path d="M 302 44 L 305 40 L 315 40 L 318 44 Z" fill="#aebac1"/>
+  <circle cx="310" cy="47" r="4" stroke="#aebac1" stroke-width="1.8" fill="none"/>
+  <!-- Search icon -->
+  <circle cx="348" cy="45" r="6" stroke="#aebac1" stroke-width="2" fill="none"/>
+  <line x1="352" y1="49" x2="358" y2="55" stroke="#aebac1" stroke-width="2" stroke-linecap="round"/>
+  <!-- 3 dots -->
+  <circle cx="380" cy="40" r="2" fill="#aebac1"/>
+  <circle cx="380" cy="46" r="2" fill="#aebac1"/>
+  <circle cx="380" cy="52" r="2" fill="#aebac1"/>
+
+  <!-- Sub Tabs -->
+  <rect x="0" y="86" width="400" height="4" fill="#00a884"/>
+
+  <!-- Chat Item 1: Target Recipient -->
+  <rect x="0" y="94" width="400" height="84" fill="#182229"/>
+  <!-- Avatar -->
+  <circle cx="48" cy="136" r="26" fill="#00a884"/>
+  <text x="48" y="144" fill="#ffffff" font-size="18" font-weight="bold" text-anchor="middle">R</text>
+  <!-- Name & Preview -->
+  <text x="90" y="128" fill="#e9edef" font-size="17" font-weight="600">Ramesh Patel (Brother)</text>
+  <text x="90" y="152" fill="#8696a0" font-size="14">Namaste! Kem chho tame?</text>
+  <text x="340" y="126" fill="#00a884" font-size="12" font-weight="bold">10:45 AM</text>
+  <circle cx="360" cy="148" r="10" fill="#00a884"/>
+  <text x="360" y="153" fill="#111b21" font-size="11" font-weight="bold" text-anchor="middle">2</text>
+  <line x1="90" y1="177" x2="400" y2="177" stroke="#222d34" stroke-width="1"/>
+
+  <!-- Chat Item 2 -->
+  <circle cx="48" cy="220" r="26" fill="#6a7175"/>
+  <text x="48" y="228" fill="#ffffff" font-size="18" font-weight="bold" text-anchor="middle">P</text>
+  <text x="90" y="212" fill="#e9edef" font-size="17" font-weight="500">Pooja (Daughter)</text>
+  <text x="90" y="236" fill="#8696a0" font-size="14">See you at home tonight!</text>
+  <text x="345" y="210" fill="#8696a0" font-size="12">Yesterday</text>
+  <line x1="90" y1="261" x2="400" y2="261" stroke="#222d34" stroke-width="1"/>
+
+  <!-- Chat Item 3 -->
+  <circle cx="48" cy="304" r="26" fill="#3b82f6"/>
+  <text x="48" y="312" fill="#ffffff" font-size="18" font-weight="bold" text-anchor="middle">D</text>
+  <text x="90" y="296" fill="#e9edef" font-size="17" font-weight="500">Dr. Mehta Clinic</text>
+  <text x="90" y="320" fill="#8696a0" font-size="14">Your checkup appointment is confirmed.</text>
+  <text x="348" y="294" fill="#8696a0" font-size="12">Sunday</text>
+  <line x1="90" y1="345" x2="400" y2="345" stroke="#222d34" stroke-width="1"/>
+
+  <!-- Chat Item 4 -->
+  <circle cx="48" cy="388" r="26" fill="#ec4899"/>
+  <text x="48" y="396" fill="#ffffff" font-size="18" font-weight="bold" text-anchor="middle">F</text>
+  <text x="90" y="380" fill="#e9edef" font-size="17" font-weight="500">Family Group (Parivar)</text>
+  <text x="90" y="404" fill="#8696a0" font-size="14">Jay Shree Krishna 🙏</text>
+  <text x="350" y="378" fill="#8696a0" font-size="12">11/04</text>
+  <line x1="90" y1="429" x2="400" y2="429" stroke="#222d34" stroke-width="1"/>
+
+  <!-- Floating Action Button at Bottom Right (New Chat) -->
+  <circle cx="340" cy="670" r="28" fill="#00a884" filter="drop-shadow(0px 4px 6px rgba(0,0,0,0.4))"/>
+  <rect x="330" y="660" width="20" height="15" rx="3" fill="#ffffff"/>
+  <polygon points="334,675 330,682 342,675" fill="#ffffff"/>
+</svg>
+

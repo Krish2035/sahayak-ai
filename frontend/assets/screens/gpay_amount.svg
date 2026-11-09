@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 750" width="100%" height="100%" style="background:#1f1f1f; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
+  <!-- Google Pay Enter Amount Screen -->
+  <!-- Top Bar -->
+  <rect x="0" y="0" width="400" height="75" fill="#1f1f1f"/>
+  <path d="M 24 38 L 36 26 M 24 38 L 36 50 M 24 38 L 44 38" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round"/>
+  
+  <!-- Merchant Card Header -->
+  <circle cx="200" cy="120" r="32" fill="#0b57d0"/>
+  <text x="200" y="128" fill="#ffffff" font-size="22" font-weight="bold" text-anchor="middle">S</text>
+  <text x="200" y="175" fill="#ffffff" font-size="20" font-weight="700" text-anchor="middle">Shreeji Provision Store</text>
+  <text x="200" y="198" fill="#9aa0a6" font-size="14" text-anchor="middle">Banking Name: RAMESHBHAI PATEL</text>
+  <rect x="135" y="210" width="130" height="26" rx="13" fill="#2d2d2d"/>
+  <text x="200" y="227" fill="#8ab4f8" font-size="12" font-weight="600" text-anchor="middle">Verified Merchant ✓</text>
+
+  <!-- Big Amount Input Display -->
+  <text x="200" y="310" fill="#ffffff" font-size="48" font-weight="800" text-anchor="middle">₹ 150</text>
+  <rect x="120" y="335" width="160" height="34" rx="17" fill="#2d2d2d"/>
+  <text x="200" y="356" fill="#c4c7c5" font-size="13" text-anchor="middle">Add a note (Kirana)</text>
+
+  <!-- Bank Account Selector Pill -->
+  <rect x="30" y="400" width="340" height="56" rx="16" fill="#2d2d2d" stroke="#3c4043" stroke-width="1.5"/>
+  <circle cx="60" cy="428" r="14" fill="#800020"/>
+  <text x="60" y="433" fill="#ffffff" font-size="10" font-weight="bold" text-anchor="middle">SBI</text>
+  <text x="86" y="423" fill="#ffffff" font-size="15" font-weight="600">State Bank of India •••• 1234</text>
+  <text x="86" y="442" fill="#9aa0a6" font-size="12">Savings account</text>
+
+  <!-- Big Blue Pay Button (TARGET FOR PAYMENT) -->
+  <g id="pay_confirm_btn">
+    <rect x="30" y="490" width="340" height="60" rx="30" fill="#0b57d0" filter="drop-shadow(0 4px 10px rgba(11,87,208,0.4))"/>
+    <text x="200" y="527" fill="#ffffff" font-size="18" font-weight="800" text-anchor="middle">Pay ₹150</text>
+    <path d="M 260 521 L 272 521 M 266 515 L 272 521 L 266 527" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round"/>
+  </g>
+
+  <!-- Reassurance Footnote -->
+  <text x="200" y="590" fill="#9aa0a6" font-size="13" text-anchor="middle">🔒 You will enter your 4-digit UPI PIN on the next screen</text>
+</svg>
+

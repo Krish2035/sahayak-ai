@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 750" width="100%" height="100%" style="background:#0b141a; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
+  <!-- WhatsApp Chat Header -->
+  <rect x="0" y="0" width="400" height="75" fill="#202c33"/>
+  <!-- Back Arrow -->
+  <path d="M 24 38 L 36 26 M 24 38 L 36 50 M 24 38 L 44 38" stroke="#aebac1" stroke-width="2.5" stroke-linecap="round"/>
+  <!-- Avatar -->
+  <circle cx="68" cy="38" r="20" fill="#00a884"/>
+  <text x="68" y="45" fill="#ffffff" font-size="16" font-weight="bold" text-anchor="middle">R</text>
+  <!-- Contact Name & Status -->
+  <text x="100" y="34" fill="#e9edef" font-size="16" font-weight="600">Ramesh Patel (Brother)</text>
+  <text x="100" y="52" fill="#00a884" font-size="13">online</text>
+  <!-- Call & Video icons -->
+  <path d="M 285 30 L 297 30 L 305 24 L 305 52 L 297 46 L 285 46 Z" fill="#aebac1"/>
+  <circle cx="340" cy="38" r="8" stroke="#aebac1" stroke-width="2" fill="none"/>
+  <!-- 3 dots -->
+  <circle cx="380" cy="32" r="2" fill="#aebac1"/>
+  <circle cx="380" cy="38" r="2" fill="#aebac1"/>
+  <circle cx="380" cy="44" r="2" fill="#aebac1"/>
+
+  <!-- Wallpaper Background Pattern Hint -->
+  <rect x="0" y="75" width="400" height="600" fill="#0b141a"/>
+
+  <!-- Incoming Message Bubble -->
+  <path d="M 20 120 L 280 120 A 10 10 0 0 1 290 130 L 290 180 A 10 10 0 0 1 280 190 L 30 190 A 10 10 0 0 1 20 180 Z" fill="#202c33"/>
+  <text x="35" y="148" fill="#e9edef" font-size="15">Kem chho bhai?</text>
+  <text x="35" y="172" fill="#e9edef" font-size="15">Mane Dr. Mehta no number moklo ne.</text>
+  <text x="240" y="184" fill="#8696a0" font-size="11">10:48 AM</text>
+
+  <!-- Outgoing Message Bubble -->
+  <path d="M 140 230 L 370 230 A 10 10 0 0 1 380 240 L 380 280 A 10 10 0 0 1 370 290 L 140 290 A 10 10 0 0 1 130 280 L 130 240 A 10 10 0 0 1 140 230 Z" fill="#005c4b"/>
+  <text x="145" y="258" fill="#e9edef" font-size="15">Ha hu have moklu chhu.</text>
+  <text x="325" y="284" fill="#8696a0" font-size="11">10:50 AM</text>
+  <text x="360" y="284" fill="#53bdeb" font-size="11">✓✓</text>
+
+  <!-- Bottom Message Bar -->
+  <!-- Text Input Capsule -->
+  <rect x="12" y="682" width="320" height="52" rx="26" fill="#202c33"/>
+  <!-- Emoji Smile -->
+  <circle cx="36" cy="708" r="11" stroke="#8696a0" stroke-width="2" fill="none"/>
+  <circle cx="32" cy="705" r="1.5" fill="#8696a0"/>
+  <circle cx="40" cy="705" r="1.5" fill="#8696a0"/>
+  <path d="M 31 712 Q 36 716 41 712" stroke="#8696a0" stroke-width="1.8" fill="none"/>
+  <!-- Placeholder Text -->
+  <text x="60" y="714" fill="#8696a0" font-size="16">Message</text>
+
+  <!-- Attachment Paperclip Icon (TARGET FOR STEP 2) -->
+  <g id="paperclip_icon" transform="translate(268, 694)">
+    <path d="M 14 6 L 6 15 A 6 6 0 0 0 15 24 L 25 14 A 4 4 0 0 0 19 8 L 10 17 A 2 2 0 0 0 13 20 L 22 11" 
+          stroke="#8696a0" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+  </g>
+
+  <!-- Camera Icon -->
+  <path d="M 302 704 L 305 700 L 315 700 L 318 704 Z" fill="#8696a0"/>
+  <circle cx="310" cy="708" r="4.5" stroke="#8696a0" stroke-width="1.8" fill="none"/>
+
+  <!-- Voice Mic Round Button -->
+  <circle cx="365" cy="708" r="25" fill="#00a884"/>
+  <rect x="361" y="698" width="8" height="13" rx="4" fill="#ffffff"/>
+  <path d="M 358 705 A 7 7 0 0 0 372 705" stroke="#ffffff" stroke-width="2" fill="none"/>
+  <line x1="365" y1="712" x2="365" y2="717" stroke="#ffffff" stroke-width="2"/>
+</svg>
+

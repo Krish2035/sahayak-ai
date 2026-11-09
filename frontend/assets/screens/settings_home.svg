@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 750" width="100%" height="100%" style="background:#121212; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
+  <!-- Android Settings Screen -->
+  <!-- Top Bar -->
+  <rect x="0" y="0" width="400" height="95" fill="#121212"/>
+  <text x="24" y="60" fill="#ffffff" font-size="28" font-weight="700">Settings</text>
+  <circle cx="360" cy="52" r="16" fill="#2d2d2d"/>
+  <circle cx="358" cy="50" r="5" stroke="#ffffff" stroke-width="1.8" fill="none"/>
+  <line x1="362" y1="54" x2="368" y2="60" stroke="#ffffff" stroke-width="2" stroke-linecap="round"/>
+
+  <!-- Search Settings Bar -->
+  <rect x="20" y="85" width="360" height="50" rx="25" fill="#242424"/>
+  <circle cx="48" cy="110" r="6" stroke="#9e9e9e" stroke-width="1.8" fill="none"/>
+  <text x="68" y="115" fill="#9e9e9e" font-size="15">Search settings</text>
+
+  <!-- Settings List -->
+  <!-- Item 1: Connections -->
+  <circle cx="44" cy="175" r="18" fill="#1e88e5"/>
+  <text x="44" y="181" fill="#ffffff" font-size="14" text-anchor="middle">📶</text>
+  <text x="76" y="172" fill="#ffffff" font-size="17" font-weight="600">Connections</text>
+  <text x="76" y="190" fill="#9e9e9e" font-size="13">Wi-Fi, Bluetooth, Flight mode</text>
+  <line x1="76" y1="210" x2="400" y2="210" stroke="#242424" stroke-width="1"/>
+
+  <!-- Item 2: Sounds and vibration -->
+  <circle cx="44" cy="245" r="18" fill="#e53935"/>
+  <text x="44" y="251" fill="#ffffff" font-size="14" text-anchor="middle">🔊</text>
+  <text x="76" y="242" fill="#ffffff" font-size="17" font-weight="600">Sounds and vibration</text>
+  <text x="76" y="260" fill="#9e9e9e" font-size="13">Ringtone, Volume, System sound</text>
+  <line x1="76" y1="280" x2="400" y2="280" stroke="#242424" stroke-width="1"/>
+
+  <!-- Item 3: DISPLAY (TARGET FOR STEP 2) -->
+  <g id="display_setting_item">
+    <rect x="0" y="295" width="400" height="75" fill="#1c242c"/>
+    <circle cx="44" cy="330" r="20" fill="#fb8c00"/>
+    <!-- Sun / Screen Icon -->
+    <circle cx="44" cy="330" r="7" fill="#ffffff"/>
+    <text x="76" y="325" fill="#ffffff" font-size="18" font-weight="700">Display</text>
+    <text x="76" y="346" fill="#81c784" font-size="14" font-weight="600">Brightness, Font size and style</text>
+    <text x="360" y="336" fill="#9e9e9e" font-size="18">➔</text>
+    <line x1="76" y1="370" x2="400" y2="370" stroke="#2d3748" stroke-width="1"/>
+  </g>
+
+  <!-- Item 4: Wallpaper -->
+  <circle cx="44" cy="405" r="18" fill="#8e24aa"/>
+  <text x="44" y="411" fill="#ffffff" font-size="14" text-anchor="middle">🎨</text>
+  <text x="76" y="402" fill="#ffffff" font-size="17" font-weight="600">Wallpaper and style</text>
+  <text x="76" y="420" fill="#9e9e9e" font-size="13">Colors, Lock screen, Palette</text>
+  <line x1="76" y1="440" x2="400" y2="440" stroke="#242424" stroke-width="1"/>
+
+  <!-- Item 5: Battery -->
+  <circle cx="44" cy="475" r="18" fill="#43a047"/>
+  <text x="44" y="481" fill="#ffffff" font-size="14" text-anchor="middle">🔋</text>
+  <text x="76" y="472" fill="#ffffff" font-size="17" font-weight="600">Battery</text>
+  <text x="76" y="490" fill="#9e9e9e" font-size="13">Power saving, Battery health</text>
+</svg>
+

@@ -1,0 +1,84 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 750" width="100%" height="100%" style="background:#090d16; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
+  <!-- Phone Home Screen Wallpaper -->
+  <defs>
+    <linearGradient id="homeGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0f172a"/>
+      <stop offset="50%" stop-color="#1e1b4b"/>
+      <stop offset="100%" stop-color="#020617"/>
+    </linearGradient>
+  </defs>
+  <rect x="0" y="0" width="400" height="750" fill="url(#homeGrad)"/>
+
+  <!-- Status Bar (Time, Battery, Wi-Fi) -->
+  <text x="28" y="32" fill="#ffffff" font-size="14" font-weight="600">10:45</text>
+  <text x="325" y="32" fill="#ffffff" font-size="13">📶 5G  98% 🔋</text>
+
+  <!-- Big Clock & Date Widget -->
+  <text x="200" y="140" fill="#ffffff" font-size="64" font-weight="200" text-anchor="middle">10:45</text>
+  <text x="200" y="175" fill="#94a3b8" font-size="16" font-weight="500" text-anchor="middle">Monday, 9 November</text>
+
+  <!-- Google Search Widget -->
+  <rect x="25" y="210" width="350" height="48" rx="24" fill="rgba(255,255,255,0.12)" stroke="rgba(255,255,255,0.2)" stroke-width="1"/>
+  <circle cx="50" cy="234" r="10" fill="#4285f4"/>
+  <text x="50" y="238" fill="#ffffff" font-size="11" font-weight="bold" text-anchor="middle">G</text>
+  <text x="75" y="240" fill="#94a3b8" font-size="14">Google Search</text>
+  <circle cx="345" cy="234" r="12" fill="rgba(255,255,255,0.1)"/>
+  <text x="345" y="239" fill="#ffffff" font-size="12" text-anchor="middle">🎙️</text>
+
+  <!-- APP ICONS GRID -->
+  <!-- Row 1: Gallery, Camera, YouTube, Settings -->
+  <circle cx="65" cy="320" r="28" fill="#8b5cf6"/>
+  <text x="65" y="327" fill="#ffffff" font-size="20" text-anchor="middle">🖼️</text>
+  <text x="65" y="365" fill="#e2e8f0" font-size="12" text-anchor="middle">Gallery</text>
+
+  <circle cx="155" cy="320" r="28" fill="#ef4444"/>
+  <text x="155" y="327" fill="#ffffff" font-size="20" text-anchor="middle">📷</text>
+  <text x="155" y="365" fill="#e2e8f0" font-size="12" text-anchor="middle">Camera</text>
+
+  <circle cx="245" cy="320" r="28" fill="#dc2626"/>
+  <text x="245" y="327" fill="#ffffff" font-size="20" text-anchor="middle">▶️</text>
+  <text x="245" y="365" fill="#e2e8f0" font-size="12" text-anchor="middle">YouTube</text>
+
+  <circle cx="335" cy="320" r="28" fill="#64748b"/>
+  <text x="335" y="327" fill="#ffffff" font-size="20" text-anchor="middle">⚙️</text>
+  <text x="335" y="365" fill="#e2e8f0" font-size="12" text-anchor="middle">Settings</text>
+
+  <!-- Row 2: Maps, Clock, Weather, GPay -->
+  <circle cx="65" cy="430" r="28" fill="#10b981"/>
+  <text x="65" y="437" fill="#ffffff" font-size="20" text-anchor="middle">🗺️</text>
+  <text x="65" y="475" fill="#e2e8f0" font-size="12" text-anchor="middle">Maps</text>
+
+  <circle cx="155" cy="430" r="28" fill="#3b82f6"/>
+  <text x="155" y="437" fill="#ffffff" font-size="20" text-anchor="middle">⏰</text>
+  <text x="155" y="475" fill="#e2e8f0" font-size="12" text-anchor="middle">Clock</text>
+
+  <circle cx="245" cy="430" r="28" fill="#0ea5e9"/>
+  <text x="245" y="437" fill="#ffffff" font-size="20" text-anchor="middle">☀️</text>
+  <text x="245" y="475" fill="#e2e8f0" font-size="12" text-anchor="middle">Weather</text>
+
+  <circle cx="335" cy="430" r="28" fill="#0b57d0"/>
+  <text x="335" y="437" fill="#ffffff" font-size="20" text-anchor="middle">💳</text>
+  <text x="335" y="475" fill="#e2e8f0" font-size="12" text-anchor="middle">GPay</text>
+
+  <!-- Bottom Dock Container -->
+  <rect x="20" y="625" width="360" height="95" rx="30" fill="rgba(255,255,255,0.12)" stroke="rgba(255,255,255,0.15)" stroke-width="1"/>
+
+  <!-- Dock Icons: Phone, Messages, WHATSAPP (TARGET STEP 1), Chrome -->
+  <circle cx="65" cy="672" r="27" fill="#16a34a"/>
+  <text x="65" y="679" fill="#ffffff" font-size="20" text-anchor="middle">📞</text>
+
+  <circle cx="155" cy="672" r="27" fill="#2563eb"/>
+  <text x="155" y="679" fill="#ffffff" font-size="20" text-anchor="middle">💬</text>
+
+  <!-- WHATSAPP ICON (TARGET FOR STEP 1) -->
+  <g id="whatsapp_app_icon">
+    <circle cx="245" cy="672" r="28" fill="#25d366" filter="drop-shadow(0px 4px 10px rgba(37,211,102,0.5))"/>
+    <!-- WhatsApp Phone & Bubble Silhouette -->
+    <path d="M 245 656 A 15 15 0 0 0 232 679 L 230 686 L 237 684 A 15 15 0 1 0 245 656 Z" fill="#ffffff"/>
+    <path d="M 241 664 C 240 664 239 665 238 667 C 238 668 239 671 241 673 C 243 675 246 677 248 676 C 250 676 251 674 251 673 C 251 672 250 671 249 671 C 248 670 247 671 247 671 C 246 671 245 671 244 670 C 243 669 242 668 242 667 C 243 667 243 666 243 665 C 242 664 241 664 241 664 Z" fill="#25d366"/>
+  </g>
+
+  <circle cx="335" cy="672" r="27" fill="#ea4335"/>
+  <text x="335" y="679" fill="#ffffff" font-size="20" text-anchor="middle">🌐</text>
+</svg>
+

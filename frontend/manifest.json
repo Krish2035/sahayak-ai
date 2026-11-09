@@ -1,0 +1,19 @@
+{
+  "name": "Sahayak AI - Smartphone Guide for Seniors",
+  "short_name": "સહાયક AI",
+  "description": "Systematic step-by-step smartphone guide with photos below every step in Gujarati, Hindi, and English",
+  "start_url": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#0b141a",
+  "theme_color": "#0b141a",
+  "icons": [
+    {
+      "src": "assets/screens/whatsapp_phone_home.svg",
+      "sizes": "192x192 512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
+

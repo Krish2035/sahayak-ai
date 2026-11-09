@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 750" width="100%" height="100%" style="background:#ffffff; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
+  <!-- WhatsApp Light Header: Select Contact -->
+  <rect x="0" y="0" width="400" height="80" fill="#008069"/>
+  <path d="M 24 40 L 36 28 M 24 40 L 36 52 M 24 40 L 44 40" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round"/>
+  <text x="64" y="38" fill="#ffffff" font-size="18" font-weight="600">Contacts to send</text>
+  <text x="64" y="56" fill="#d1fae5" font-size="13">1 contact selected</text>
+  <circle cx="355" cy="40" r="7" stroke="#ffffff" stroke-width="2" fill="none"/>
+  <line x1="360" y1="45" x2="368" y2="53" stroke="#ffffff" stroke-width="2" stroke-linecap="round"/>
+
+  <!-- Selected Chip (Dr. Mehta) -->
+  <rect x="20" y="96" width="130" height="36" rx="18" fill="#e9edef" stroke="#008069" stroke-width="1.5"/>
+  <circle cx="38" cy="114" r="12" fill="#008069"/>
+  <text x="38" y="119" fill="#ffffff" font-size="11" font-weight="bold" text-anchor="middle">✓</text>
+  <text x="58" y="119" fill="#111b21" font-size="13" font-weight="600">Dr. Mehta</text>
+  <text x="135" y="119" fill="#667781" font-size="14" font-weight="bold">×</text>
+
+  <line x1="0" y1="146" x2="400" y2="146" stroke="#e9edef" stroke-width="1"/>
+
+  <!-- Frequently Contacted Contacts List -->
+  <text x="24" y="176" fill="#667781" font-size="13" font-weight="bold">FREQUENTLY CONTACTED</text>
+
+  <!-- Contact 1: Selected (Dr. Mehta) -->
+  <rect x="0" y="190" width="400" height="74" fill="#f0f2f5"/>
+  <circle cx="48" cy="226" r="22" fill="#007aff"/>
+  <text x="48" y="233" fill="#ffffff" font-size="16" font-weight="bold" text-anchor="middle">D</text>
+  <!-- Green Checkmark Badge -->
+  <circle cx="62" cy="240" r="9" fill="#008069"/>
+  <text x="62" y="244" fill="#ffffff" font-size="11" font-weight="bold" text-anchor="middle">✓</text>
+
+  <text x="88" y="222" fill="#008069" font-size="16" font-weight="600">Dr. Mehta Clinic</text>
+  <text x="88" y="242" fill="#667781" font-size="13">+91 98250 12345 (Mobile)</text>
+  <line x1="88" y1="264" x2="400" y2="264" stroke="#e9edef" stroke-width="1"/>
+
+  <!-- Contact 2: Uncle Anil -->
+  <circle cx="48" cy="304" r="22" fill="#f59e0b"/>
+  <text x="48" y="311" fill="#ffffff" font-size="16" font-weight="bold" text-anchor="middle">A</text>
+  <text x="88" y="300" fill="#111b21" font-size="16" font-weight="500">Uncle Anil</text>
+  <text x="88" y="320" fill="#667781" font-size="13">+91 98980 54321 (Mobile)</text>
+  <line x1="88" y1="342" x2="400" y2="342" stroke="#e9edef" stroke-width="1"/>
+
+  <!-- Contact 3: Bharat Electrician -->
+  <circle cx="48" cy="382" r="22" fill="#10b981"/>
+  <text x="48" y="389" fill="#ffffff" font-size="16" font-weight="bold" text-anchor="middle">B</text>
+  <text x="88" y="378" fill="#111b21" font-size="16" font-weight="500">Bharat Electrician</text>
+  <text x="88" y="398" fill="#667781" font-size="13">+91 94260 99887 (Mobile)</text>
+  <line x1="88" y1="420" x2="400" y2="420" stroke="#e9edef" stroke-width="1"/>
+
+  <!-- Floating Green Send Button (TARGET FOR STEP 4) -->
+  <g id="send_button_target">
+    <circle cx="340" cy="670" r="30" fill="#008069" filter="drop-shadow(0px 4px 8px rgba(0,0,0,0.3))"/>
+    <path d="M 330 656 L 356 670 L 330 684 L 336 670 Z" fill="#ffffff"/>
+  </g>
+</svg>
+

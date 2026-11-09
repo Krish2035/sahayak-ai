@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="gu">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+  <title>Sahayak AI - Systematic Visual Smartphone Guide for Seniors</title>
+  <link rel="stylesheet" href="css/styles.css?v=2.3">
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#0b141a">
+  <meta name="description" content="ChatGPT-style systematic step-by-step smartphone guide with photos below every step in Gujarati, Hindi, and English">
+  <!-- Set this to your live Render backend URL when deployed (e.g. https://sahayak-ai.onrender.com) -->
+  <meta name="backend-api-url" content="">
+</head>
+<body>
+  <div class="app-viewport">
+    
+    <!-- Top App Header -->
+    <header class="top-nav">
+      <div class="top-nav-inner">
+        <div class="logo-area">
+          <div class="logo-badge">👵👴</div>
+          <div>
+            <div class="app-title" id="appTitle">સહાયક AI</div>
+            <div class="app-subtitle" id="appSubtitle">વડીલો માટે સ્ટેપ-બાય-સ્ટેપ ફોટો ગાઈડ</div>
+          </div>
+        </div>
+        
+        <div class="nav-actions">
+          <!-- Senior Accessibility Font Zoom Button -->
+          <button class="btn-font-zoom" id="btnFontZoom" title="Text Size / અક્ષરો મોટા કરો">
+            <span id="fontZoomLabel">A+</span>
+          </button>
+          <!-- Language Switcher Pill -->
+          <button class="lang-select-btn" id="langSelectBtn" title="Change Language / ભાષા બદલો">
+            <span id="langLabel">🇮🇳 ગુજરાતી</span> ▾
+          </button>
+          <!-- Clear Chat Button -->
+          <button class="btn-icon-clear" id="btnClearChat" title="Reset Chat / નવો પ્રશ્ન">
+            🔄
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Calming Reassurance Strip -->
+    <div class="reassurance-strip">
+      <div class="reassurance-inner">
+        <span>🛡️</span>
+        <span id="reassuranceText">ચિંતા કરશો નહીં, આ ગાઈડથી તમારા ફોનમાં કશું જ ડિલીટ કે ખોટું નહીં થાય.</span>
+      </div>
+    </div>
+
+    <!-- MAIN CHAT FEED (ChatGPT Style) -->
+    <main class="chat-feed" id="chatFeed">
+      
+      <!-- Welcome Hero Message Card -->
+      <div class="welcome-hero-card" id="welcomeCard">
+        <div class="welcome-avatar">👵📱👴</div>
+        <h1 class="welcome-title" id="welcomeTitle">નમસ્તે! હું તમારો સહાયક AI છું</h1>
+        <p class="welcome-desc" id="welcomeDesc">
+          તમારે ફોનમાં જે પણ કરવું હોય, તે નીચે માઇક દબાવીને બોલો અથવા લખો. હું તમને <strong>દરેક સ્ટેપની નીચે ફોટો</strong> સાથે સરળતાથી સમજાવીશ.
+        </p>
+
+        <!-- Quick Suggestions Tray -->
+        <div class="quick-tray-title" id="quickTrayTitle">પ્રશ્ન પૂછવા માટે અહીં ટચ કરો:</div>
+        <div class="quick-chips-grid">
+          <button class="query-chip-btn" id="chipQ1">
+            <span id="chipQ1Text">વોટ્સએપ પર કોઈનો નંબર કેવી રીતે મોકલવો?</span>
+            <span class="chip-arrow-icon">➔</span>
+          </button>
+          <button class="query-chip-btn" id="chipQ2">
+            <span id="chipQ2Text">વોટ્સએપ પર ફોટો કેવી રીતે મોકલવો?</span>
+            <span class="chip-arrow-icon">➔</span>
+          </button>
+          <button class="query-chip-btn" id="chipQ3">
+            <span id="chipQ3Text">દુકાને ક્યૂઆર કોડ સ્કેન કરીને પેમેન્ટ કેમ કરવું?</span>
+            <span class="chip-arrow-icon">➔</span>
+          </button>
+          <button class="query-chip-btn" id="chipQ4">
+            <span id="chipQ4Text">ફોનમાં અક્ષરો મોટા કેવી રીતે કરવા?</span>
+            <span class="chip-arrow-icon">➔</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Messages will be dynamically rendered here -->
+
+    </main>
+
+    <!-- FLOATING CHAT INPUT BAR (BOTTOM) -->
+    <footer class="chat-input-wrapper">
+      <div class="chat-input-inner">
+        <!-- Active Voice Recording Indicator -->
+        <div class="mic-active-banner" id="micActiveBanner">
+          🎙️ સાંભળી રહ્યું છે... તમારો પ્રશ્ન બોલો
+        </div>
+
+        <div class="input-container">
+          <!-- Giant Mic Button -->
+          <button class="btn-input-mic" id="btnMic" aria-label="Speak in native language">
+            <svg style="width: 24px; height: 24px; fill: currentColor;" viewBox="0 0 24 24">
+              <path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z"/>
+              <path d="M17 11c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z"/>
+            </svg>
+          </button>
+
+          <!-- Text Input Field -->
+          <input type="text" class="chat-input-field" id="chatInput" 
+                 placeholder="બોલો અથવા અહીં પ્રશ્ન લખો (દા.ત. વૉટ્સએપ નંબર)..." 
+                 autocomplete="off">
+
+          <!-- Send Button -->
+          <button class="btn-input-send" id="btnSend" aria-label="Send query">
+            ➔
+          </button>
+        </div>
+        <!-- Desktop/Laptop Helper Hint -->
+        <div class="desktop-input-hint" id="desktopInputHint">
+          💡 Enter ↵ દબાવો અથવા બોલવા માટે માઇક 🎙️ પર ક્લિક કરો (Press Enter to send or click mic)
+        </div>
+      </div>
+    </footer>
+
+  </div>
+
+  <script src="js/app.js?v=2.3"></script>
+</body>
+</html>

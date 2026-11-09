@@ -124,6 +124,10 @@ if os.path.exists(frontend_dir):
     def serve_manifest():
         return FileResponse(os.path.join(frontend_dir, "manifest.json"), media_type="application/manifest+json")
 
+    @app.get("/favicon.svg")
+    def serve_favicon():
+        return FileResponse(os.path.join(frontend_dir, "favicon.svg"), media_type="image/svg+xml")
+
     @app.get("/sw.js")
     def serve_sw():
         return FileResponse(os.path.join(frontend_dir, "sw.js"), media_type="application/javascript")

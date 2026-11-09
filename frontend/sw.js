@@ -1,11 +1,16 @@
 // Sahayak AI Offline Service Worker
-const CACHE_NAME = 'sahayak-ai-v1';
+const CACHE_NAME = 'sahayak-ai-v2';
 const ASSETS_TO_CACHE = [
   '/',
   '/index.html',
   '/css/styles.css',
   '/js/app.js',
   '/manifest.json',
+  '/favicon.svg',
+  '/assets/logo.svg',
+  '/assets/icons/pwa-icon.svg',
+  '/assets/icons/icon-192.png',
+  '/assets/icons/icon-512.png',
   '/assets/screens/whatsapp_phone_home.svg',
   '/assets/screens/whatsapp_chat_list.svg',
   '/assets/screens/whatsapp_chat_screen.svg',

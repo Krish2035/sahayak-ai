@@ -1347,7 +1347,7 @@ body.light-theme .btn-icon-clear:hover {
    6. Android Floating Bubble Companion
    ========================================================================== */
 
-/* Super-Tools Horizontal Tray */
+/* Super-Tools Tray */
 .elder-tools-bar {
   width: 100%;
   max-width: 860px;
@@ -1355,14 +1355,31 @@ body.light-theme .btn-icon-clear:hover {
   padding: 6px 16px 12px 16px;
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+}
+
+.elder-tools-bar::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
+  width: 0;
+  height: 0;
 }
 
 .elder-tools-scroll {
   display: flex;
   align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
   gap: 10px;
-  width: max-content;
-  padding-bottom: 4px;
+  width: 100%;
+}
+
+@media (max-width: 640px) {
+  .elder-tools-scroll {
+    justify-content: flex-start;
+    flex-wrap: nowrap;
+    width: max-content;
+  }
 }
 
 .elder-tool-pill {

@@ -2,8 +2,8 @@ from typing import Optional, List
 from pydantic import BaseModel, Field
 
 class TargetCoordinate(BaseModel):
-    x_percent: float = Field(..., description="Horizontal position (0-100% from left of screen)")
-    y_percent: float = Field(..., description="Vertical position (0-100% from top of screen)")
+    x_percent: float = Field(50.0, description="Horizontal position (0-100% from left of screen)")
+    y_percent: float = Field(50.0, description="Vertical position (0-100% from top of screen)")
     radius_percent: float = Field(7.0, description="Radius size for the pulsing spotlight circle")
     description: str = Field("Target button", description="Visual description of the target button/area")
 

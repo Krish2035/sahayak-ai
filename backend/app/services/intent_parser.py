@@ -82,6 +82,17 @@ class IntentParserService:
         # Step 5: Fallback default response
         return self._generate_graceful_fallback(query_clean, active_lang, detected_lang_name, platform)
 
+    def _parse_coordinates(self, coords: Any) -> Optional[TargetCoordinate]:
+        """Safely parses target coordinates into TargetCoordinate schema."""
+        if not coords or not isinstance(coords, dict):
+            return None
+        return TargetCoordinate(
+            x_percent=float(coords.get("x_percent", 50.0)),
+            y_percent=float(coords.get("y_percent", 50.0)),
+            radius_percent=float(coords.get("radius_percent", 7.0)),
+            description=str(coords.get("description", "Target button"))
+        )
+
     def _extract_recipient(self, query: str, lang: str) -> Optional[str]:
         """Extracts person/relationship if mentioned in the query."""
         lower = query.lower()
@@ -124,7 +135,7 @@ class IntentParserService:
                     title=s["title"],
                     instruction=s["instruction"],
                     target_ui_element=s["target_ui_element"],
-                    target_coordinates=TargetCoordinate(**s["target_coordinates"]) if s.get("target_coordinates") else None,
+                    target_coordinates=self._parse_coordinates(s.get("target_coordinates")),
                     audio_text=s["audio_text"],
                     screen_type=s["screen_type"],
                     reassurance=s.get("reassurance")
@@ -199,23 +210,13 @@ class IntentParserService:
             data = json.loads(raw_clean)
             steps = []
             for idx, s in enumerate(data.get("steps", [])):
-                coords = s.get("target_coordinates")
-                target_coord = None
-                if coords and isinstance(coords, dict):
-                    target_coord = TargetCoordinate(
-                        x_percent=float(coords.get("x_percent", 50.0)),
-                        y_percent=float(coords.get("y_percent", 50.0)),
-                        radius_percent=float(coords.get("radius_percent", 7.0)),
-                        description=str(coords.get("description", "Target button"))
-                    )
-
                 steps.append(
                     StepItem(
                         step_number=idx + 1,
                         title=s.get("title", f"Step {idx + 1}"),
                         instruction=s.get("instruction", ""),
                         target_ui_element=s.get("target_ui_element", "Screen Button"),
-                        target_coordinates=target_coord,
+                        target_coordinates=self._parse_coordinates(s.get("target_coordinates")),
                         audio_text=s.get("audio_text", s.get("instruction", "")),
                         screen_type=s.get("screen_type", "generic_screen"),
                         reassurance=s.get("reassurance")
@@ -259,7 +260,7 @@ class IntentParserService:
                 title=s["title"],
                 instruction=s["instruction"],
                 target_ui_element=s["target_ui_element"],
-                target_coordinates=TargetCoordinate(**s["target_coordinates"]) if s.get("target_coordinates") else None,
+                target_coordinates=self._parse_coordinates(s.get("target_coordinates")),
                 audio_text=s["audio_text"],
                 screen_type=s["screen_type"],
                 reassurance=s.get("reassurance")

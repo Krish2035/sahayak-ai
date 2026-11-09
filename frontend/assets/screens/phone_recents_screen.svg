@@ -1,0 +1,73 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 750" width="100%" height="100%" style="background:#121212; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
+  <!-- Phone App Header -->
+  <rect x="0" y="0" width="400" height="70" fill="#1e1e1e"/>
+  <rect x="20" y="16" width="360" height="40" rx="20" fill="#2d2d2d"/>
+  <text x="45" y="41" fill="#9aa0a6" font-size="14">🔍 કોન્ટેક્ટ અને નંબર શોધો...</text>
+  <circle cx="355" cy="36" r="14" fill="#00a884"/>
+  <text x="355" y="42" fill="#ffffff" font-size="14" text-anchor="middle">🎙️</text>
+
+  <!-- Tabs: Favorites, Recents, Contacts -->
+  <rect x="0" y="70" width="400" height="45" fill="#1e1e1e"/>
+  <text x="65" y="98" fill="#9aa0a6" font-size="15" font-weight="600" text-anchor="middle">મનપસંદ</text>
+  <text x="200" y="98" fill="#00a884" font-size="15" font-weight="800" text-anchor="middle">છેલ્લા કોલ (Recents)</text>
+  <rect x="135" y="112" width="130" height="3" fill="#00a884"/>
+  <text x="335" y="98" fill="#9aa0a6" font-size="15" font-weight="600" text-anchor="middle">કોન્ટેક્ટ્સ</text>
+
+  <!-- Call History List -->
+  <!-- Call 1: Known Family Call -->
+  <g>
+    <rect x="0" y="125" width="400" height="80" fill="#121212"/>
+    <circle cx="45" cy="165" r="22" fill="#25d366"/>
+    <text x="45" y="172" fill="#ffffff" font-size="16" font-weight="bold" text-anchor="middle">R</text>
+    <text x="80" y="158" fill="#ffffff" font-size="17" font-weight="700">Ramesh Patel (ભાઈ)</text>
+    <text x="80" y="178" fill="#9aa0a6" font-size="13">↙️ ઇનકમિંગ • આજે, 10:30 AM</text>
+    <circle cx="360" cy="165" r="18" fill="#2a2a2a"/>
+    <text x="360" y="171" fill="#00a884" font-size="16" text-anchor="middle">📞</text>
+    <line x1="80" y1="205" x2="400" y2="205" stroke="#252525" stroke-width="1"/>
+  </g>
+
+  <!-- Call 2: TARGET UNKNOWN SPAM NUMBER (STEP TARGET x: 88%, y: 32%) -->
+  <g id="spam_call_row">
+    <rect x="0" y="210" width="400" height="85" fill="#211717"/>
+    <circle cx="45" cy="252" r="22" fill="#ef4444"/>
+    <text x="45" y="258" font-size="16" text-anchor="middle">⚠️</text>
+    <text x="80" y="244" fill="#fca5a5" font-size="17" font-weight="800">+91 98765 43210</text>
+    <text x="80" y="265" fill="#f87171" font-size="13">🚨 શંકાસ્પદ ફ્રોડ કોલ (Spam) • આજે, 09:15 AM</text>
+    
+    <!-- Info Button (i) TARGET FOR DETAILS -->
+    <g id="info_btn">
+      <circle cx="355" cy="252" r="18" fill="#3f1e1e" stroke="#ef4444" stroke-width="1.5"/>
+      <text x="355" y="258" fill="#fca5a5" font-size="15" font-weight="bold" text-anchor="middle">ℹ️</text>
+    </g>
+    <line x1="80" y1="295" x2="400" y2="295" stroke="#352525" stroke-width="1"/>
+  </g>
+
+  <!-- Call 3: Medical Store -->
+  <g>
+    <rect x="0" y="300" width="400" height="80" fill="#121212"/>
+    <circle cx="45" cy="340" r="22" fill="#3b82f6"/>
+    <text x="45" y="347" fill="#ffffff" font-size="16" font-weight="bold" text-anchor="middle">M</text>
+    <text x="80" y="333" fill="#ffffff" font-size="17" font-weight="700">મેડિકલ સ્ટોર (દવાખાનું)</text>
+    <text x="80" y="353" fill="#9aa0a6" font-size="13">↗️ આઉટગોઇંગ • ગઈકાલે</text>
+    <circle cx="360" cy="340" r="18" fill="#2a2a2a"/>
+    <text x="360" y="346" fill="#00a884" font-size="16" text-anchor="middle">📞</text>
+    <line x1="80" y1="380" x2="400" y2="380" stroke="#252525" stroke-width="1"/>
+  </g>
+
+  <!-- POPUP DETAILS / BLOCK CONFIRMATION CARD (STEP 3 & 4) -->
+  <rect x="15" y="420" width="370" height="230" rx="20" fill="#1e1e1e" stroke="#ef4444" stroke-width="2" filter="drop-shadow(0 8px 24px rgba(0,0,0,0.8))"/>
+  <circle cx="200" cy="460" r="26" fill="#7f1d1d"/>
+  <text x="200" y="468" font-size="24" text-anchor="middle">🚫</text>
+  <text x="200" y="505" fill="#ffffff" font-size="19" font-weight="800" text-anchor="middle">+91 98765 43210 બ્લોક કરો</text>
+  <text x="200" y="528" fill="#cbd5e1" font-size="14" text-anchor="middle">આ નંબર પરથી ફરી ક્યારેય કોલ કે મેસેજ નહીં આવે.</text>
+
+  <!-- TARGET ACTION: RED BLOCK BUTTON (STEP TARGET x: 50%, y: 76%) -->
+  <g id="block_confirm_btn">
+    <rect x="35" y="560" width="330" height="52" rx="26" fill="#dc2626"/>
+    <text x="200" y="592" fill="#ffffff" font-size="18" font-weight="800" text-anchor="middle">🚫 નંબર બ્લોક કરો (Block Number)</text>
+  </g>
+
+  <!-- Bottom Dial Pad Floating Icon -->
+  <circle cx="330" cy="690" r="28" fill="#00a884" filter="drop-shadow(0 4px 10px rgba(0,0,0,0.5))"/>
+  <text x="330" y="698" font-size="24" text-anchor="middle">🔢</text>
+</svg>

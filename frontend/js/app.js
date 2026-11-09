@@ -1,6 +1,7 @@
 /**
  * Sahayak AI: Systematic Step-by-Step Visual Guide
  * Conversational Feed Engine with Photos Embedded Below Every Step
+ * Trilingual: Gujarati (Primary), Hindi, English
  */
 
 // Resolve backend API URL for local dev, Render, or Vercel
@@ -28,7 +29,9 @@ const state = {
   currentSpeakingUtterance: null,
   apiBaseUrl: getApiBaseUrl(),
   latestFlow: null,
-  fontSizeLevel: 0 // 0: normal, 1: large (A++), 2: xlarge (A-)
+  fontSizeLevel: 0, // 0: normal, 1: large (A++), 2: xlarge (A-)
+  isVoiceNavActive: false,
+  voiceNavRecognition: null
 };
 
 // Trilingual UI Translations
@@ -44,6 +47,10 @@ const UI_STRINGS = {
     q2: "વોટ્સએપ પર ફોટો કેવી રીતે મોકલવો?",
     q3: "દુકાને ક્યૂઆર કોડ સ્કેન કરીને પેમેન્ટ કેમ કરવું?",
     q4: "ફોનમાં અક્ષરો મોટા કેવી રીતે કરવા?",
+    q5: "YouTube પર ભજન કેવી રીતે ડાઉનલોડ કરવું?",
+    q6: "WhatsApp પર લાઈવ લોકેશન કેમ મોકલવું?",
+    q7: "અજાણ્યા ફોન નંબર બ્લોક કેમ કરવા?",
+    q8: "વોટ્સએપ પર બોલીને અવાજનો મેસેજ કેમ મોકલવો?",
     inputPlaceholder: "બોલો અથવા અહીં પ્રશ્ન લખો (દા.ત. વૉટ્સએપ નંબર)...",
     micListening: "🎙️ સાંભળી રહ્યું છે... તમારો પ્રશ્ન બોલો",
     thinking: "સહાયક AI સ્ટેપ-બાય-સ્ટેપ ફોટો ગાઈડ તૈયાર કરી રહ્યું છે...",
@@ -54,10 +61,13 @@ const UI_STRINGS = {
     listenFull: "🔊 પૂરો ગાઈડ સાંભળો",
     shareDad: "📲 પપ્પાને WhatsApp પર મોકલો",
     finishBannerTitle: "કામ પૂરું થયું! 🎉",
-    finishBannerDesc: "આ બધા પગલાં અનુસર્યા પછી તમારો ફોન નંબર સરળતાથી મોકલાઈ જશે.",
+    finishBannerDesc: "આ બધા પગલાં અનુસર્યા પછી તમારું કામ સરળતાથી પૂરું થઈ જશે.",
     copiedToast: "લિંક કોપી થઈ ગઈ છે!",
     stepDoneBtn: "મેં આ કર્યું ✓",
-    stepDoneCompleted: "પૂર્ણ થયું! ✅"
+    stepDoneCompleted: "પૂર્ણ થયું! ✅",
+    voiceNavActive: "🎙️ બોલો 'Next' અથવા 'આગળ' આગળ વધવા માટે",
+    voiceNavNextHeard: "આગળનું પગલું ખોલ્યું",
+    voiceNavBackHeard: "પાછલું પગલું ખોલ્યું"
   },
   hi: {
     appTitle: "सहायक AI",
@@ -70,6 +80,10 @@ const UI_STRINGS = {
     q2: "व्हाट्सएप पर फोटो कैसे भेजें?",
     q3: "दुकान पर क्यूआर कोड स्कैन करके भुगतान कैसे करें?",
     q4: "फोन में लिखावट (अक्षर) बड़े कैसे करें?",
+    q5: "YouTube पर भजन कैसे डाउनलोड करें?",
+    q6: "WhatsApp पर लाइव लोकेशन कैसे भेजें?",
+    q7: "अनजान फोन नंबर ब्लॉक कैसे करें?",
+    q8: "व्हाट्सएप पर बोलकर आवाज का मैसेज कैसे भेजें?",
     inputPlaceholder: "बोलें या यहाँ सवाल लिखें (उदा. व्हाट्सएप नंबर)...",
     micListening: "🎙️ सुन रहा हूँ... अपना सवाल बोलिए",
     thinking: "सहायक AI स्टेप-बाय-स्टेप फोटो गाइड तैयार कर रहा है...",
@@ -83,7 +97,10 @@ const UI_STRINGS = {
     finishBannerDesc: "इन सभी कदमों को पूरा करने के बाद आपका काम आसानी से हो जाएगा।",
     copiedToast: "गाइड कॉपी हो गई है!",
     stepDoneBtn: "मैंने यह कर लिया ✓",
-    stepDoneCompleted: "पूरा हुआ! ✅"
+    stepDoneCompleted: "पूरा हुआ! ✅",
+    voiceNavActive: "🎙️ बोलिए 'Next' या 'आगे' अगले कदम पर जाने के लिए",
+    voiceNavNextHeard: "अगले कदम पर आ गए",
+    voiceNavBackHeard: "पिछले कदम पर आ गए"
   },
   en: {
     appTitle: "Sahayak AI",
@@ -96,6 +113,10 @@ const UI_STRINGS = {
     q2: "How to send a photo on WhatsApp?",
     q3: "How to scan a QR code to pay at a shop?",
     q4: "How to make text and letters bigger on phone?",
+    q5: "How to download bhajan/songs on YouTube?",
+    q6: "How to share live location on WhatsApp?",
+    q7: "How to block unknown spam phone numbers?",
+    q8: "How to send a voice message on WhatsApp?",
     inputPlaceholder: "Speak or type your question (e.g. WhatsApp number)...",
     micListening: "🎙️ Listening... speak your question now",
     thinking: "Sahayak AI is generating your systematic step-by-step visual guide...",
@@ -106,10 +127,13 @@ const UI_STRINGS = {
     listenFull: "🔊 Listen to Full Guide",
     shareDad: "📲 Share with Dad on WhatsApp",
     finishBannerTitle: "All Done! 🎉",
-    finishBannerDesc: "Following these steps will safely complete your task on WhatsApp.",
+    finishBannerDesc: "Following these steps will safely complete your task.",
     copiedToast: "Guide copied to clipboard!",
     stepDoneBtn: "Done with this step ✓",
-    stepDoneCompleted: "Completed! ✅"
+    stepDoneCompleted: "Completed! ✅",
+    voiceNavActive: "🎙️ Say 'Next' or 'Back' to navigate hands-free",
+    voiceNavNextHeard: "Next step",
+    voiceNavBackHeard: "Previous step"
   }
 };
 
@@ -122,17 +146,24 @@ const SCREEN_ASSETS = {
   whatsapp_contact_search: "assets/screens/whatsapp_contact_search.svg",
   whatsapp_contact_picker: "assets/screens/whatsapp_contact_picker.svg",
   whatsapp_photo_preview: "assets/screens/whatsapp_photo_preview.svg",
+  youtube_bhajan_screen: "assets/screens/youtube_bhajan_screen.svg",
+  phone_recents_screen: "assets/screens/phone_recents_screen.svg",
+  maps_directions_screen: "assets/screens/maps_directions_screen.svg",
+  clock_alarm_screen: "assets/screens/clock_alarm_screen.svg",
   gpay_home: "assets/screens/gpay_home.svg",
   scanner_camera: "assets/screens/gpay_scanner.svg",
   gpay_amount_screen: "assets/screens/gpay_amount.svg",
   android_home: "assets/screens/whatsapp_phone_home.svg",
   settings_list: "assets/screens/settings_home.svg",
   font_settings: "assets/screens/settings_home.svg",
+  settings_home: "assets/screens/settings_home.svg",
   default_screen: "assets/screens/whatsapp_chat_screen.svg"
 };
 
 // DOM References
 const el = {
+  btnThemeToggle: document.getElementById('btnThemeToggle'),
+  themeIcon: document.getElementById('themeIcon'),
   btnFontZoom: document.getElementById('btnFontZoom'),
   fontZoomLabel: document.getElementById('fontZoomLabel'),
   langSelectBtn: document.getElementById('langSelectBtn'),
@@ -148,17 +179,47 @@ const el = {
   chipQ2: document.getElementById('chipQ2'),
   chipQ3: document.getElementById('chipQ3'),
   chipQ4: document.getElementById('chipQ4'),
+  chipQ5: document.getElementById('chipQ5'),
+  chipQ6: document.getElementById('chipQ6'),
+  chipQ7: document.getElementById('chipQ7'),
+  chipQ8: document.getElementById('chipQ8'),
   chipQ1Text: document.getElementById('chipQ1Text'),
   chipQ2Text: document.getElementById('chipQ2Text'),
   chipQ3Text: document.getElementById('chipQ3Text'),
   chipQ4Text: document.getElementById('chipQ4Text'),
+  chipQ5Text: document.getElementById('chipQ5Text'),
+  chipQ6Text: document.getElementById('chipQ6Text'),
+  chipQ7Text: document.getElementById('chipQ7Text'),
+  chipQ8Text: document.getElementById('chipQ8Text'),
   chatInput: document.getElementById('chatInput'),
   btnMic: document.getElementById('btnMic'),
   btnSend: document.getElementById('btnSend'),
   micActiveBanner: document.getElementById('micActiveBanner')
 };
 
-// Initialize Speech Recognition (STT)
+// Senior High-Contrast Light Mode Engine
+function initTheme() {
+  const savedTheme = localStorage.getItem('sahayak_theme') || 'dark';
+  applyTheme(savedTheme);
+}
+
+function applyTheme(theme) {
+  if (theme === 'light') {
+    document.body.classList.add('light-theme');
+    if (el.themeIcon) el.themeIcon.textContent = '🌙';
+  } else {
+    document.body.classList.remove('light-theme');
+    if (el.themeIcon) el.themeIcon.textContent = '☀️';
+  }
+  localStorage.setItem('sahayak_theme', theme);
+}
+
+function toggleTheme() {
+  const isLight = document.body.classList.contains('light-theme');
+  applyTheme(isLight ? 'dark' : 'light');
+}
+
+// Initialize Speech Recognition (STT for Queries)
 function initSpeechRecognition() {
   const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
   if (!SpeechRecognition) {
@@ -172,8 +233,9 @@ function initSpeechRecognition() {
 
   state.recognition.onstart = () => {
     state.isListening = true;
-    el.btnMic.classList.add('listening');
-    el.micActiveBanner.classList.add('active');
+    stopVoiceNavListener(); // pause voice nav during query dictation
+    if (el.btnMic) el.btnMic.classList.add('listening');
+    if (el.micActiveBanner) el.micActiveBanner.classList.add('active');
   };
 
   state.recognition.onresult = (event) => {
@@ -214,8 +276,91 @@ function startListening() {
 
 function stopListening() {
   state.isListening = false;
-  el.btnMic.classList.remove('listening');
-  el.micActiveBanner.classList.remove('active');
+  if (el.btnMic) el.btnMic.classList.remove('listening');
+  if (el.micActiveBanner) el.micActiveBanner.classList.remove('active');
+}
+
+// Live Voice Navigation Mode ("Next" / "આગળ" Hands-Free Trigger)
+function startVoiceNavListener() {
+  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if (!SpeechRecognition) return;
+
+  if (state.voiceNavRecognition) {
+    try { state.voiceNavRecognition.stop(); } catch (e) {}
+  }
+
+  const navRec = new SpeechRecognition();
+  navRec.continuous = true;
+  navRec.interimResults = false;
+  const langMap = { gu: 'gu-IN', hi: 'hi-IN', en: 'en-IN' };
+  navRec.lang = langMap[state.currentLanguage] || 'gu-IN';
+
+  navRec.onresult = (event) => {
+    for (let i = event.resultIndex; i < event.results.length; ++i) {
+      if (event.results[i].isFinal) {
+        const spoken = event.results[i][0].transcript.trim().toLowerCase();
+        console.log("Live Voice Nav heard:", spoken);
+        handleVoiceNavCommand(spoken);
+      }
+    }
+  };
+
+  navRec.onerror = (e) => {
+    console.log("Voice nav notice:", e.error);
+  };
+
+  navRec.onend = () => {
+    if (state.isVoiceNavActive && !state.isListening) {
+      try { navRec.start(); } catch (err) {}
+    }
+  };
+
+  state.voiceNavRecognition = navRec;
+  state.isVoiceNavActive = true;
+  try {
+    navRec.start();
+  } catch (err) {}
+}
+
+function stopVoiceNavListener() {
+  state.isVoiceNavActive = false;
+  if (state.voiceNavRecognition) {
+    try { state.voiceNavRecognition.stop(); } catch (e) {}
+  }
+}
+
+function handleVoiceNavCommand(spoken) {
+  const isNext = /next|આગળ|આગલ|आगे|agla|agle|nekst/i.test(spoken);
+  const isBack = /back|પાછળ|પાછલ|પીછે|piche|pichhe|bek/i.test(spoken);
+
+  if (isNext) {
+    const stepCards = document.querySelectorAll('.systematic-step-card');
+    for (let card of stepCards) {
+      const btn = card.querySelector('.step-done-btn');
+      if (btn && !btn.classList.contains('completed')) {
+        btn.click();
+        const feedback = UI_STRINGS[state.currentLanguage].voiceNavNextHeard;
+        speakText(feedback);
+        return;
+      }
+    }
+  } else if (isBack) {
+    const stepCards = Array.from(document.querySelectorAll('.systematic-step-card'));
+    for (let i = stepCards.length - 1; i >= 0; i--) {
+      const btn = stepCards[i].querySelector('.step-done-btn');
+      if (btn && btn.classList.contains('completed')) {
+        btn.classList.remove('completed');
+        btn.innerHTML = `<span>✓</span> <span>${UI_STRINGS[state.currentLanguage].stepDoneBtn}</span>`;
+        stepCards[i].scrollIntoView({ behavior: 'smooth', block: 'center' });
+        const feedback = UI_STRINGS[state.currentLanguage].voiceNavBackHeard;
+        speakText(feedback);
+        return;
+      }
+    }
+    if (stepCards.length > 0) {
+      stepCards[0].scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  }
 }
 
 // Text-to-Speech (TTS)
@@ -224,7 +369,7 @@ function speakText(textToSpeak, onEndCallback) {
   state.speechSynth.cancel();
 
   const utterance = new SpeechSynthesisUtterance(textToSpeak);
-  utterance.rate = 0.82; // Patient, slow speed for elderly listeners
+  utterance.rate = 0.82; // Patient, slow pace for elderly listeners
   utterance.pitch = 1.0;
 
   const langMap = { gu: 'gu-IN', hi: 'hi-IN', en: 'en-IN' };
@@ -291,7 +436,7 @@ async function submitQuery(queryText, wasVoice = false) {
     state.latestFlow = flowData;
     renderAiVisualGuide(flowData);
   } catch (err) {
-    console.warn("Backend request failed, falling back to local preloaded flow:", err);
+    console.warn("Backend request failed, falling back to local flow:", err);
     removeThinkingIndicator(thinkingId);
     const fallbackFlow = getLocalFallbackFlow(query);
     state.latestFlow = fallbackFlow;
@@ -374,6 +519,14 @@ function renderAiVisualGuide(flowData) {
         <span>📲</span>
         <span>${strings.shareDad}</span>
       </button>
+    </div>
+    <!-- Live Voice Navigation Mode Banner -->
+    <div class="voice-nav-banner">
+      <div class="voice-nav-badge">
+        <span class="voice-nav-indicator-dot"></span>
+        <span>${strings.voiceNavActive}</span>
+      </div>
+      <span class="voice-nav-hint">Next ➔ / Back ⬅️</span>
     </div>
   `;
   container.appendChild(header);
@@ -527,6 +680,9 @@ function renderAiVisualGuide(flowData) {
   containerRow.appendChild(container);
   el.chatFeed.appendChild(containerRow);
   scrollToBottom();
+
+  // Start continuous voice navigation for elderly users hands-free
+  startVoiceNavListener();
 }
 
 // Play Full Guide Audio Sequentially
@@ -577,9 +733,65 @@ function shareGuideOnWhatsApp(flowData) {
   window.open(encodedUrl, '_blank');
 }
 
-// Local Fallback Flow for 100% Reliable Offline Demonstration
+// Local Fallback Flow for 100% Reliable Offline Operation
 function getLocalFallbackFlow(query) {
   const lang = state.currentLanguage;
+  const qLower = (query || "").toLowerCase();
+
+  // 1. YouTube Bhajan Download
+  if (qLower.includes("youtube") || qLower.includes("bhajan") || qLower.includes("ભજન") || qLower.includes("भजन") || qLower.includes("ડાઉનલોડ") || qLower.includes("डाउनलोड")) {
+    if (lang === 'gu') {
+      return {
+        title: "YouTube પર ભજન ડાઉનલોડ કરો",
+        summary: "તમારા મનપસંદ ભજનને ફોનમાં ડાઉનલોડ કરો જેથી ઇન્ટરનેટ વગર પણ સાંભળી શકાય.",
+        reassurance_banner: "ચિંતા કરશો નહીં, આ ભજન તમારા YouTube માં સુરક્ષિત સેવ રહેશે અને ગમે ત્યારે વાગશે.",
+        total_steps: 4,
+        intent_info: { app_name: "YouTube", intent: "download_youtube_video" },
+        steps: [
+          { step_number: 1, title: "1. YouTube એપ ખોલો", instruction: "તમારા ફોનમાં લાલ રંગનું YouTube નું નિશાન શોધો અને તેના પર ટચ કરો.", target_ui_element: "લાલ YouTube આઇકન", target_coordinates: { x_percent: 61.3, y_percent: 89.6, radius_percent: 7.5 }, audio_text: "સૌપ્રથમ લાલ રંગની YouTube એપ ખોલો.", screen_type: "whatsapp_phone_home", reassurance: "YouTube એપ ખુલશે." },
+          { step_number: 2, title: "2. ઉપર સર્ચમાં ભજનનું નામ લખો", instruction: "ઉપર આપેલા કાચ જેવા સર્ચ 🔍 નિશાન પર ટચ કરી જે ભજન સાંભળવું હોય તેનું નામ લખો.", target_ui_element: "🔍 સર્ચ બટન", target_coordinates: { x_percent: 82.5, y_percent: 4.0, radius_percent: 6.5 }, audio_text: "ઉપર સર્ચમાં ભજનનું નામ લખો.", screen_type: "youtube_bhajan_screen", reassurance: "ભજનનું લિસ્ટ દેખાશે." },
+          { step_number: 3, title: "3. વિડીયો નીચે 'ડાઉનલોડ' પર ટચ કરો", instruction: "ભજન ચાલુ થાય પછી વિડીયોની નીચે ગોળ તીર ⬇️ વાળા 'ડાઉનલોડ' (Download) બટન પર ટચ કરો.", target_ui_element: "⬇️ ડાઉનલોડ બટન", target_coordinates: { x_percent: 63.0, y_percent: 52.0, radius_percent: 7.5 }, audio_text: "વિડીયોની નીચે ડાઉનલોડ બટન પર અડો.", screen_type: "youtube_bhajan_screen", reassurance: "ડાઉનલોડ શરૂ થઈ જશે." },
+          { step_number: 4, title: "4. ભજન ડાઉનલોડ થઈ ગયું છે!", instruction: "નીચે લાઈબ્રેરી 📚 માં જઈને તમે નેટ વગર પણ આ ભજન ગમે ત્યારે સાંભળી શકશો.", target_ui_element: "લાઈબ્રેરી સેવ", target_coordinates: { x_percent: 87.5, y_percent: 96.0, radius_percent: 6.0 }, audio_text: "ભજન ડાઉનલોડ થઈ ગયું છે. હવે ઇન્ટરનેટ વગર પણ સાંભળી શકશો.", screen_type: "youtube_bhajan_screen", reassurance: "ભજન સફળતાપૂર્વક સેવ થઈ ગયું છે." }
+        ]
+      };
+    }
+  }
+
+  // 2. WhatsApp Share Live Location
+  if (qLower.includes("location") || qLower.includes("લોકેશન") || qLower.includes("लोकेशन")) {
+    return {
+      title: lang === 'gu' ? "WhatsApp પર લાઈવ લોકેશન મોકલો" : (lang === 'hi' ? "WhatsApp पर लाइव लोकेशन भेजें" : "Share Live Location on WhatsApp"),
+      summary: lang === 'gu' ? "તમે ક્યાં છો તે ઘરના સભ્યોને નકશા પર તરત જ બતાવો." : (lang === 'hi' ? "घर वालों को नक्शे पर अपनी लोकेशन भेजें।" : "Safely share your location in chat."),
+      reassurance_banner: lang === 'gu' ? "ચિંતા કરશો નહીં, આ ફક્ત તમે જેને મોકલશો તેમને જ તમારું લોકેશન બતાવશે." : "Don't worry, your location is shared privately.",
+      total_steps: 4,
+      intent_info: { app_name: "WhatsApp", intent: "share_location" },
+      steps: [
+        { step_number: 1, title: lang === 'gu' ? "1. વોટ્સએપ ખોલો" : "1. Open WhatsApp", instruction: lang === 'gu' ? "તમારા ફોનની સ્ક્રીન પર લીલા રંગનું વૉટ્સએપનું નિશાન શોધો." : "Find and open WhatsApp.", target_ui_element: "WhatsApp Icon", target_coordinates: { x_percent: 61.3, y_percent: 89.6, radius_percent: 7.5 }, audio_text: "Open WhatsApp.", screen_type: "whatsapp_phone_home", reassurance: "Safe." },
+        { step_number: 2, title: lang === 'gu' ? "2. જેમને મોકલવું છે તેમની ચેટ ખોલો" : "2. Open Chat", instruction: lang === 'gu' ? "જે સભ્યને લોકેશન મોકલવું છે તેમના નામ પર ટચ કરો." : "Tap person's chat.", target_ui_element: "Chat Name", target_coordinates: { x_percent: 50.0, y_percent: 18.2, radius_percent: 7.5 }, audio_text: "Open the chat.", screen_type: "whatsapp_chat_list", reassurance: "Opens conversation." },
+        { step_number: 3, title: lang === 'gu' ? "3. પેપરક્લિપ 📎 પર ટચ કરી 'Location' પસંદ કરો" : "3. Tap Clip & Choose Location", instruction: lang === 'gu' ? "નીચે ક્લિપ 📎 પર અડો અને લીલા રંગના 'Location' 📍 બટન પર ટચ કરો." : "Tap Paperclip and select Location 📍.", target_ui_element: "📍 Location Option", target_coordinates: { x_percent: 50.0, y_percent: 76.7, radius_percent: 7.0 }, audio_text: "Tap Location.", screen_type: "whatsapp_attachment_menu", reassurance: "Shows map options." },
+        { step_number: 4, title: lang === 'gu' ? "4. 'Send your current location' પર ટચ કરો" : "4. Send Current Location", instruction: lang === 'gu' ? "'Send your current location' વાળા વિકલ્પ પર અડો. તમારું લોકેશન પહોંચી ગયું!" : "Tap Send Current Location.", target_ui_element: "Send Location Button", target_coordinates: { x_percent: 50.0, y_percent: 62.0, radius_percent: 7.5 }, audio_text: "Location sent!", screen_type: "maps_directions_screen", reassurance: "Location successfully sent." }
+      ]
+    };
+  }
+
+  // 3. Block Unknown Number
+  if (qLower.includes("block") || qLower.includes("બ્લોક") || qLower.includes("ब्लॉक") || qLower.includes("અજાણ્યા") || qLower.includes("अनजान") || qLower.includes("spam")) {
+    return {
+      title: lang === 'gu' ? "અજાણ્યા ફોન નંબર બ્લોક કરો" : (lang === 'hi' ? "अनजान फोन नंबर ब्लॉक करें" : "Block Unknown Spam Numbers"),
+      summary: lang === 'gu' ? "ખોટા કે અજાણ્યા નંબરોને બ્લોક કરો જેથી તેમના ફોન કે મેસેજ ન આવે." : "Block spam numbers from calling you.",
+      reassurance_banner: lang === 'gu' ? "ચિંતા કરશો નહીં, આ નંબર બ્લોક કરવાથી તમારા પોતાના કોઈ સંપર્કો ડિલીટ નહીં થાય." : "Safe to block spam.",
+      total_steps: 4,
+      intent_info: { app_name: "Phone", intent: "block_phone_number" },
+      steps: [
+        { step_number: 1, title: lang === 'gu' ? "1. ફોન (કોલ) ની એપ ખોલો" : "1. Open Phone App", instruction: lang === 'gu' ? "તમારા ફોનની સ્ક્રીન પર લીલા ફોન રીસીવર 📞 વાળા આઇકન પર ટચ કરો." : "Tap Phone receiver icon.", target_ui_element: "📞 Phone App", target_coordinates: { x_percent: 38.5, y_percent: 89.6, radius_percent: 7.5 }, audio_text: "Open Phone app.", screen_type: "whatsapp_phone_home", reassurance: "Opens recents." },
+        { step_number: 2, title: lang === 'gu' ? "2. અજાણ્યા નંબરની બાજુમાં 'i' બટન પર ટચ કરો" : "2. Tap Info Button (i)", instruction: lang === 'gu' ? "જે ખોટો નંબર આવ્યો હતો તેની જમણી બાજુ ગોળ (i) માહિતી વાળા બટન પર ટચ કરો." : "Tap (i) next to the spam number.", target_ui_element: "(i) Info Button", target_coordinates: { x_percent: 88.7, y_percent: 33.6, radius_percent: 6.5 }, audio_text: "Tap info button.", screen_type: "phone_recents_screen", reassurance: "Opens call details." },
+        { step_number: 3, title: lang === 'gu' ? "3. નીચે 'Block' (બ્લોક) પર ટચ કરો" : "3. Tap Block", instruction: lang === 'gu' ? "સ્ક્રીનની નીચે આપેલા 'Block' 🚫 બટન પર ટચ કરો." : "Tap Block at the bottom.", target_ui_element: "🚫 Block Button", target_coordinates: { x_percent: 50.0, y_percent: 78.0, radius_percent: 7.5 }, audio_text: "Tap Block.", screen_type: "phone_recents_screen", reassurance: "Prevents spam." },
+        { step_number: 4, title: lang === 'gu' ? "4. નંબર બ્લોક થઈ ગયો છે!" : "4. Number Blocked Successfully", instruction: lang === 'gu' ? "હવે આ નંબર પરથી ક્યારેય તમને ફોન કે મેસેજ આવી શકશે નહીં." : "This spam number can no longer disturb you.", target_ui_element: "Blocked Badge", target_coordinates: { x_percent: 50.0, y_percent: 22.0, radius_percent: 7.0 }, audio_text: "Number blocked successfully.", screen_type: "phone_recents_screen", reassurance: "Safe and protected." }
+      ]
+    };
+  }
+
+  // 4. Default: The Verified Core Incident (WhatsApp Contact Share)
   if (lang === 'gu') {
     return {
       title: "વોટ્સએપ પર ફોન નંબર મોકલો",
@@ -588,136 +800,28 @@ function getLocalFallbackFlow(query) {
       total_steps: 6,
       intent_info: { app_name: "WhatsApp", intent: "share_contact_number" },
       steps: [
-        {
-          step_number: 1,
-          title: "1. વૉટ્સએપ ખોલો (Open WhatsApp)",
-          instruction: "તમારા ફોનની સ્ક્રીન પર લીલા રંગનું વૉટ્સએપનું ગોળ નિશાન શોધો અને તેના પર એક વાર ટચ કરો.",
-          target_ui_element: "વૉટ્સએપ એપનું લીલું નિશાન",
-          target_coordinates: { x_percent: 61.3, y_percent: 89.6, radius_percent: 7.5 },
-          audio_text: "સૌપ્રથમ તમારા ફોનમાં લીલા રંગના વૉટ્સએપ નિશાન પર એક વાર અડો.",
-          screen_type: "whatsapp_phone_home",
-          reassurance: "આનાથી તમારા ફોનમાં વૉટ્સએપ ખુલશે."
-        },
-        {
-          step_number: 2,
-          title: "2. જેમને નંબર મોકલવો છે તેમની ચેટ ખોલો",
-          instruction: "જે વ્યક્તિને તમારે ફોન નંબર મોકલવો છે (દા.ત. તમારા ભાઈ કે મિત્ર), તેમના નામ પર ટચ કરીને ચેટ ખોલો.",
-          target_ui_element: "વ્યક્તિની ચેટનું નામ",
-          target_coordinates: { x_percent: 50.0, y_percent: 18.2, radius_percent: 7.5 },
-          audio_text: "હવે જેમને નંબર મોકલવો છે તેમના નામ પર ટચ કરીને વાતચીત ખોલો.",
-          screen_type: "whatsapp_chat_list",
-          reassurance: "એમના નામ પર ટચ કરવાથી મેસેજની સ્ક્રીન ખુલશે."
-        },
-        {
-          step_number: 3,
-          title: "3. પેપરક્લિપ (ક્લિપ) ના નિશાન પર ટચ કરો",
-          instruction: "નીચે જ્યાં મેસેજ લખો છો તેની જમણી બાજુ નાની ક્લિપ જેવું નિશાન 📎 દેખાશે. તેના પર ટચ કરો.",
-          target_ui_element: "📎 પેપરક્લિપ આઇકન",
-          target_coordinates: { x_percent: 70.8, y_percent: 94.5, radius_percent: 5.5 },
-          audio_text: "નીચે મેસેજ લખવાની જગ્યા પાસે નાની પેપરક્લિપ પર અડો.",
-          screen_type: "whatsapp_chat_screen",
-          reassurance: "આનાથી ફોટો કે નંબર મોકલવાના વિકલ્પો દેખાશે."
-        },
-        {
-          step_number: 4,
-          title: "4. મેનૂમાંથી 'Contact' (વાદળી ગોળ) પસંદ કરો",
-          instruction: "એક નાનું રંગીન મેનૂ ખુલશે. તેમાં વાદળી રંગના ગોળ 'Contact' (માણસના ચહેરાવાળા) બટન પર ટચ કરો.",
-          target_ui_element: "👤 વાદળી કોન્ટેક્ટ બટન",
-          target_coordinates: { x_percent: 80.0, y_percent: 76.7, radius_percent: 7.0 },
-          audio_text: "હવે વાદળી રંગના કોન્ટેક્ટ વાળા બટન પર ટચ કરો.",
-          screen_type: "whatsapp_attachment_menu",
-          reassurance: "આનાથી તમારા ફોનની કોન્ટેક્ટ લિસ્ટ ખુલશે."
-        },
-        {
-          step_number: 5,
-          title: "5. જે વ્યક્તિનો નંબર મોકલવો છે તેમને શોધીને પસંદ કરો",
-          instruction: "ઉપર સર્ચમાં જે વ્યક્તિનો નંબર મોકલવો હોય તેમનું નામ લખો અથવા લિસ્ટમાંથી શોધીને તેમના નામ પર ટચ કરો.",
-          target_ui_element: "મોકલવા માટે કોન્ટેક્ટનું નામ",
-          target_coordinates: { x_percent: 50.0, y_percent: 23.6, radius_percent: 8.0 },
-          audio_text: "જેમનો નંબર મોકલવો હોય તેમના નામ પર ટચ કરો.",
-          screen_type: "whatsapp_contact_search",
-          reassurance: "તેમના નામ પાસે લીલું નિશાન આવી જશે."
-        },
-        {
-          step_number: 6,
-          title: "6. નીચે આપેલા લીલા બટન પર ટચ કરો",
-          instruction: "સૌથી નીચે જમણી બાજુ આપેલા લીલા રંગના તીર ➡️ વાળા સેન્ડ બટન પર ટચ કરો. નંબર સફળતાપૂર્વક પહોંચી જશે!",
-          target_ui_element: "લીલું સેન્ડ (મોકલો) બટન",
-          target_coordinates: { x_percent: 85.0, y_percent: 89.3, radius_percent: 7.5 },
-          audio_text: "નામ પસંદ કર્યા પછી નીચે લીલા તીર પર અડો. નંબર પહોંચી ગયો છે!",
-          screen_type: "whatsapp_contact_picker",
-          reassurance: "નંબર સફળતાપૂર્વક મોકલાઈ ગયો છે."
-        }
+        { step_number: 1, title: "1. વૉટ્સએપ ખોલો (Open WhatsApp)", instruction: "તમારા ફોનની સ્ક્રીન પર લીલા રંગનું વૉટ્સએપનું ગોળ નિશાન શોધો અને તેના પર એક વાર ટચ કરો.", target_ui_element: "વૉટ્સએપ એપનું લીલું નિશાન", target_coordinates: { x_percent: 61.3, y_percent: 89.6, radius_percent: 7.5 }, audio_text: "સૌપ્રથમ તમારા ફોનમાં લીલા રંગના વૉટ્સએપ નિશાન પર એક વાર અડો.", screen_type: "whatsapp_phone_home", reassurance: "આનાથી તમારા ફોનમાં વૉટ્સએપ ખુલશે." },
+        { step_number: 2, title: "2. જેમને નંબર મોકલવો છે તેમની ચેટ ખોલો", instruction: "જે વ્યક્તિને તમારે ફોન નંબર મોકલવો છે (દા.ત. તમારા ભાઈ કે મિત્ર), તેમના નામ પર ટચ કરીને ચેટ ખોલો.", target_ui_element: "વ્યક્તિની ચેટનું નામ", target_coordinates: { x_percent: 50.0, y_percent: 18.2, radius_percent: 7.5 }, audio_text: "હવે જેમને નંબર મોકલવો છે તેમના નામ પર ટચ કરીને વાતચીત ખોલો.", screen_type: "whatsapp_chat_list", reassurance: "એમના નામ પર ટચ કરવાથી મેસેજની સ્ક્રીન ખુલશે." },
+        { step_number: 3, title: "3. પેપરક્લિપ (ક્લિપ) ના નિશાન પર ટચ કરો", instruction: "નીચે જ્યાં મેસેજ લખો છો તેની જમણી બાજુ નાની ક્લિપ જેવું નિશાન 📎 દેખાશે. તેના પર ટચ કરો.", target_ui_element: "📎 પેપરક્લિપ આઇકન", target_coordinates: { x_percent: 70.8, y_percent: 94.5, radius_percent: 5.5 }, audio_text: "નીચે મેસેજ લખવાની જગ્યા પાસે નાની પેપરક્લિપ પર અડો.", screen_type: "whatsapp_chat_screen", reassurance: "આનાથી ફોટો કે નંબર મોકલવાના વિકલ્પો દેખાશે." },
+        { step_number: 4, title: "4. મેનૂમાંથી 'Contact' (વાદળી ગોળ) પસંદ કરો", instruction: "એક નાનું રંગીન મેનૂ ખુલશે. તેમાં વાદળી રંગના ગોળ 'Contact' (માણસના ચહેરાવાળા) બટન પર ટચ કરો.", target_ui_element: "👤 વાદળી કોન્ટેક્ટ બટન", target_coordinates: { x_percent: 80.0, y_percent: 76.7, radius_percent: 7.0 }, audio_text: "હવે વાદળી રંગના કોન્ટેક્ટ વાળા બટન પર ટચ કરો.", screen_type: "whatsapp_attachment_menu", reassurance: "આનાથી તમારા ફોનની કોન્ટેક્ટ લિસ્ટ ખુલશે." },
+        { step_number: 5, title: "5. જે વ્યક્તિનો નંબર મોકલવો છે તેમને શોધીને પસંદ કરો", instruction: "ઉપર સર્ચમાં જે વ્યક્તિનો નંબર મોકલવો હોય તેમનું નામ લખો અથવા લિસ્ટમાંથી શોધીને તેમના નામ પર ટચ કરો.", target_ui_element: "મોકલવા માટે કોન્ટેક્ટનું નામ", target_coordinates: { x_percent: 50.0, y_percent: 23.6, radius_percent: 8.0 }, audio_text: "જેમનો નંબર મોકલવો હોય તેમના નામ પર ટચ કરો.", screen_type: "whatsapp_contact_search", reassurance: "તેમના નામ પાસે લીલું નિશાન આવી જશે." },
+        { step_number: 6, title: "6. નીચે આપેલા લીલા બટન પર ટચ કરો", instruction: "સૌથી નીચે જમણી બાજુ આપેલા લીલા રંગના તીર ➡️ વાળા સેન્ડ બટન પર ટચ કરો. નંબર સફળતાપૂર્વક પહોંચી જશે!", target_ui_element: "લીલું સેન્ડ (મોકલો) બટન", target_coordinates: { x_percent: 85.0, y_percent: 89.3, radius_percent: 7.5 }, audio_text: "નામ પસંદ કર્યા પછી નીચે લીલા તીર પર અડો. નંબર પહોંચી ગયો છે!", screen_type: "whatsapp_contact_picker", reassurance: "નંબર સફળતાપૂર્વક મોકલાઈ ગયો છે." }
       ]
     };
   } else if (lang === 'hi') {
     return {
       title: "व्हाट्सएप पर फोन नंबर भेजें",
       summary: "व्हाट्सएप चैट में किसी का भी फोन नंबर आसानी से भेजें।",
-      reassurance_banner: "चिंता मत कीजिए, इससे सिर्फ फोन नंबर जाएगा। फोन से कुछ भी डिलीટ नहीं होगा।",
+      reassurance_banner: "चिंता मत कीजिए, इससे सिर्फ फोन नंबर जाएगा। फोन से कुछ भी डिलीट नहीं होगा।",
       total_steps: 6,
       intent_info: { app_name: "WhatsApp", intent: "share_contact_number" },
       steps: [
-        {
-          step_number: 1,
-          title: "1. व्हाट्सएप खोलें (Open WhatsApp)",
-          instruction: "अपने फोन की स्क्रीन पर हरे रंग का व्हाट्सएप का निशान देखें और उस पर एक बार छुएं।",
-          target_ui_element: "व्हाट्सएप का हरा निशान",
-          target_coordinates: { x_percent: 61.3, y_percent: 89.6, radius_percent: 7.5 },
-          audio_text: "सबसे पहले अपने फोन में हरे रंग के व्हाट्सएप निशान पर एक बार छुएं।",
-          screen_type: "whatsapp_phone_home",
-          reassurance: "इससे आपके फोन में व्हाट्सएप खुल जाएगा।"
-        },
-        {
-          step_number: 2,
-          title: "2. जिन्हें नंबर भेजना है उनकी चैट खोलें",
-          instruction: "जिस व्यक्ति को आप फोन नंबर भेजना चाहते हैं (जैसे आपके भाई या दोस्त), उनके नाम पर टैप करें।",
-          target_ui_element: "व्यक्ति का चैट नाम",
-          target_coordinates: { x_percent: 50.0, y_percent: 18.2, radius_percent: 7.5 },
-          audio_text: "जिन्हें नंबर भेजना है उनके नाम पर टैप करके चैट खोलें।",
-          screen_type: "whatsapp_chat_list",
-          reassurance: "उनके नाम पर टैप करने से बातचीत खुल जाएगी।"
-        },
-        {
-          step_number: 3,
-          title: "3. पिन (पेपरक्लिप) के निशान को छुएं",
-          instruction: "नीचे जहां मैसेज लिखते हैं, उसके पास छोटी पिन जैसी क्लिप 📎 दिखेगी। उस पर टैप करें।",
-          target_ui_element: "📎 पिन या पेपरक्लिप का निशान",
-          target_coordinates: { x_percent: 70.8, y_percent: 94.5, radius_percent: 5.5 },
-          audio_text: "नीचे जहां टाइप करते हैं, वहां छोटी पिन के निशान पर छुएं।",
-          screen_type: "whatsapp_chat_screen",
-          reassurance: "इससे नंबर और फोटो भेजने के विकल्प खुलेंगे।"
-        },
-        {
-          step_number: 4,
-          title: "4. मेनू से 'Contact' (नीला गोल) चुनें",
-          instruction: "रंगीन गोल बटन खुलेंगे। इनमें नीले रंग के 'Contact' (आदमी का निशान) वाले बटन को छुएं।",
-          target_ui_element: "👤 नीला कांटेक्ट बटन",
-          target_coordinates: { x_percent: 80.0, y_percent: 76.7, radius_percent: 7.0 },
-          audio_text: "अब नीले रंग वाले कांटेक्ट बटन को छुएं।",
-          screen_type: "whatsapp_attachment_menu",
-          reassurance: "इससे आपके फोन के सभी नंबर दिखेंगे।"
-        },
-        {
-          step_number: 5,
-          title: "5. जिसका नंबर भेजना है उसे चुन लें",
-          instruction: "ऊपर सर्च में नाम लिखें या लिस्ट से देखकर जिसका नंबर भेजना है उनके नाम पर टैप करें।",
-          target_ui_element: "कांटेक्ट का नाम",
-          target_coordinates: { x_percent: 50.0, y_percent: 23.6, radius_percent: 8.0 },
-          audio_text: "जिसका नंबर भेजना है उनके नाम पर टैप करें।",
-          screen_type: "whatsapp_contact_search",
-          reassurance: "उनके नाम के आगे हरा निशान लग जाएगा।"
-        },
-        {
-          step_number: 6,
-          title: "6. नीचे दिए गए हरे तीर वाले बटन को दबाएं",
-          instruction: "सबसे नीचे दाईं तरफ हरे तीर ➡️ वाले बटन को दबा दें। नंबर चला गया!",
-          target_ui_element: "हरा सेंड तीर बटन",
-          target_coordinates: { x_percent: 85.0, y_percent: 89.3, radius_percent: 7.5 },
-          audio_text: "नीचे हरे तीर वाले बटन को दबाएं। नंबर सफलतापूर्वक चला गया!",
-          screen_type: "whatsapp_contact_picker",
-          reassurance: "नंबर सफलतापूर्वक भेजा जा चुका है।"
-        }
+        { step_number: 1, title: "1. व्हाट्सएप खोलें (Open WhatsApp)", instruction: "अपने फोन की स्क्रीन पर हरे रंग का व्हाट्सएप का निशान देखें और उस पर एक बार छुएं।", target_ui_element: "व्हाट्सएप का हरा निशान", target_coordinates: { x_percent: 61.3, y_percent: 89.6, radius_percent: 7.5 }, audio_text: "सबसे पहले अपने फोन में हरे रंग के व्हाट्सएप निशान पर एक बार छुएं।", screen_type: "whatsapp_phone_home", reassurance: "इससे आपके फोन में व्हाट्सएप खुल जाएगा।" },
+        { step_number: 2, title: "2. जिन्हें नंबर भेजना है उनकी चैट खोलें", instruction: "जिस व्यक्ति को आप फोन नंबर भेजना चाहते हैं, उनके नाम पर टैप करें।", target_ui_element: "व्यक्ति का चैट नाम", target_coordinates: { x_percent: 50.0, y_percent: 18.2, radius_percent: 7.5 }, audio_text: "जिन्हें नंबर भेजना है उनके नाम पर टैप करके चैट खोलें।", screen_type: "whatsapp_chat_list", reassurance: "बातचीत खुल जाएगी।" },
+        { step_number: 3, title: "3. पिन (पेपरक्लिप) के निशान को छुएं", instruction: "नीचे जहां मैसेज लिखते हैं, उसके पास छोटी पिन जैसी क्लिप 📎 दिखेगी। उस पर टैप करें।", target_ui_element: "📎 पिन या पेपरक्लिप का निशान", target_coordinates: { x_percent: 70.8, y_percent: 94.5, radius_percent: 5.5 }, audio_text: "छोटी पिन के निशान पर छुएं।", screen_type: "whatsapp_chat_screen", reassurance: "विकल्प खुलेंगे।" },
+        { step_number: 4, title: "4. मेनू से 'Contact' (नीला गोल) चुनें", instruction: "रंगीन गोल बटन खुलेंगे। इनमें नीले रंग के 'Contact' वाले बटन को छुएं।", target_ui_element: "👤 नीला कांटेक्ट बटन", target_coordinates: { x_percent: 80.0, y_percent: 76.7, radius_percent: 7.0 }, audio_text: "नीले रंग वाले कांटेक्ट बटन को छुएं।", screen_type: "whatsapp_attachment_menu", reassurance: "कांटेक्ट खुलेंगे।" },
+        { step_number: 5, title: "5. जिसका नंबर भेजना है उसे चुन लें", instruction: "ऊपर सर्च में नाम लिखें या लिस्ट से देखकर उनके नाम पर टैप करें।", target_ui_element: "कांटेक्ट का नाम", target_coordinates: { x_percent: 50.0, y_percent: 23.6, radius_percent: 8.0 }, audio_text: "नाम पर टैप करें।", screen_type: "whatsapp_contact_search", reassurance: "हरा निशान लगेगा।" },
+        { step_number: 6, title: "6. नीचे दिए गए हरे तीर वाले बटन को दबाएं", instruction: "सबसे नीचे दाईं तरफ हरे तीर ➡️ वाले बटन को दबा दें। नंबर चला गया!", target_ui_element: "हरा सेंड तीर बटन", target_coordinates: { x_percent: 85.0, y_percent: 89.3, radius_percent: 7.5 }, audio_text: "हरे तीर वाले बटन को दबाएं। नंबर चला गया!", screen_type: "whatsapp_contact_picker", reassurance: "नंबर सफलतापूर्वक भेजा जा चुका है।" }
       ]
     };
   } else {
@@ -728,66 +832,12 @@ function getLocalFallbackFlow(query) {
       total_steps: 6,
       intent_info: { app_name: "WhatsApp", intent: "share_contact_number" },
       steps: [
-        {
-          step_number: 1,
-          title: "1. Open WhatsApp",
-          instruction: "Find the green WhatsApp icon on your phone's home screen and tap it once to open the app.",
-          target_ui_element: "WhatsApp Green App Icon",
-          target_coordinates: { x_percent: 61.3, y_percent: 89.6, radius_percent: 7.5 },
-          audio_text: "First, find the green WhatsApp icon on your phone screen and tap it once.",
-          screen_type: "whatsapp_phone_home",
-          reassurance: "This safely opens WhatsApp."
-        },
-        {
-          step_number: 2,
-          title: "2. Go to the Contact You Want to Send to",
-          instruction: "Find and tap the name of the person you want to send the phone number to.",
-          target_ui_element: "Contact's Chat Name",
-          target_coordinates: { x_percent: 50.0, y_percent: 18.2, radius_percent: 7.5 },
-          audio_text: "Tap the name of the person you want to send the number to.",
-          screen_type: "whatsapp_chat_list",
-          reassurance: "This opens your conversation."
-        },
-        {
-          step_number: 3,
-          title: "3. Tap the Paperclip Icon",
-          instruction: "At the bottom right where you type messages, tap the small Paperclip symbol 📎.",
-          target_ui_element: "📎 Paperclip Attachment Icon",
-          target_coordinates: { x_percent: 70.8, y_percent: 94.5, radius_percent: 5.5 },
-          audio_text: "At the bottom right, tap the small paperclip symbol.",
-          screen_type: "whatsapp_chat_screen",
-          reassurance: "This opens attachment options."
-        },
-        {
-          step_number: 4,
-          title: "4. Select 'Contact' Option in That Window",
-          instruction: "A colorful popup menu will appear. Tap the blue circular button labeled 'Contact' 👤.",
-          target_ui_element: "👤 Blue Contact Option",
-          target_coordinates: { x_percent: 80.0, y_percent: 76.7, radius_percent: 7.0 },
-          audio_text: "Tap the blue circle with the person symbol that says Contact.",
-          screen_type: "whatsapp_attachment_menu",
-          reassurance: "This opens your phone book."
-        },
-        {
-          step_number: 5,
-          title: "5. Search & Select the Contact You Want to Send",
-          instruction: "Search or find the contact whose number you want to share, and tap their name.",
-          target_ui_element: "Target Contact Name to Send",
-          target_coordinates: { x_percent: 50.0, y_percent: 23.6, radius_percent: 8.0 },
-          audio_text: "Find and tap the name of the person whose number you want to share.",
-          screen_type: "whatsapp_contact_search",
-          reassurance: "A green checkmark will appear next to their name."
-        },
-        {
-          step_number: 6,
-          title: "6. Click on the Green Icon to Send",
-          instruction: "At the bottom right, tap the round green button with the white arrow ➡️. The phone number is sent!",
-          target_ui_element: "Green Circular Send Arrow Button",
-          target_coordinates: { x_percent: 85.0, y_percent: 89.3, radius_percent: 7.5 },
-          audio_text: "Tap the round green arrow button at the bottom right. The number has been sent!",
-          screen_type: "whatsapp_contact_picker",
-          reassurance: "The phone number has been sent safely."
-        }
+        { step_number: 1, title: "1. Open WhatsApp", instruction: "Find the green WhatsApp icon on your phone's home screen and tap it once to open the app.", target_ui_element: "WhatsApp Green App Icon", target_coordinates: { x_percent: 61.3, y_percent: 89.6, radius_percent: 7.5 }, audio_text: "First, find the green WhatsApp icon on your phone screen and tap it once.", screen_type: "whatsapp_phone_home", reassurance: "Safely opens WhatsApp." },
+        { step_number: 2, title: "2. Go to the Contact You Want to Send to", instruction: "Find and tap the name of the person you want to send the phone number to.", target_ui_element: "Contact's Chat Name", target_coordinates: { x_percent: 50.0, y_percent: 18.2, radius_percent: 7.5 }, audio_text: "Tap the name of the person you want to send the number to.", screen_type: "whatsapp_chat_list", reassurance: "Opens conversation." },
+        { step_number: 3, title: "3. Tap the Paperclip Icon", instruction: "At the bottom right where you type messages, tap the small Paperclip symbol 📎.", target_ui_element: "📎 Paperclip Attachment Icon", target_coordinates: { x_percent: 70.8, y_percent: 94.5, radius_percent: 5.5 }, audio_text: "Tap the small paperclip symbol.", screen_type: "whatsapp_chat_screen", reassurance: "Opens attachments." },
+        { step_number: 4, title: "4. Select 'Contact' Option in That Window", instruction: "A colorful popup menu will appear. Tap the blue circular button labeled 'Contact' 👤.", target_ui_element: "👤 Blue Contact Option", target_coordinates: { x_percent: 80.0, y_percent: 76.7, radius_percent: 7.0 }, audio_text: "Tap the blue circle labeled Contact.", screen_type: "whatsapp_attachment_menu", reassurance: "Opens phone book." },
+        { step_number: 5, title: "5. Search & Select the Contact You Want to Send", instruction: "Search or find the contact whose number you want to share, and tap their name.", target_ui_element: "Target Contact Name to Send", target_coordinates: { x_percent: 50.0, y_percent: 23.6, radius_percent: 8.0 }, audio_text: "Find and tap the name of the person whose number you want to share.", screen_type: "whatsapp_contact_search", reassurance: "Green checkmark appears." },
+        { step_number: 6, title: "6. Click on the Green Icon to Send", instruction: "At the bottom right, tap the round green button with the white arrow ➡️. The phone number is sent!", target_ui_element: "Green Circular Send Arrow Button", target_coordinates: { x_percent: 85.0, y_percent: 89.3, radius_percent: 7.5 }, audio_text: "Tap the round green arrow button. The number is sent!", screen_type: "whatsapp_contact_picker", reassurance: "Phone number sent safely." }
       ]
     };
   }
@@ -806,24 +856,29 @@ function applyLanguage(langCode) {
   const s = UI_STRINGS[langCode];
 
   const labels = { gu: "🇮🇳 ગુજરાતી", hi: "🇮🇳 हिन्दी", en: "🌐 English" };
-  el.langLabel.textContent = labels[langCode];
+  if (el.langLabel) el.langLabel.textContent = labels[langCode];
 
-  el.reassuranceText.textContent = s.reassuranceGeneral;
-  el.welcomeTitle.textContent = s.welcomeTitle;
-  el.welcomeDesc.textContent = s.welcomeDesc;
-  el.quickTrayTitle.textContent = s.quickTrayTitle;
-  el.chipQ1Text.textContent = s.q1;
-  el.chipQ2Text.textContent = s.q2;
-  el.chipQ3Text.textContent = s.q3;
-  el.chipQ4Text.textContent = s.q4;
-  el.chatInput.placeholder = s.inputPlaceholder;
-  el.micActiveBanner.textContent = s.micListening;
+  if (el.reassuranceText) el.reassuranceText.textContent = s.reassuranceGeneral;
+  if (el.welcomeTitle) el.welcomeTitle.textContent = s.welcomeTitle;
+  if (el.welcomeDesc) el.welcomeDesc.textContent = s.welcomeDesc;
+  if (el.quickTrayTitle) el.quickTrayTitle.textContent = s.quickTrayTitle;
+  if (el.chipQ1Text) el.chipQ1Text.textContent = s.q1;
+  if (el.chipQ2Text) el.chipQ2Text.textContent = s.q2;
+  if (el.chipQ3Text) el.chipQ3Text.textContent = s.q3;
+  if (el.chipQ4Text) el.chipQ4Text.textContent = s.q4;
+  if (el.chipQ5Text) el.chipQ5Text.textContent = s.q5;
+  if (el.chipQ6Text) el.chipQ6Text.textContent = s.q6;
+  if (el.chipQ7Text) el.chipQ7Text.textContent = s.q7;
+  if (el.chipQ8Text) el.chipQ8Text.textContent = s.q8;
+  if (el.chatInput) el.chatInput.placeholder = s.inputPlaceholder;
+  if (el.micActiveBanner) el.micActiveBanner.textContent = s.micListening;
 }
 
 // Reset Chat
 function clearChat() {
   stopSpeaking();
   stopListening();
+  stopVoiceNavListener();
   // Clear chat rows except welcome card
   const rows = el.chatFeed.querySelectorAll('.chat-row');
   rows.forEach(r => r.remove());
@@ -836,7 +891,7 @@ function clearChat() {
 function scrollToBottom() {
   setTimeout(() => {
     window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
-    el.chatFeed.scrollTop = el.chatFeed.scrollHeight;
+    if (el.chatFeed) el.chatFeed.scrollTop = el.chatFeed.scrollHeight;
   }, 100);
 }
 
@@ -868,47 +923,67 @@ function toggleFontZoom() {
 
 // Setup Event Listeners
 function setupEvents() {
+  // Senior High Contrast Light Mode Toggle Button
+  if (el.btnThemeToggle) {
+    el.btnThemeToggle.addEventListener('click', toggleTheme);
+  }
+
   // Accessibility Font Zoom Button
   if (el.btnFontZoom) {
     el.btnFontZoom.addEventListener('click', toggleFontZoom);
   }
 
-  // Mic Button
-  el.btnMic.addEventListener('click', () => {
-    if (state.isListening) {
-      stopListening();
-    } else {
-      startListening();
-    }
-  });
+  // Mic Button for Query input
+  if (el.btnMic) {
+    el.btnMic.addEventListener('click', () => {
+      if (state.isListening) {
+        stopListening();
+      } else {
+        startListening();
+      }
+    });
+  }
 
   // Send Button
-  el.btnSend.addEventListener('click', () => {
-    submitQuery(el.chatInput.value);
-  });
+  if (el.btnSend) {
+    el.btnSend.addEventListener('click', () => {
+      submitQuery(el.chatInput.value);
+    });
+  }
 
   // Enter Key on Input
-  el.chatInput.addEventListener('keydown', (e) => {
-    if (e.key === 'Enter') {
-      submitQuery(el.chatInput.value);
-    }
-  });
+  if (el.chatInput) {
+    el.chatInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        submitQuery(el.chatInput.value);
+      }
+    });
+  }
 
   // Language Toggle
-  el.langSelectBtn.addEventListener('click', toggleLanguage);
+  if (el.langSelectBtn) {
+    el.langSelectBtn.addEventListener('click', toggleLanguage);
+  }
 
   // Clear Chat
-  el.btnClearChat.addEventListener('click', clearChat);
+  if (el.btnClearChat) {
+    el.btnClearChat.addEventListener('click', clearChat);
+  }
 
-  // Quick Chips
-  el.chipQ1.addEventListener('click', () => submitQuery(UI_STRINGS[state.currentLanguage].q1));
-  el.chipQ2.addEventListener('click', () => submitQuery(UI_STRINGS[state.currentLanguage].q2));
-  el.chipQ3.addEventListener('click', () => submitQuery(UI_STRINGS[state.currentLanguage].q3));
-  el.chipQ4.addEventListener('click', () => submitQuery(UI_STRINGS[state.currentLanguage].q4));
+  // Quick Chips (All 8 core queries)
+  if (el.chipQ1) el.chipQ1.addEventListener('click', () => submitQuery(UI_STRINGS[state.currentLanguage].q1));
+  if (el.chipQ2) el.chipQ2.addEventListener('click', () => submitQuery(UI_STRINGS[state.currentLanguage].q2));
+  if (el.chipQ3) el.chipQ3.addEventListener('click', () => submitQuery(UI_STRINGS[state.currentLanguage].q3));
+  if (el.chipQ4) el.chipQ4.addEventListener('click', () => submitQuery(UI_STRINGS[state.currentLanguage].q4));
+  if (el.chipQ5) el.chipQ5.addEventListener('click', () => submitQuery(UI_STRINGS[state.currentLanguage].q5));
+  if (el.chipQ6) el.chipQ6.addEventListener('click', () => submitQuery(UI_STRINGS[state.currentLanguage].q6));
+  if (el.chipQ7) el.chipQ7.addEventListener('click', () => submitQuery(UI_STRINGS[state.currentLanguage].q7));
+  if (el.chipQ8) el.chipQ8.addEventListener('click', () => submitQuery(UI_STRINGS[state.currentLanguage].q8));
 }
 
 // App Bootstrap
 document.addEventListener('DOMContentLoaded', () => {
+  initTheme();
   setupEvents();
   applyLanguage('gu');
   initSpeechRecognition();

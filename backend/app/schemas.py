@@ -5,7 +5,7 @@ class TargetCoordinate(BaseModel):
     x_percent: float = Field(..., description="Horizontal position (0-100% from left of screen)")
     y_percent: float = Field(..., description="Vertical position (0-100% from top of screen)")
     radius_percent: float = Field(7.0, description="Radius size for the pulsing spotlight circle")
-    description: str = Field(..., description="Visual description of the target button/area")
+    description: str = Field("Target button", description="Visual description of the target button/area")
 
 class StepItem(BaseModel):
     step_number: int = Field(..., description="Step index starting from 1")

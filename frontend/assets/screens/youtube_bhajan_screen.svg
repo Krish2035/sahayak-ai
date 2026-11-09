@@ -1,0 +1,78 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 750" width="100%" height="100%" style="background:#0f0f0f; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
+  <!-- YouTube Top Header -->
+  <rect x="0" y="0" width="400" height="60" fill="#0f0f0f"/>
+  <rect x="18" y="18" width="30" height="22" rx="6" fill="#ff0000"/>
+  <polygon points="30,24 30,34 39,29" fill="#ffffff"/>
+  <text x="56" y="34" fill="#ffffff" font-size="19" font-weight="800" letter-spacing="-0.5px">YouTube</text>
+  <circle cx="330" cy="30" r="16" fill="#272727"/>
+  <text x="330" y="35" fill="#ffffff" font-size="14" text-anchor="middle">🔍</text>
+  <circle cx="372" cy="30" r="14" fill="#ff4e45"/>
+  <text x="372" y="35" fill="#ffffff" font-size="12" font-weight="bold" text-anchor="middle">D</text>
+
+  <!-- Video Player Box -->
+  <rect x="0" y="60" width="400" height="225" fill="#181818"/>
+  <defs>
+    <linearGradient id="bhajanGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#f59e0b"/>
+      <stop offset="50%" stop-color="#d97706"/>
+      <stop offset="100%" stop-color="#b45309"/>
+    </linearGradient>
+  </defs>
+  <rect x="0" y="60" width="400" height="225" fill="url(#bhajanGrad)"/>
+  <circle cx="200" cy="172" r="42" fill="rgba(0,0,0,0.6)"/>
+  <polygon points="192,156 192,188 218,172" fill="#ffffff"/>
+  <text x="200" y="240" fill="#ffffff" font-size="20" font-weight="800" text-anchor="middle" filter="drop-shadow(0 2px 4px rgba(0,0,0,0.8))">🪔 શ્રી કૃષ્ણ ભજન સંગ્રહ 🪔</text>
+
+  <!-- Video Details -->
+  <rect x="0" y="285" width="400" height="120" fill="#0f0f0f"/>
+  <text x="18" y="318" fill="#f1f1f1" font-size="18" font-weight="700">શ્રી કૃષ્ણ અમૃતવાણી | સવારના શાંતિદાયક ભજન</text>
+  <text x="18" y="340" fill="#aaaaaa" font-size="13">ભક્તિ ચેનલ • 1.2M views • 2 દિવસ પહેલાં</text>
+
+  <!-- ACTION BUTTONS ROW (WITH DOWNLOAD BUTTON) -->
+  <rect x="0" y="360" width="400" height="70" fill="#0f0f0f"/>
+  
+  <!-- Like Button -->
+  <rect x="16" y="372" width="80" height="38" rx="19" fill="#272727"/>
+  <text x="36" y="396" font-size="15">👍</text>
+  <text x="56" y="396" fill="#f1f1f1" font-size="13" font-weight="bold">12K</text>
+
+  <!-- Share Button -->
+  <rect x="104" y="372" width="85" height="38" rx="19" fill="#272727"/>
+  <text x="120" y="396" font-size="15">↗️</text>
+  <text x="142" y="396" fill="#f1f1f1" font-size="13" font-weight="bold">શેર</text>
+
+  <!-- TARGET ACTION: DOWNLOAD BUTTON ⬇️ (STEP TARGET x: 63%, y: 52%) -->
+  <g id="download_btn">
+    <rect x="198" y="372" width="115" height="38" rx="19" fill="#3f3f3f" stroke="#ffffff" stroke-width="1.2"/>
+    <circle cx="218" cy="391" r="10" fill="#ffffff"/>
+    <path d="M 218 385 L 218 395 M 214 391 L 218 395 L 222 391" stroke="#0f0f0f" stroke-width="2" stroke-linecap="round"/>
+    <text x="236" y="396" fill="#ffffff" font-size="14" font-weight="800">ડાઉનલોડ</text>
+  </g>
+
+  <!-- Save Button -->
+  <rect x="322" y="372" width="62" height="38" rx="19" fill="#272727"/>
+  <text x="338" y="396" font-size="15">📑</text>
+  <text x="358" y="396" fill="#f1f1f1" font-size="13">સેવ</text>
+
+  <line x1="0" y1="440" x2="400" y2="440" stroke="#272727" stroke-width="1"/>
+
+  <!-- Next Videos Suggestions -->
+  <text x="18" y="475" fill="#f1f1f1" font-size="16" font-weight="700">આગળના ભજન અને ગીતો</text>
+  
+  <rect x="18" y="495" width="120" height="75" rx="8" fill="#d97706"/>
+  <text x="18" y="540" font-size="30" text-anchor="middle" dx="60">🪘</text>
+  <text x="150" y="520" fill="#f1f1f1" font-size="15" font-weight="600">હનુમાન ચાલીસા પાઠ</text>
+  <text x="150" y="542" fill="#aaaaaa" font-size="13">ભક્તિ સાગર • 3.5M views</text>
+
+  <rect x="18" y="590" width="120" height="75" rx="8" fill="#b45309"/>
+  <text x="18" y="635" font-size="30" text-anchor="middle" dx="60">🕉️</text>
+  <text x="150" y="615" fill="#f1f1f1" font-size="15" font-weight="600">મહા મૃત્યુંજય મંત્ર 108 વાર</text>
+  <text x="150" y="637" fill="#aaaaaa" font-size="13">દિવ્ય મંત્ર • 5.1M views</text>
+
+  <!-- Bottom Nav -->
+  <rect x="0" y="690" width="400" height="60" fill="#0f0f0f" stroke="#272727" stroke-width="1"/>
+  <text x="50" y="725" font-size="20" text-anchor="middle">🏠</text>
+  <text x="150" y="725" font-size="20" text-anchor="middle">⚡</text>
+  <text x="250" y="725" font-size="20" text-anchor="middle">➕</text>
+  <text x="350" y="725" font-size="20" text-anchor="middle">📚</text>
+</svg>

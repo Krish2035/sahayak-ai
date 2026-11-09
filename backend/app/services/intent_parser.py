@@ -81,14 +81,28 @@ class IntentParserService:
         return None
 
     def _match_preloaded_flow(self, query: str, lang: str, platform: str, recipient: Optional[str]) -> Optional[QueryResponse]:
-        """Checks if the query matches our verified top senior tasks."""
+        """Checks if the query matches our verified top 15 senior tasks with keyword scoring."""
         lower = query.lower()
-        
-        # Check Font Size first if query mentions font or akshar
-        if any(k in lower for k in ["font", "size", "bigger text", "akshar", "mota", "મોટા", "अक्षर बड़े", "अक्षर", "लिखावट"]):
-            flow_data = PRELOADED_FLOWS["settings_font_size"]
-            lang_key = lang if lang in flow_data["flows"] else "en"
+        best_flow_key = None
+        best_score = 0
+
+        # Dynamic keyword matching against all 15 preloaded flows
+        for flow_key, flow_data in PRELOADED_FLOWS.items():
+            score = 0
+            keywords = flow_data.get("keywords", [])
+            for kw in keywords:
+                kw_lower = kw.lower()
+                if kw_lower in lower:
+                    score += len(kw_lower) * 2
+            if score > best_score:
+                best_score = score
+                best_flow_key = flow_key
+
+        if best_flow_key and best_score >= 4:
+            flow_data = PRELOADED_FLOWS[best_flow_key]
+            lang_key = lang if lang in flow_data["flows"] else ("gu" if "gu" in flow_data["flows"] else "en")
             selected_content = flow_data["flows"][lang_key]
+
             steps = [
                 StepItem(
                     step_number=s["step_number"],
@@ -102,177 +116,22 @@ class IntentParserService:
                 )
                 for s in selected_content["steps"]
             ]
+
             return QueryResponse(
                 success=True,
                 query=query,
                 intent_info=IntentResult(
-                    app_name="Settings",
-                    intent="increase_font_size",
+                    app_name=flow_data.get("app_name", "App"),
+                    intent=flow_data.get("intent", "action"),
                     confidence=0.98,
                     platform=platform,
                     detected_language=lang,
                     language_name=self._get_lang_name(lang),
-                    target_recipient=None
+                    target_recipient=recipient if ("contact" in best_flow_key or "photo" in best_flow_key) else None
                 ),
                 title=selected_content["title"],
                 summary=selected_content["summary"],
-                reassurance_banner=selected_content["reassurance_banner"],
-                total_steps=len(steps),
-                steps=steps
-            )
-
-        # Check WhatsApp Send Photo first if photo/image mentioned
-        if any(k in lower for k in ["photo", "picture", "image", "ફોટો", "તસવીર", "फोटो", "तस्वीर"]):
-            flow_data = PRELOADED_FLOWS["whatsapp_send_photo"]
-            lang_key = lang if lang in flow_data["flows"] else "en"
-            selected_content = flow_data["flows"][lang_key]
-            steps = [
-                StepItem(
-                    step_number=s["step_number"],
-                    title=s["title"],
-                    instruction=s["instruction"],
-                    target_ui_element=s["target_ui_element"],
-                    target_coordinates=TargetCoordinate(**s["target_coordinates"]) if s.get("target_coordinates") else None,
-                    audio_text=s["audio_text"],
-                    screen_type=s["screen_type"],
-                    reassurance=s.get("reassurance")
-                )
-                for s in selected_content["steps"]
-            ]
-            return QueryResponse(
-                success=True,
-                query=query,
-                intent_info=IntentResult(
-                    app_name="WhatsApp",
-                    intent="send_photo",
-                    confidence=0.98,
-                    platform=platform,
-                    detected_language=lang,
-                    language_name=self._get_lang_name(lang),
-                    target_recipient=recipient
-                ),
-                title=selected_content["title"],
-                summary=selected_content["summary"],
-                reassurance_banner=selected_content["reassurance_banner"],
-                total_steps=len(steps),
-                steps=steps
-            )
-
-        # Check WhatsApp Contact Sharing (the user's core incident!)
-        is_contact_query = any(k in lower for k in [
-            "number", "contact", "phone number", "cellphone number", "mobile number",
-            "નંબર", "કોન્ટેક્ટ", "नंबर", "कांटेक्ट"
-        ])
-        is_whatsapp = any(k in lower for k in ["whatsapp", "વોટ્સએપ", "व्हाट्सएप", "વોટ્સપ"]) or "number" in lower
-
-        if is_contact_query and (is_whatsapp or len(lower.split()) < 10):
-            flow_data = PRELOADED_FLOWS["whatsapp_share_contact"]
-            lang_key = lang if lang in flow_data["flows"] else "en"
-            selected_content = flow_data["flows"][lang_key]
-
-            steps = [
-                StepItem(
-                    step_number=s["step_number"],
-                    title=s["title"],
-                    instruction=s["instruction"],
-                    target_ui_element=s["target_ui_element"],
-                    target_coordinates=TargetCoordinate(**s["target_coordinates"]) if s.get("target_coordinates") else None,
-                    audio_text=s["audio_text"],
-                    screen_type=s["screen_type"],
-                    reassurance=s.get("reassurance")
-                )
-                for s in selected_content["steps"]
-            ]
-
-            return QueryResponse(
-                success=True,
-                query=query,
-                intent_info=IntentResult(
-                    app_name="WhatsApp",
-                    intent="share_contact_number",
-                    confidence=0.99,
-                    platform=platform,
-                    detected_language=lang,
-                    language_name=self._get_lang_name(lang),
-                    target_recipient=recipient
-                ),
-                title=selected_content["title"],
-                summary=selected_content["summary"],
-                reassurance_banner=selected_content["reassurance_banner"],
-                total_steps=len(steps),
-                steps=steps
-            )
-
-        # Check Google Pay QR code scan
-        if any(k in lower for k in ["qr", "scan", "gpay", "google pay", "સ્કેન", "स्कैन", "पेमेंट"]):
-            flow_data = PRELOADED_FLOWS["gpay_scan_qr"]
-            lang_key = lang if lang in flow_data["flows"] else "en"
-            selected_content = flow_data["flows"][lang_key]
-            steps = [
-                StepItem(
-                    step_number=s["step_number"],
-                    title=s["title"],
-                    instruction=s["instruction"],
-                    target_ui_element=s["target_ui_element"],
-                    target_coordinates=TargetCoordinate(**s["target_coordinates"]) if s.get("target_coordinates") else None,
-                    audio_text=s["audio_text"],
-                    screen_type=s["screen_type"],
-                    reassurance=s.get("reassurance")
-                )
-                for s in selected_content["steps"]
-            ]
-            return QueryResponse(
-                success=True,
-                query=query,
-                intent_info=IntentResult(
-                    app_name="Google Pay",
-                    intent="scan_qr_code",
-                    confidence=0.97,
-                    platform=platform,
-                    detected_language=lang,
-                    language_name=self._get_lang_name(lang),
-                    target_recipient=None
-                ),
-                title=selected_content["title"],
-                summary=selected_content["summary"],
-                reassurance_banner=selected_content["reassurance_banner"],
-                total_steps=len(steps),
-                steps=steps
-            )
-
-        # Check Font Size
-        if any(k in lower for k in ["font", "size", "bigger text", "akshar", "mota", "મોટા", "अक्षर बड़े"]):
-            flow_data = PRELOADED_FLOWS["settings_font_size"]
-            lang_key = lang if lang in flow_data["flows"] else "en"
-            selected_content = flow_data["flows"][lang_key]
-            steps = [
-                StepItem(
-                    step_number=s["step_number"],
-                    title=s["title"],
-                    instruction=s["instruction"],
-                    target_ui_element=s["target_ui_element"],
-                    target_coordinates=TargetCoordinate(**s["target_coordinates"]) if s.get("target_coordinates") else None,
-                    audio_text=s["audio_text"],
-                    screen_type=s["screen_type"],
-                    reassurance=s.get("reassurance")
-                )
-                for s in selected_content["steps"]
-            ]
-            return QueryResponse(
-                success=True,
-                query=query,
-                intent_info=IntentResult(
-                    app_name="Settings",
-                    intent="increase_font_size",
-                    confidence=0.98,
-                    platform=platform,
-                    detected_language=lang,
-                    language_name=self._get_lang_name(lang),
-                    target_recipient=None
-                ),
-                title=selected_content["title"],
-                summary=selected_content["summary"],
-                reassurance_banner=selected_content["reassurance_banner"],
+                reassurance_banner=selected_content.get("reassurance_banner", ""),
                 total_steps=len(steps),
                 steps=steps
             )

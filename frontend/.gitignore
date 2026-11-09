@@ -1,0 +1,11 @@
+# Frontend Environment & Secrets
+.env
+.env.*
+*.env
+!.env.example
+
+# Build & Cache
+node_modules/
+.vercel/
+dist/
+build/

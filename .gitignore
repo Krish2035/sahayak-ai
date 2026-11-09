@@ -1,4 +1,15 @@
-# Python
+# ==========================================
+# Sahayak AI - Git Ignore
+# ==========================================
+
+# 1. Environment Variables & Secrets (CRITICAL: NEVER COMMIT REAL KEYS)
+.env
+.env.*
+*.env
+!.env.example
+!*.env.example
+
+# 2. Python Cache & Virtual Environments
 __pycache__/
 *.py[cod]
 *$py.class
@@ -8,26 +19,31 @@ env/
 venv/
 .venv/
 ENV/
+.pytest_cache/
 
-# Environment Variables & Secrets
-.env
-.env.local
-.env.*.local
-
-# Logs
+# 3. Logs & Temporary Files
 *.log
 logs/
+*.pid
 
-# IDE & Editor
+# 4. IDE & Editor Artifacts
 .vscode/
 .idea/
 *.swp
 *.swo
 
-# Antigravity & Agent workspace artifacts
+# 5. Antigravity & Agent workspace artifacts
 .gemini/
 scratch/
 
-# OS specific
+# 6. Frontend & Vercel
+node_modules/
+.vercel/
+dist/
+build/
+.next/
+
+# 7. OS Specific Files
 .DS_Store
 Thumbs.db
+desktop.ini

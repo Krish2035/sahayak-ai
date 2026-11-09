@@ -1,0 +1,13 @@
+# Backend Environment & Secrets
+.env
+.env.*
+*.env
+!.env.example
+
+# Python Cache & Testing
+__pycache__/
+*.py[cod]
+.pytest_cache/
+*.log
+venv/
+.venv/

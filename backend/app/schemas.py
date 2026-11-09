@@ -42,3 +42,45 @@ class QueryResponse(BaseModel):
     total_steps: int
     steps: List[StepItem]
 
+# --- Elder Super-Tools Schemas ---
+
+class ScamCheckRequest(BaseModel):
+    text: Optional[str] = Field(None, description="SMS or WhatsApp text to analyze")
+    image_base64: Optional[str] = Field(None, description="Optional screenshot of message")
+    language: Optional[str] = Field("gu", description="Language code: gu, hi, en")
+
+class ScamCheckResponse(BaseModel):
+    is_scam: bool
+    risk_score: int
+    verdict_title: str
+    verdict_audio: str
+    explanation: str
+    action_steps: List[str]
+
+class DocumentReadRequest(BaseModel):
+    doc_type: str = Field("medicine", description="medicine or utility_bill")
+    sample_id: Optional[str] = Field(None, description="Preset sample ID")
+    image_base64: Optional[str] = Field(None, description="Optional uploaded image")
+    language: Optional[str] = Field("gu", description="gu, hi, en")
+
+class DocumentReadResponse(BaseModel):
+    success: bool = True
+    doc_type: str
+    title: str
+    audio_narration: str
+    key_details: List[dict]
+    comfort_note: str
+
+class VisionGuideRequest(BaseModel):
+    image_base64: Optional[str] = Field(None, description="Live camera frame")
+    current_task: Optional[str] = Field("whatsapp_contact", description="Task identifier")
+    language: Optional[str] = Field("gu", description="gu, hi, en")
+
+class VisionGuideResponse(BaseModel):
+    detected_screen: str
+    voice_instruction: str
+    highlight_x_percent: float
+    highlight_y_percent: float
+    target_element_name: str
+
+

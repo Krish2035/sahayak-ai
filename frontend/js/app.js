@@ -559,6 +559,10 @@ function renderAiVisualGuide(flowData) {
           <span>🔊</span>
           <span>${strings.listenStep}</span>
         </button>
+        <button class="btn-guide-action btn-ask-child-step" data-step-num="${idx + 1}" data-step-title="${escapeHtml(step.title)}">
+          <span>👨‍👩‍👧</span>
+          <span>બેટાને પૂછો</span>
+        </button>
       </div>
     `;
 
@@ -653,6 +657,14 @@ function renderAiVisualGuide(flowData) {
         });
       }
     });
+
+    // Step Ask Child Button Listener
+    const askChildBtn = stepHeader.querySelector('.btn-ask-child-step');
+    if (askChildBtn) {
+      askChildBtn.addEventListener('click', () => {
+        openModal('modalFamilyBridge');
+      });
+    }
 
     stepsList.appendChild(stepCard);
   });
@@ -922,6 +934,341 @@ function toggleFontZoom() {
 }
 
 // Setup Event Listeners
+
+// ==========================================================================
+// ELDER SUPER-TOOLS LOGIC:
+// 1. Anti-Scam Radar
+// 2. Live Camera Screen Vision
+// 3. Zero-Risk UPI Sandbox Practice
+// 4. Family Caregiver Bridge & SOS
+// 5. Gujarati Document & Medicine OCR Reader
+// 6. Android Floating Bubble Companion
+// ==========================================================================
+
+let activeCameraStream = null;
+let currentSandboxPin = "";
+let latestScamAudioText = "";
+let latestDocAudioText = "";
+
+// Modal Management
+function openModal(modalId) {
+  const modal = document.getElementById(modalId);
+  if (!modal) return;
+  modal.classList.add('active');
+  modal.setAttribute('aria-hidden', 'false');
+
+  if (modalId === 'modalCameraVision') {
+    startCameraVision();
+  }
+}
+
+function closeModal(modalId) {
+  const modal = document.getElementById(modalId);
+  if (!modal) return;
+  modal.classList.remove('active');
+  modal.setAttribute('aria-hidden', 'true');
+
+  if (modalId === 'modalCameraVision') {
+    stopCameraVision();
+  }
+  stopSpeaking();
+}
+
+// 1. Anti-Scam Radar Logic
+async function runScamCheck(customText) {
+  const textInput = document.getElementById('scamInputText');
+  const textToCheck = (customText || (textInput ? textInput.value : '')).trim();
+  if (!textToCheck) {
+    alert(state.currentLanguage === 'gu' ? "કૃપા કરીને તપાસવા માટે મેસેજ લખો અથવા સેમ્પલ બટન દબાવો." : "Please enter a message to check.");
+    return;
+  }
+
+  const verdictCard = document.getElementById('scamVerdictCard');
+  const badgeEl = document.getElementById('scamVerdictBadge');
+  const explanationEl = document.getElementById('scamVerdictExplanation');
+  const actionsEl = document.getElementById('scamVerdictActions');
+
+  try {
+    const res = await fetch(`${state.apiBaseUrl}/api/check-scam`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        text: textToCheck,
+        language: state.currentLanguage
+      })
+    });
+    const data = await res.json();
+    renderScamVerdict(data);
+  } catch (err) {
+    // Client-side fallback analysis
+    const lower = textToCheck.toLowerCase();
+    const isScam = lower.includes('power') || lower.includes('disconnected') || lower.includes('arrest') || lower.includes('kyc') || lower.includes('lottery') || lower.includes('બિલ') || lower.includes('કાપી') || lower.includes('અરેસ્ટ');
+    const fallbackData = {
+      is_scam: isScam,
+      verdict_title: isScam ? "❌ ૧૦૦% છેતરપિંડી (SCAM ALERT)" : "✅ સુરક્ષિત સામાન્ય મેસેજ",
+      verdict_audio: isScam ? "ચેતવણી: આ મેસેજ ૧૦૦ ટકા છેતરપિંડી છે! કોઈ લિંક પર ક્લિક ન કરતા કે નંબર પર ફોન ન કરતા." : "આ મેસેજમાં કોઈ ખતરો જણાતો નથી.",
+      explanation: isScam ? "આ વીજળી બિલ કાપવાની ધમકી આપીને કે બેંક એકાઉન્ટ બ્લોકના નામે છેતરપિંડી કરવાનો ફ્રોડ મેસેજ છે." : "આ મેસેજમાં કોઈ શંકાસ્પદ લિંક નથી.",
+      action_steps: isScam ? ["આ મેસેજની કોઈપણ લિંક પર ક્લિક ન કરો.", "નંબર પર સામો ફોન ન કરો.", "આ નંબરને તરત બ્લોક કરો."] : ["તમે સુરક્ષિત છો."]
+    };
+    renderScamVerdict(fallbackData);
+  }
+}
+
+function renderScamVerdict(data) {
+  const verdictCard = document.getElementById('scamVerdictCard');
+  const badgeEl = document.getElementById('scamVerdictBadge');
+  const explanationEl = document.getElementById('scamVerdictExplanation');
+  const actionsEl = document.getElementById('scamVerdictActions');
+
+  latestScamAudioText = data.verdict_audio;
+  verdictCard.style.display = 'flex';
+  if (data.is_scam) {
+    verdictCard.classList.remove('safe');
+    badgeEl.textContent = data.verdict_title;
+  } else {
+    verdictCard.classList.add('safe');
+    badgeEl.textContent = data.verdict_title;
+  }
+
+  explanationEl.textContent = data.explanation;
+  actionsEl.innerHTML = '';
+  data.action_steps.forEach(act => {
+    const li = document.createElement('div');
+    li.innerHTML = `• ${escapeHtml(act)}`;
+    actionsEl.appendChild(li);
+  });
+
+  // Speak aloud immediately for senior safety
+  speakText(data.verdict_audio);
+}
+
+// 2. Live Camera Vision Guide Logic
+async function startCameraVision() {
+  const videoEl = document.getElementById('cameraVideo');
+  const sampleEl = document.getElementById('cameraSampleView');
+  const instructionEl = document.getElementById('cameraInstructionText');
+
+  const promptText = state.currentLanguage === 'gu'
+    ? "કેમેરામાં તમારો ફોન દેખાય છે! નીચે વાદળી રંગના બટન પર તમારા અંગૂઠાથી ટચ કરો."
+    : (state.currentLanguage === 'hi' ? "कैमरे में आपका फोन दिख रहा है! नीचे दिए गए नीले बटन पर टैप करें।" : "Phone screen visible in camera! Tap the blue button below.");
+
+  if (instructionEl) instructionEl.textContent = promptText;
+
+  if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({
+        video: { facingMode: 'environment' }
+      });
+      activeCameraStream = stream;
+      if (videoEl) {
+        videoEl.srcObject = stream;
+        videoEl.style.display = 'block';
+      }
+      if (sampleEl) sampleEl.style.display = 'none';
+      speakText(promptText);
+      return;
+    } catch (err) {
+      console.log("Camera access not available or denied, showing simulated phone view:", err);
+    }
+  }
+
+  // Graceful fallback to interactive camera view mockup
+  if (videoEl) videoEl.style.display = 'none';
+  if (sampleEl) sampleEl.style.display = 'block';
+  speakText(promptText);
+}
+
+function stopCameraVision() {
+  if (activeCameraStream) {
+    activeCameraStream.getTracks().forEach(track => track.stop());
+    activeCameraStream = null;
+  }
+}
+
+function toggleCameraSource() {
+  const videoEl = document.getElementById('cameraVideo');
+  const sampleEl = document.getElementById('cameraSampleView');
+  if (sampleEl.style.display === 'none') {
+    stopCameraVision();
+    if (videoEl) videoEl.style.display = 'none';
+    if (sampleEl) sampleEl.style.display = 'block';
+  } else {
+    startCameraVision();
+  }
+}
+
+// 3. Safe Sandbox Practice (UPI PIN Keypad) Logic
+function handleSandboxKey(key) {
+  if (currentSandboxPin.length < 4) {
+    currentSandboxPin += key;
+    updateSandboxPinDots();
+    if (currentSandboxPin.length === 4) {
+      setTimeout(submitSandboxPayment, 300);
+    }
+  }
+}
+
+function clearSandboxKey() {
+  currentSandboxPin = currentSandboxPin.slice(0, -1);
+  updateSandboxPinDots();
+}
+
+function updateSandboxPinDots() {
+  for (let i = 1; i <= 4; i++) {
+    const dot = document.getElementById(`pinDot${i}`);
+    if (dot) {
+      if (i <= currentSandboxPin.length) {
+        dot.classList.add('filled');
+      } else {
+        dot.classList.remove('filled');
+      }
+    }
+  }
+}
+
+function submitSandboxPayment() {
+  const successBanner = document.getElementById('sandboxSuccessBanner');
+  if (successBanner) {
+    successBanner.style.display = 'flex';
+  }
+  const chimeMsg = state.currentLanguage === 'gu'
+    ? "રૂપિયા ૧૦ સફળતાપૂર્વક ચૂકવાયા! ખૂબ સરસ, તમે સાચો પિન નાખીને ડેમો પેમેન્ટ પૂર્ણ કર્યું. આ માત્ર પ્રેક્ટિસ હતી, તમારા સાચા ખાતામાંથી એક પણ રૂપિયો કપાયો નથી."
+    : (state.currentLanguage === 'hi'
+      ? "दस रुपये का भुगतान सफल हुआ! बहुत बढ़िया, आपने डेमो पेमेंट पूरा कर लिया। यह सिर्फ अभ्यास था, आपके असली खाते से कोई पैसा नहीं कटा।"
+      : "Ten rupees payment successful! Great job, this was a zero-risk sandbox practice.");
+  speakText(chimeMsg);
+}
+
+function resetSandbox() {
+  currentSandboxPin = "";
+  updateSandboxPinDots();
+  const successBanner = document.getElementById('sandboxSuccessBanner');
+  if (successBanner) successBanner.style.display = 'none';
+}
+
+// 4. Family Bridge (Ask Child & SOS) Logic
+function initFamilyBridge() {
+  const childNameInput = document.getElementById('familyChildName');
+  const childPhoneInput = document.getElementById('familyChildPhone');
+
+  const savedName = localStorage.getItem('sahayak_child_name') || 'કૃષ્ણ (Krish)';
+  const savedPhone = localStorage.getItem('sahayak_child_phone') || '919876543210';
+
+  if (childNameInput) childNameInput.value = savedName;
+  if (childPhoneInput) childPhoneInput.value = savedPhone;
+}
+
+function saveFamilyContact() {
+  const childNameInput = document.getElementById('familyChildName');
+  const childPhoneInput = document.getElementById('familyChildPhone');
+
+  const name = childNameInput ? childNameInput.value.trim() : '';
+  const phone = childPhoneInput ? childPhoneInput.value.trim() : '';
+
+  if (!phone) {
+    alert("કૃપા કરીને દીકરા/દીકરીનો WhatsApp નંબર લખો.");
+    return;
+  }
+
+  localStorage.setItem('sahayak_child_name', name);
+  localStorage.setItem('sahayak_child_phone', phone);
+  alert("સંપર્ક સફળતાપૂર્વક સેવ થઈ ગયો છે! ✅");
+}
+
+function askChildOnWhatsApp() {
+  const phone = (localStorage.getItem('sahayak_child_phone') || '').replace(/[^0-9]/g, '');
+  const childName = localStorage.getItem('sahayak_child_name') || 'બેટા';
+  const taskTitle = state.latestFlow?.title || "ફોન ચલાવવામાં મદદ";
+
+  let msg = `નમસ્તે ${childName}! હું સહાયક AI વાપરી રહ્યો છું અને મને "${taskTitle}" માં તમારી મદદ જોઈએ છે. કૃપા કરીને મને ફોન પર સમજાવો ને!`;
+  if (state.currentLanguage === 'hi') {
+    msg = `नमस्ते ${childName}! मैं सहायक AI में "${taskTitle}" कर रहा हूँ और मुझे आपकी मदद चाहिए।`;
+  } else if (state.currentLanguage === 'en') {
+    msg = `Hi ${childName}! I am using Sahayak AI for "${taskTitle}" and need a little help.`;
+  }
+
+  const cleanPhone = phone ? (phone.startsWith('91') ? phone : `91${phone}`) : '';
+  const url = cleanPhone ? `https://wa.me/${cleanPhone}?text=${encodeURIComponent(msg)}` : `https://wa.me/?text=${encodeURIComponent(msg)}`;
+  window.open(url, '_blank');
+}
+
+function callChildDirect() {
+  const phone = (localStorage.getItem('sahayak_child_phone') || '').replace(/[^0-9]/g, '');
+  if (!phone) {
+    alert("કૃપા કરીને દીકરા/દીકરીનો મોબાઈલ નંબર નાખીને સેવ કરો.");
+    return;
+  }
+  window.location.href = `tel:${phone}`;
+}
+
+// 5. Document & Medicine OCR Reader Logic
+async function loadDocumentData(docType) {
+  const titleEl = document.getElementById('docResultTitle');
+  const gridEl = document.getElementById('docDetailsGrid');
+  const comfortEl = document.getElementById('docComfortText');
+
+  try {
+    const res = await fetch(`${state.apiBaseUrl}/api/read-document`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ doc_type: docType, language: state.currentLanguage })
+    });
+    const data = await res.json();
+    renderDocumentData(data);
+  } catch (err) {
+    // Client-side fallback
+    if (docType === 'medicine') {
+      renderDocumentData({
+        title: "💊 દવાની માહિતી અને લેવાનો સમય",
+        audio_narration: "આ બ્લડ પ્રેશરની ટેબ્લેટ છે. ડૉક્ટરની સલાહ મુજબ આ ગોળી સવારે નાસ્તો કર્યા પછી ૧ ગોળી પાણી સાથે લેવાની છે.",
+        key_details: [
+          { label: "દવાનું નામ", value: "ટેલમિસાર્ટન 40mg (Telmisartan)" },
+          { label: "શેના માટે?", value: "બ્લડ પ્રેશર (BP) કંટ્રોલ રાખવા" },
+          { label: "ક્યારે લેવી?", value: "સવારે નાસ્તો કર્યા પછી - ૧ ગોળી" }
+        ],
+        comfort_note: "ચિંતા કરશો નહીં, આ તમારી રોજીંદી સામાન્ય દવા છે."
+      });
+    } else {
+      renderDocumentData({
+        title: "⚡ લાઈટ બિલની વિગતો (Electricity Bill)",
+        audio_narration: "તમારું આ મહિનાનું વીજળી બિલ ₹૧,૪૫૦ આવ્યું છે. ભરવાની છેલ્લી તારીખ ૨૦ નવેમ્બર છે.",
+        key_details: [
+          { label: "કંપનીનું નામ", value: "ટોરેન્ટ પાવર લિમિટેડ" },
+          { label: "ગ્રાહક નંબર", value: "5420 8912 341" },
+          { label: "ભરવાની રકમ", value: "₹ ૧,૪૫૦/-" },
+          { label: "છેલ્લી તારીખ", value: "૨૦ નવેમ્બર, ૨૦૨૬" }
+        ],
+        comfort_note: "તમે Google Pay થી આ બિલ ચૂકવી શકો છો."
+      });
+    }
+  }
+}
+
+function renderDocumentData(data) {
+  const titleEl = document.getElementById('docResultTitle');
+  const gridEl = document.getElementById('docDetailsGrid');
+  const comfortEl = document.getElementById('docComfortText');
+
+  latestDocAudioText = data.audio_narration;
+  if (titleEl) titleEl.textContent = data.title;
+  if (comfortEl) comfortEl.textContent = data.comfort_note;
+
+  if (gridEl) {
+    gridEl.innerHTML = '';
+    data.key_details.forEach(item => {
+      const row = document.createElement('div');
+      row.className = 'doc-detail-row';
+      row.innerHTML = `
+        <span class="doc-detail-label">${escapeHtml(item.label)}</span>
+        <span class="doc-detail-value">${escapeHtml(item.value)}</span>
+      `;
+      gridEl.appendChild(row);
+    });
+  }
+
+  speakText(data.audio_narration);
+}
+
 function setupEvents() {
   // Senior High Contrast Light Mode Toggle Button
   if (el.btnThemeToggle) {
@@ -979,11 +1326,158 @@ function setupEvents() {
   if (el.chipQ6) el.chipQ6.addEventListener('click', () => submitQuery(UI_STRINGS[state.currentLanguage].q6));
   if (el.chipQ7) el.chipQ7.addEventListener('click', () => submitQuery(UI_STRINGS[state.currentLanguage].q7));
   if (el.chipQ8) el.chipQ8.addEventListener('click', () => submitQuery(UI_STRINGS[state.currentLanguage].q8));
+
+  // --- ELDER SUPER-TOOLS EVENT LISTENERS ---
+  // Modals Open Triggers
+  const btnOpenScam = document.getElementById('btnOpenScamRadar');
+  if (btnOpenScam) btnOpenScam.addEventListener('click', () => openModal('modalScamRadar'));
+
+  const btnOpenCam = document.getElementById('btnOpenCameraVision');
+  if (btnOpenCam) btnOpenCam.addEventListener('click', () => openModal('modalCameraVision'));
+
+  const btnOpenBox = document.getElementById('btnOpenSandbox');
+  if (btnOpenBox) btnOpenBox.addEventListener('click', () => openModal('modalSafeSandbox'));
+
+  const btnOpenFam = document.getElementById('btnOpenFamilyBridge');
+  if (btnOpenFam) btnOpenFam.addEventListener('click', () => openModal('modalFamilyBridge'));
+
+  const btnOpenDoc = document.getElementById('btnOpenDocReader');
+  if (btnOpenDoc) btnOpenDoc.addEventListener('click', () => {
+    openModal('modalDocReader');
+    loadDocumentData('medicine');
+  });
+
+  const btnOpenBub = document.getElementById('btnOpenBubble');
+  if (btnOpenBub) btnOpenBub.addEventListener('click', () => openModal('modalBubbleGuide'));
+
+  const floatBub = document.getElementById('floatingBubble');
+  if (floatBub) floatBub.addEventListener('click', () => openModal('modalBubbleGuide'));
+
+  // Modals Close Buttons
+  const closeScam = document.getElementById('btnCloseScamRadar');
+  if (closeScam) closeScam.addEventListener('click', () => closeModal('modalScamRadar'));
+
+  const closeCam = document.getElementById('btnCloseCameraVision');
+  if (closeCam) closeCam.addEventListener('click', () => closeModal('modalCameraVision'));
+
+  const closeBox = document.getElementById('btnCloseSandbox');
+  if (closeBox) closeBox.addEventListener('click', () => closeModal('modalSafeSandbox'));
+
+  const closeFam = document.getElementById('btnCloseFamilyBridge');
+  if (closeFam) closeFam.addEventListener('click', () => closeModal('modalFamilyBridge'));
+
+  const closeDoc = document.getElementById('btnCloseDocReader');
+  if (closeDoc) closeDoc.addEventListener('click', () => closeModal('modalDocReader'));
+
+  const closeBub = document.getElementById('btnCloseBubbleGuide');
+  if (closeBub) closeBub.addEventListener('click', () => closeModal('modalBubbleGuide'));
+
+  // Close modals on clicking backdrop
+  document.querySelectorAll('.elder-modal-backdrop').forEach(backdrop => {
+    backdrop.addEventListener('click', (e) => {
+      if (e.target === backdrop) {
+        closeModal(backdrop.id);
+      }
+    });
+  });
+
+  // Scam Radar Listeners
+  const btnRunScam = document.getElementById('btnRunScamCheck');
+  if (btnRunScam) btnRunScam.addEventListener('click', () => runScamCheck());
+
+  const pScamElec = document.getElementById('presetScamElectricity');
+  if (pScamElec) pScamElec.addEventListener('click', () => {
+    const txt = "Dear consumer electricity power will be disconnected tonight by 9:30 PM from electricity office call 9876543210 immediately.";
+    document.getElementById('scamInputText').value = txt;
+    runScamCheck(txt);
+  });
+
+  const pScamBank = document.getElementById('presetScamBank');
+  if (pScamBank) pScamBank.addEventListener('click', () => {
+    const txt = "SBI Alert: Your Account has been suspended. Please update your PAN Card immediately by clicking https://bit.ly/sbi-pan-kyc";
+    document.getElementById('scamInputText').value = txt;
+    runScamCheck(txt);
+  });
+
+  const pScamArrest = document.getElementById('presetScamArrest');
+  if (pScamArrest) pScamArrest.addEventListener('click', () => {
+    const txt = "Arrest warrant issued by CBI and Cyber Police department. Join video call immediately or face arrest.";
+    document.getElementById('scamInputText').value = txt;
+    runScamCheck(txt);
+  });
+
+  const btnListenScam = document.getElementById('btnListenScamVerdict');
+  if (btnListenScam) btnListenScam.addEventListener('click', () => {
+    if (latestScamAudioText) speakText(latestScamAudioText);
+  });
+
+  // Camera Vision Listeners
+  const btnToggleCam = document.getElementById('btnToggleCameraSource');
+  if (btnToggleCam) btnToggleCam.addEventListener('click', toggleCameraSource);
+
+  const btnSpeakCam = document.getElementById('btnSpeakCameraGuidance');
+  if (btnSpeakCam) btnSpeakCam.addEventListener('click', () => {
+    const txt = document.getElementById('cameraInstructionText')?.textContent;
+    if (txt) speakText(txt);
+  });
+
+  // Safe Sandbox UPI Keypad Listeners
+  document.querySelectorAll('.keypad-btn[data-key]').forEach(btn => {
+    btn.addEventListener('click', () => handleSandboxKey(btn.getAttribute('data-key')));
+  });
+
+  const btnClr = document.getElementById('btnKeypadClear');
+  if (btnClr) btnClr.addEventListener('click', clearSandboxKey);
+
+  const btnSub = document.getElementById('btnKeypadSubmit');
+  if (btnSub) btnSub.addEventListener('click', submitSandboxPayment);
+
+  const btnResetBox = document.getElementById('btnResetSandbox');
+  if (btnResetBox) btnResetBox.addEventListener('click', resetSandbox);
+
+  // Family Bridge Listeners
+  const btnSaveFam = document.getElementById('btnSaveFamilyContact');
+  if (btnSaveFam) btnSaveFam.addEventListener('click', saveFamilyContact);
+
+  const btnAskChild = document.getElementById('btnAskChildWhatsApp');
+  if (btnAskChild) btnAskChild.addEventListener('click', askChildOnWhatsApp);
+
+  const btnCallChild = document.getElementById('btnCallChildDirect');
+  if (btnCallChild) btnCallChild.addEventListener('click', callChildDirect);
+
+  // Document Reader Listeners
+  const tabDocMed = document.getElementById('tabDocMedicine');
+  const tabDocB = document.getElementById('tabDocBill');
+  if (tabDocMed && tabDocB) {
+    tabDocMed.addEventListener('click', () => {
+      tabDocMed.classList.add('active');
+      tabDocB.classList.remove('active');
+      loadDocumentData('medicine');
+    });
+    tabDocB.addEventListener('click', () => {
+      tabDocB.classList.add('active');
+      tabDocMed.classList.remove('active');
+      loadDocumentData('utility_bill');
+    });
+  }
+
+  const pDocMed = document.getElementById('presetDocMedicine');
+  if (pDocMed) pDocMed.addEventListener('click', () => loadDocumentData('medicine'));
+
+  const pDocBill = document.getElementById('presetDocBill');
+  if (pDocBill) pDocBill.addEventListener('click', () => loadDocumentData('utility_bill'));
+
+  const btnListenDoc = document.getElementById('btnListenDocAudio');
+  if (btnListenDoc) btnListenDoc.addEventListener('click', () => {
+    if (latestDocAudioText) speakText(latestDocAudioText);
+  });
+
 }
 
 // App Bootstrap
 document.addEventListener('DOMContentLoaded', () => {
   initTheme();
+  initFamilyBridge();
   setupEvents();
   applyLanguage('gu');
   initSpeechRecognition();

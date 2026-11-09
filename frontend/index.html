@@ -54,6 +54,36 @@
       </div>
     </div>
 
+    <!-- Senior Super-Tools Navigation Bar -->
+    <section class="elder-tools-bar" aria-label="Senior Super Tools">
+      <div class="elder-tools-scroll">
+        <button class="elder-tool-pill tool-scam" id="btnOpenScamRadar" title="સ્કેમ ચેક કરો">
+          <span class="tool-icon">🛡️</span>
+          <span class="tool-label" id="toolScamLabel">રક્ષા કવચ (સ્કેમ ચેક)</span>
+        </button>
+        <button class="elder-tool-pill tool-camera" id="btnOpenCameraVision" title="કેમેરાથી ફોન જુઓ">
+          <span class="tool-icon">👁️</span>
+          <span class="tool-label" id="toolCameraLabel">લાઈવ કેમેરા ગાઈડ</span>
+        </button>
+        <button class="elder-tool-pill tool-sandbox" id="btnOpenSandbox" title="ડમી UPI પ્રેક્ટિસ">
+          <span class="tool-icon">🧪</span>
+          <span class="tool-label" id="toolSandboxLabel">સેફ પ્રેક્ટિસ મોડ</span>
+        </button>
+        <button class="elder-tool-pill tool-family" id="btnOpenFamilyBridge" title="દીકરાને પૂછો / SOS">
+          <span class="tool-icon">👨‍👩‍👧</span>
+          <span class="tool-label" id="toolFamilyLabel">ફેમિલી બ્રિજ</span>
+        </button>
+        <button class="elder-tool-pill tool-doc" id="btnOpenDocReader" title="દવા અને બિલ વાંચો">
+          <span class="tool-icon">💊</span>
+          <span class="tool-label" id="toolDocLabel">દવા & બિલ રીડર</span>
+        </button>
+        <button class="elder-tool-pill tool-bubble" id="btnOpenBubble" title="ફ્લોટિંગ બબલ">
+          <span class="tool-icon">🎈</span>
+          <span class="tool-label" id="toolBubbleLabel">ફ્લોટિંગ બબલ</span>
+        </button>
+      </div>
+    </section>
+
     <!-- MAIN CHAT FEED (ChatGPT Style) -->
     <main class="chat-feed" id="chatFeed">
       
@@ -144,5 +174,316 @@
   </div>
 
   <script src="js/app.js?v=2.3"></script>
+    <!-- FLOATING GRANDMA COMPANION BUBBLE -->
+    <div class="floating-grandma-bubble" id="floatingBubble" title="Sahayak AI Floating Companion">
+      <span class="bubble-avatar">👵</span>
+      <span class="bubble-ping"></span>
+    </div>
+
+    <!-- 1. MODAL: RAKSHA KAVACH (ANTI-SCAM RADAR) -->
+    <div class="elder-modal-backdrop" id="modalScamRadar" role="dialog" aria-hidden="true">
+      <div class="elder-modal-dialog">
+        <div class="modal-header">
+          <div class="modal-title-row">
+            <span class="modal-title-icon">🛡️</span>
+            <div>
+              <h2 class="modal-main-title" id="scamModalTitle">રક્ષા કવચ — AI ફ્રોડ અને સ્કેમ ડીટેક્ટર</h2>
+              <p class="modal-sub-title" id="scamModalSub">કોઈપણ શંકાસ્પદ WhatsApp મેસેજ કે SMS અહીં તપાસો</p>
+            </div>
+          </div>
+          <button class="modal-close-btn" id="btnCloseScamRadar" aria-label="Close">✕</button>
+        </div>
+
+        <div class="modal-body">
+          <div class="scam-presets-box">
+            <label class="modal-label" id="scamPresetLabel">ચકાસણી માટે આમાંથી કોઈ એક દબાવો:</label>
+            <div class="scam-chips-row">
+              <button class="preset-chip-btn" id="presetScamElectricity">⚡ વીજળી બિલ કાપવાનો SMS</button>
+              <button class="preset-chip-btn" id="presetScamBank">🏦 SBI ખાતું બ્લોક (KYC) લિંક</button>
+              <button class="preset-chip-btn" id="presetScamArrest">👮 CBI / પોલીસ ડિજિટલ અરેસ્ટ</button>
+            </div>
+          </div>
+
+          <div class="scam-input-group">
+            <label class="modal-label" for="scamInputText" id="scamInputLabel">અથવા તમને આવેલો મેસેજ અહીં પેસ્ટ કરો:</label>
+            <textarea class="scam-textarea" id="scamInputText" rows="3" placeholder="મેસેજ અહીં લખો અથવા પેસ્ટ કરો..."></textarea>
+          </div>
+
+          <div class="scam-action-bar">
+            <button class="btn-primary-action" id="btnRunScamCheck">
+              <span>🔍</span> <span id="btnRunScamCheckLabel">મેસેજ તપાસો (Check Message)</span>
+            </button>
+            <label class="btn-secondary-action" for="scamPhotoUpload">
+              <span>📷</span> <span>સ્ક્રીનશોટ અપલોડ કરો</span>
+              <input type="file" id="scamPhotoUpload" accept="image/*" style="display: none;">
+            </label>
+          </div>
+
+          <!-- Dynamic Verdict Card -->
+          <div class="scam-verdict-card" id="scamVerdictCard" style="display: none;">
+            <div class="verdict-badge" id="scamVerdictBadge">❌ ૧૦૦% છેતરપિંડી (SCAM ALERT)</div>
+            <p class="verdict-explanation" id="scamVerdictExplanation"></p>
+            <div class="verdict-actions-list" id="scamVerdictActions"></div>
+            <button class="btn-listen-verdict" id="btnListenScamVerdict">
+              <span>🔊</span> <span>ચેતવણી મોટેથી સાંભળો</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2. MODAL: LIVE CAMERA VISION GUIDE -->
+    <div class="elder-modal-backdrop" id="modalCameraVision" role="dialog" aria-hidden="true">
+      <div class="elder-modal-dialog">
+        <div class="modal-header">
+          <div class="modal-title-row">
+            <span class="modal-title-icon">👁️</span>
+            <div>
+              <h2 class="modal-main-title" id="camModalTitle">લાઈવ કેમેરા ગાઈડ (Live Camera Vision)</h2>
+              <p class="modal-sub-title" id="camModalSub">તમારા સાચા ફોનની સ્ક્રીનને કેમેરા સામે રાખો</p>
+            </div>
+          </div>
+          <button class="modal-close-btn" id="btnCloseCameraVision" aria-label="Close">✕</button>
+        </div>
+
+        <div class="modal-body">
+          <div class="camera-viewport-frame">
+            <video class="camera-stream" id="cameraVideo" autoplay playsinline></video>
+            <div class="camera-sample-display" id="cameraSampleView" style="display: none;">
+              <img src="assets/screens/whatsapp_chat_screen.svg" alt="Sample Phone Screen in Camera" class="camera-sample-img">
+            </div>
+            <!-- Target Spotlight Ring -->
+            <div class="camera-target-ring" id="cameraTargetRing" style="left: 70.8%; top: 94.5%;">
+              <div class="camera-tap-pointer">👉 અહીં ટચ કરો!</div>
+            </div>
+            <div class="camera-crosshairs"></div>
+          </div>
+
+          <div class="camera-instruction-box">
+            <span class="camera-pulse-dot"></span>
+            <span id="cameraInstructionText">કેમેરામાં તમારો ફોન દેખાય છે! નીચે વાદળી રંગના બટન પર તમારા અંગૂઠાથી ટચ કરો.</span>
+          </div>
+
+          <div class="camera-controls-row">
+            <button class="btn-primary-action" id="btnToggleCameraSource">
+              <span>🔄</span> <span>કેમેરા / સેમ્પલ મોડ બદલો</span>
+            </button>
+            <button class="btn-listen-verdict" id="btnSpeakCameraGuidance">
+              <span>🔊</span> <span>સૂચના સાંભળો</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. MODAL: SAFE SANDBOX PRACTICE (ZERO-RISK UPI SIMULATOR) -->
+    <div class="elder-modal-backdrop" id="modalSafeSandbox" role="dialog" aria-hidden="true">
+      <div class="elder-modal-dialog">
+        <div class="modal-header">
+          <div class="modal-title-row">
+            <span class="modal-title-icon">🧪</span>
+            <div>
+              <h2 class="modal-main-title" id="sandboxModalTitle">સેફ પ્રેક્ટિસ મોડ (Zero-Risk Sandbox)</h2>
+              <p class="modal-sub-title" id="sandboxModalSub">નકલી ₹૧૦ નું પેમેન્ટ કરીને હાથ છૂટો કરો — કોઈ સાચા પૈસા નહીં કપાય!</p>
+            </div>
+          </div>
+          <button class="modal-close-btn" id="btnCloseSandbox" aria-label="Close">✕</button>
+        </div>
+
+        <div class="modal-body">
+          <div class="sandbox-phone-card">
+            <div class="sandbox-payee-info">
+              <div class="payee-avatar">🏪</div>
+              <div class="payee-name">રમેશ જનરલ સ્ટોર (Ramesh General Store)</div>
+              <div class="payee-amount">₹ 10.00</div>
+              <div class="payee-note">ડેમો પ્રેક્ટિસ પેમેન્ટ</div>
+            </div>
+
+            <!-- 4-Digit PIN Display -->
+            <div class="sandbox-pin-row">
+              <span class="pin-dot" id="pinDot1"></span>
+              <span class="pin-dot" id="pinDot2"></span>
+              <span class="pin-dot" id="pinDot3"></span>
+              <span class="pin-dot" id="pinDot4"></span>
+            </div>
+
+            <!-- PIN keypad -->
+            <div class="sandbox-keypad">
+              <button class="keypad-btn" data-key="1">1</button>
+              <button class="keypad-btn" data-key="2">2</button>
+              <button class="keypad-btn" data-key="3">3</button>
+              <button class="keypad-btn" data-key="4">4</button>
+              <button class="keypad-btn" data-key="5">5</button>
+              <button class="keypad-btn" data-key="6">6</button>
+              <button class="keypad-btn" data-key="7">7</button>
+              <button class="keypad-btn" data-key="8">8</button>
+              <button class="keypad-btn" data-key="9">9</button>
+              <button class="keypad-btn clear" id="btnKeypadClear">⌫</button>
+              <button class="keypad-btn" data-key="0">0</button>
+              <button class="keypad-btn submit" id="btnKeypadSubmit">✓</button>
+            </div>
+
+            <!-- Success Celebration Banner -->
+            <div class="sandbox-success-banner" id="sandboxSuccessBanner" style="display: none;">
+              <div class="success-icon">🎉 ✅</div>
+              <h3 class="success-title">₹ ૧૦.૦૦ પેમેન્ટ સફળ થયું!</h3>
+              <p class="success-desc">
+                ખૂબ સરસ! તમે સફળતાપૂર્વક UPI પિન નાખીને પેમેન્ટ પૂર્ણ કર્યું.<br>
+                <strong>આ માત્ર પ્રેક્ટિસ હતી, તમારા સાચા બેંકમાંથી એક પણ રૂપિયો કપાયો નથી!</strong>
+              </p>
+              <button class="btn-primary-action" id="btnResetSandbox">
+                <span>🔄</span> <span>ફરીથી પ્રેક્ટિસ કરો</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 4. MODAL: FAMILY BRIDGE (ASK MY CHILD & SOS) -->
+    <div class="elder-modal-backdrop" id="modalFamilyBridge" role="dialog" aria-hidden="true">
+      <div class="elder-modal-dialog">
+        <div class="modal-header">
+          <div class="modal-title-row">
+            <span class="modal-title-icon">👨‍👩‍👧</span>
+            <div>
+              <h2 class="modal-main-title" id="familyModalTitle">ફેમિલી બ્રિજ — દીકરા/દીકરી સાથે કનેક્ટ</h2>
+              <p class="modal-sub-title" id="familyModalSub">કોઈપણ સમયે અટકો તો ૧-ટેપમાં પરિવારની મદદ મેળવો</p>
+            </div>
+          </div>
+          <button class="modal-close-btn" id="btnCloseFamilyBridge" aria-label="Close">✕</button>
+        </div>
+
+        <div class="modal-body">
+          <div class="family-config-card">
+            <div class="input-field-wrap">
+              <label class="modal-label" for="familyChildName">દીકરા / દીકરીનું નામ:</label>
+              <input type="text" class="family-text-input" id="familyChildName" placeholder="દા.ત. કૃષ્ણ / બેટો">
+            </div>
+            <div class="input-field-wrap">
+              <label class="modal-label" for="familyChildPhone">તેમનો WhatsApp મોબાઈલ નંબર:</label>
+              <input type="tel" class="family-text-input" id="familyChildPhone" placeholder="દા.ત. 9876543210">
+            </div>
+            <button class="btn-secondary-action" id="btnSaveFamilyContact">
+              <span>💾</span> <span>નંબર સેવ કરો (Save Contact)</span>
+            </button>
+          </div>
+
+          <div class="family-actions-grid">
+            <button class="btn-family-whatsapp" id="btnAskChildWhatsApp">
+              <span class="action-icon">💬</span>
+              <div>
+                <div class="action-bold">WhatsApp પર બેટાને પૂછો</div>
+                <div class="action-small">હું જ્યાં અટક્યો છું તેની લિંક સાથે મેસેજ જશે</div>
+              </div>
+            </button>
+
+            <button class="btn-family-call" id="btnCallChildDirect">
+              <span class="action-icon">📞</span>
+              <div>
+                <div class="action-bold">બેટાને તુરંત ફોન કરો</div>
+                <div class="action-small">ડાયરેક્ટ કોલ લાગશે</div>
+              </div>
+            </button>
+          </div>
+
+          <div class="family-sos-strip">
+            <span>🚨</span>
+            <span>SOS ઇમરજન્સી: મુશ્કેલીના સમયે આ બટનથી લાઈવ લોકેશન પરિવારને મોકલાશે.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 5. MODAL: GUJARATI DOCUMENT & MEDICINE OCR READER -->
+    <div class="elder-modal-backdrop" id="modalDocReader" role="dialog" aria-hidden="true">
+      <div class="elder-modal-dialog">
+        <div class="modal-header">
+          <div class="modal-title-row">
+            <span class="modal-title-icon">💊</span>
+            <div>
+              <h2 class="modal-main-title" id="docModalTitle">દવા અને બિલ વાંચનાર (Document Reader)</h2>
+              <p class="modal-sub-title" id="docModalSub">દવાની પટ્ટી કે લાઈટ બિલનો ફોટો પાડો — અવાજથી સાંભળો</p>
+            </div>
+          </div>
+          <button class="modal-close-btn" id="btnCloseDocReader" aria-label="Close">✕</button>
+        </div>
+
+        <div class="modal-body">
+          <!-- Document Category Tabs -->
+          <div class="doc-tabs-row">
+            <button class="doc-tab-btn active" id="tabDocMedicine">💊 દવાની પટ્ટી / ગોળીઓ</button>
+            <button class="doc-tab-btn" id="tabDocBill">⚡ વીજળી / લાઈટ બિલ</button>
+          </div>
+
+          <div class="scam-presets-box">
+            <label class="modal-label">ડેમો ચકાસણી માટે પસંદ કરો:</label>
+            <div class="scam-chips-row">
+              <button class="preset-chip-btn" id="presetDocMedicine">💊 બ્લડ પ્રેશર (BP) ટેબ્લેટ</button>
+              <button class="preset-chip-btn" id="presetDocBill">⚡ ટોરેન્ટ પાવર બિલ (₹૧,૪૫૦)</button>
+            </div>
+          </div>
+
+          <!-- Document Result Card -->
+          <div class="doc-result-card" id="docResultCard">
+            <div class="doc-result-header">
+              <h3 class="doc-result-title" id="docResultTitle">💊 દવાની માહિતી અને લેવાનો સમય</h3>
+              <button class="btn-listen-verdict" id="btnListenDocAudio">
+                <span>🔊</span> <span>મોટેથી સાંભળો</span>
+              </button>
+            </div>
+
+            <div class="doc-details-grid" id="docDetailsGrid">
+              <!-- Dynamically populated key-value rows -->
+            </div>
+
+            <div class="doc-comfort-footer" id="docComfortFooter">
+              <span>🛡️</span>
+              <span id="docComfortText">ચિંતા કરશો નહીં, આ તમારી નિયમિત દવા છે. સમયસર લઈ લેજો.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 6. MODAL: ANDROID FLOATING BUBBLE PREVIEW -->
+    <div class="elder-modal-backdrop" id="modalBubbleGuide" role="dialog" aria-hidden="true">
+      <div class="elder-modal-dialog">
+        <div class="modal-header">
+          <div class="modal-title-row">
+            <span class="modal-title-icon">🎈</span>
+            <div>
+              <h2 class="modal-main-title">Android ફ્લોટિંગ બબલ (Floating Companion)</h2>
+              <p class="modal-sub-title">WhatsApp કે YouTube ની અંદર પણ સાહાયક AI નો અવતાર તરતો રહેશે</p>
+            </div>
+          </div>
+          <button class="modal-close-btn" id="btnCloseBubbleGuide" aria-label="Close">✕</button>
+        </div>
+
+        <div class="modal-body">
+          <div class="bubble-demo-card">
+            <div class="bubble-preview-screen">
+              <img src="assets/screens/whatsapp_chat_screen.svg" alt="WhatsApp with floating bubble" class="bubble-preview-img">
+              <div class="floating-grandma-bubble preview-bubble">
+                <span class="bubble-avatar">👵</span>
+              </div>
+              <div class="bubble-callout-box">
+                "દાદા, હું વોટ્સએપ પર જ છું! પેપરક્લિપ પર અડો."
+              </div>
+            </div>
+
+            <div class="bubble-install-steps">
+              <h4 class="install-title">📱 ફોનમાં ૧-ક્લિક શોર્ટકટ કેવી રીતે રાખવો?</h4>
+              <ol class="install-ol">
+                <li>બ્રાઉઝરના ઉપરના ત્રણ ટપકાં (⋮) પર ટચ કરો.</li>
+                <li><strong>'Add to Home screen' (હોમ સ્ક્રીન પર ઉમેરો)</strong> પસંદ કરો.</li>
+                <li>હવે તમારા ફોનની સ્ક્રીન પર સાહાયક AI ની એપ આવી જશે!</li>
+              </ol>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
 </body>
 </html>

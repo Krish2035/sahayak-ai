@@ -1336,3 +1336,912 @@ body.light-theme .lang-select-btn:hover,
 body.light-theme .btn-icon-clear:hover {
   background-color: #e2e8f0;
 }
+
+/* ==========================================================================
+   ELDER SUPER-TOOLS BAR & INTERACTIVE 6 INNOVATION FEATURES
+   1. Anti-Scam Radar
+   2. Live Camera Screen Vision
+   3. Zero-Risk UPI Sandbox Practice
+   4. Family Caregiver Bridge & SOS
+   5. Gujarati Document & Medicine OCR Reader
+   6. Android Floating Bubble Companion
+   ========================================================================== */
+
+/* Super-Tools Horizontal Tray */
+.elder-tools-bar {
+  width: 100%;
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 6px 16px 12px 16px;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.elder-tools-scroll {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: max-content;
+  padding-bottom: 4px;
+}
+
+.elder-tool-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  border-radius: 24px;
+  font-size: 14px;
+  font-weight: 700;
+  border: 1.5px solid transparent;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.elder-tool-pill:hover, .elder-tool-pill:active {
+  transform: translateY(-2px);
+  filter: brightness(1.15);
+}
+
+.tool-scam {
+  background: rgba(239, 68, 68, 0.15);
+  color: #fca5a5;
+  border-color: rgba(239, 68, 68, 0.4);
+}
+
+.tool-camera {
+  background: rgba(59, 130, 246, 0.15);
+  color: #93c5fd;
+  border-color: rgba(59, 130, 246, 0.4);
+}
+
+.tool-sandbox {
+  background: rgba(168, 85, 247, 0.15);
+  color: #d8b4fe;
+  border-color: rgba(168, 85, 247, 0.4);
+}
+
+.tool-family {
+  background: rgba(16, 185, 129, 0.15);
+  color: #6ee7b7;
+  border-color: rgba(16, 185, 129, 0.4);
+}
+
+.tool-doc {
+  background: rgba(245, 158, 11, 0.15);
+  color: #fcd34d;
+  border-color: rgba(245, 158, 11, 0.4);
+}
+
+.tool-bubble {
+  background: rgba(236, 72, 153, 0.15);
+  color: #f472b6;
+  border-color: rgba(236, 72, 153, 0.4);
+}
+
+/* Floating Grandma Avatar Bubble */
+.floating-grandma-bubble {
+  position: fixed;
+  bottom: 84px;
+  right: 20px;
+  width: 58px;
+  height: 58px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #00a884, #059669);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 999;
+  transition: transform 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.floating-grandma-bubble:hover {
+  transform: scale(1.12);
+}
+
+.bubble-avatar {
+  font-size: 30px;
+  user-select: none;
+}
+
+.bubble-ping {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background-color: #ef4444;
+  border: 2.5px solid #0b141a;
+  animation: bubblePing 1.8s infinite;
+}
+
+@keyframes bubblePing {
+  0% { transform: scale(0.9); opacity: 1; }
+  50% { transform: scale(1.3); opacity: 0.6; }
+  100% { transform: scale(0.9); opacity: 1; }
+}
+
+/* Modal Backdrops & Dialogs */
+.elder-modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(6px);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+  padding: 16px;
+}
+
+.elder-modal-backdrop.active {
+  display: flex;
+  animation: modalFadeIn 0.25s ease-out;
+}
+
+@keyframes modalFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.elder-modal-dialog {
+  background: #111b21;
+  border: 1.5px solid var(--border-light);
+  border-radius: 24px;
+  width: 100%;
+  max-width: 620px;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+  display: flex;
+  flex-direction: column;
+}
+
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 24px;
+  border-bottom: 1px solid var(--border-light);
+}
+
+.modal-title-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.modal-title-icon {
+  font-size: 32px;
+}
+
+.modal-main-title {
+  font-size: 20px;
+  font-weight: 800;
+  color: #ffffff;
+  line-height: 1.25;
+}
+
+.modal-sub-title {
+  font-size: 14px;
+  color: var(--text-secondary);
+  margin-top: 4px;
+}
+
+.modal-close-btn {
+  background: rgba(255, 255, 255, 0.08);
+  border: none;
+  color: var(--text-secondary);
+  font-size: 20px;
+  font-weight: 700;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.modal-close-btn:hover {
+  background: rgba(239, 68, 68, 0.25);
+  color: #ef4444;
+}
+
+.modal-body {
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.modal-label {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 6px;
+  display: block;
+}
+
+/* Scam Radar Specifics */
+.scam-presets-box {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.scam-chips-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.preset-chip-btn {
+  background: #202c33;
+  border: 1px solid var(--border-light);
+  color: var(--text-primary);
+  padding: 8px 14px;
+  border-radius: 16px;
+  font-size: 13.5px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.preset-chip-btn:hover {
+  background: #2a3942;
+  border-color: var(--wa-green);
+}
+
+.scam-textarea {
+  width: 100%;
+  background: #202c33;
+  border: 1.5px solid var(--border-light);
+  border-radius: 16px;
+  color: var(--text-primary);
+  padding: 12px 16px;
+  font-size: 16px;
+  line-height: 1.5;
+  resize: vertical;
+}
+
+.scam-action-bar {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.btn-primary-action {
+  background: linear-gradient(135deg, var(--wa-green), #059669);
+  color: #0b141a;
+  border: none;
+  border-radius: 20px;
+  padding: 12px 22px;
+  font-size: 16px;
+  font-weight: 800;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-primary-action:hover {
+  transform: translateY(-1px);
+  filter: brightness(1.1);
+}
+
+.btn-secondary-action {
+  background: #202c33;
+  border: 1.5px solid var(--border-light);
+  color: var(--text-primary);
+  border-radius: 20px;
+  padding: 12px 20px;
+  font-size: 15px;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+}
+
+.scam-verdict-card {
+  background: rgba(239, 68, 68, 0.12);
+  border: 2px solid #ef4444;
+  border-radius: 20px;
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  animation: modalFadeIn 0.3s ease-out;
+}
+
+.scam-verdict-card.safe {
+  background: rgba(16, 185, 129, 0.12);
+  border-color: #10b981;
+}
+
+.verdict-badge {
+  font-size: 19px;
+  font-weight: 800;
+  color: #f87171;
+}
+
+.scam-verdict-card.safe .verdict-badge {
+  color: #34d399;
+}
+
+.verdict-explanation {
+  font-size: 16px;
+  line-height: 1.5;
+  color: #ffffff;
+}
+
+.verdict-actions-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding-left: 20px;
+  color: #fca5a5;
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.btn-listen-verdict {
+  background: #ef4444;
+  color: #ffffff;
+  border: none;
+  border-radius: 16px;
+  padding: 10px 18px;
+  font-size: 14.5px;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  width: fit-content;
+  cursor: pointer;
+}
+
+.scam-verdict-card.safe .btn-listen-verdict {
+  background: #10b981;
+}
+
+/* Camera Screen Viewfinder */
+.camera-viewport-frame {
+  position: relative;
+  width: 100%;
+  height: 340px;
+  background: #000000;
+  border-radius: 20px;
+  overflow: hidden;
+  border: 2px solid var(--border-light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.camera-stream, .camera-sample-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.camera-target-ring {
+  position: absolute;
+  width: 64px;
+  height: 64px;
+  border: 3.5px solid #ef4444;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  animation: pulseTarget 1.4s infinite;
+  pointer-events: none;
+}
+
+.camera-tap-pointer {
+  position: absolute;
+  top: -34px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #ef4444;
+  color: #ffffff;
+  font-size: 13px;
+  font-weight: 800;
+  padding: 3px 10px;
+  border-radius: 12px;
+  white-space: nowrap;
+}
+
+.camera-instruction-box {
+  background: rgba(0, 168, 132, 0.15);
+  border: 1.5px solid var(--wa-green);
+  color: var(--wa-green);
+  border-radius: 16px;
+  padding: 12px 18px;
+  font-size: 16px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.camera-pulse-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: var(--wa-green);
+  animation: voiceDotPulse 1.2s infinite ease-in-out;
+}
+
+.camera-controls-row {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+/* Safe Sandbox (GPay Simulator) */
+.sandbox-phone-card {
+  background: #1f2c34;
+  border-radius: 24px;
+  border: 1px solid var(--border-light);
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.sandbox-payee-info {
+  text-align: center;
+}
+
+.payee-avatar {
+  font-size: 38px;
+}
+
+.payee-name {
+  font-size: 17px;
+  font-weight: 800;
+  color: #ffffff;
+  margin-top: 4px;
+}
+
+.payee-amount {
+  font-size: 36px;
+  font-weight: 900;
+  color: var(--wa-green);
+  margin: 6px 0;
+}
+
+.payee-note {
+  font-size: 13.5px;
+  color: var(--text-secondary);
+}
+
+.sandbox-pin-row {
+  display: flex;
+  gap: 14px;
+  margin: 10px 0;
+}
+
+.pin-dot {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #374248;
+  border: 2px solid var(--border-light);
+  transition: all 0.2s;
+}
+
+.pin-dot.filled {
+  background: var(--wa-green);
+  border-color: var(--wa-green);
+  transform: scale(1.15);
+}
+
+.sandbox-keypad {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  width: 100%;
+  max-width: 320px;
+}
+
+.keypad-btn {
+  background: #111b21;
+  border: 1.5px solid var(--border-light);
+  color: #ffffff;
+  font-size: 22px;
+  font-weight: 800;
+  border-radius: 18px;
+  padding: 14px 0;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.keypad-btn:hover, .keypad-btn:active {
+  background: var(--wa-green);
+  color: #0b141a;
+}
+
+.keypad-btn.clear {
+  color: #ef4444;
+}
+
+.keypad-btn.submit {
+  color: var(--wa-green);
+  font-size: 24px;
+}
+
+.sandbox-success-banner {
+  background: rgba(16, 185, 129, 0.15);
+  border: 2px solid var(--wa-green);
+  border-radius: 20px;
+  padding: 20px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  animation: modalFadeIn 0.3s ease-out;
+}
+
+.success-icon {
+  font-size: 42px;
+}
+
+.success-title {
+  font-size: 22px;
+  font-weight: 800;
+  color: #ffffff;
+}
+
+.success-desc {
+  font-size: 15.5px;
+  line-height: 1.5;
+  color: #d1fae5;
+}
+
+/* Family Bridge */
+.family-config-card {
+  background: #202c33;
+  border-radius: 20px;
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.input-field-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.family-text-input {
+  background: #111b21;
+  border: 1.5px solid var(--border-light);
+  border-radius: 14px;
+  color: #ffffff;
+  padding: 10px 14px;
+  font-size: 16px;
+}
+
+.family-actions-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 14px;
+}
+
+.btn-family-whatsapp {
+  background: #25d366;
+  color: #0b141a;
+  border: none;
+  border-radius: 20px;
+  padding: 16px 20px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-weight: 800;
+  cursor: pointer;
+  text-align: left;
+}
+
+.btn-family-call {
+  background: #3b82f6;
+  color: #ffffff;
+  border: none;
+  border-radius: 20px;
+  padding: 16px 20px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-weight: 800;
+  cursor: pointer;
+  text-align: left;
+}
+
+.action-icon {
+  font-size: 32px;
+}
+
+.action-bold {
+  font-size: 17px;
+}
+
+.action-small {
+  font-size: 13px;
+  opacity: 0.85;
+  margin-top: 2px;
+}
+
+.family-sos-strip {
+  background: rgba(239, 68, 68, 0.15);
+  border: 1.5px solid #ef4444;
+  color: #fca5a5;
+  border-radius: 14px;
+  padding: 10px 14px;
+  font-size: 13.5px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Document & Medicine OCR Reader */
+.doc-tabs-row {
+  display: flex;
+  gap: 10px;
+}
+
+.doc-tab-btn {
+  flex: 1;
+  background: #202c33;
+  border: 1.5px solid var(--border-light);
+  color: var(--text-secondary);
+  border-radius: 16px;
+  padding: 12px;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.doc-tab-btn.active {
+  background: var(--wa-green);
+  color: #0b141a;
+  border-color: var(--wa-green);
+}
+
+.doc-result-card {
+  background: #202c33;
+  border: 1.5px solid var(--border-light);
+  border-radius: 20px;
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.doc-result-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.doc-result-title {
+  font-size: 18px;
+  font-weight: 800;
+  color: #ffffff;
+}
+
+.doc-details-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.doc-detail-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 12px;
+  background: #111b21;
+  border-radius: 12px;
+}
+
+.doc-detail-label {
+  font-size: 14px;
+  color: var(--text-secondary);
+}
+
+.doc-detail-value {
+  font-size: 15.5px;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.doc-comfort-footer {
+  font-size: 14px;
+  color: #34d399;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Android Bubble Preview */
+.bubble-demo-card {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.bubble-preview-screen {
+  position: relative;
+  width: 100%;
+  max-width: 320px;
+  margin: 0 auto;
+  border-radius: 24px;
+  overflow: hidden;
+  border: 2px solid var(--border-light);
+}
+
+.bubble-preview-img {
+  width: 100%;
+  display: block;
+}
+
+.preview-bubble {
+  position: absolute;
+  bottom: 60px;
+  right: 16px;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.4);
+}
+
+.bubble-callout-box {
+  position: absolute;
+  bottom: 128px;
+  right: 12px;
+  background: #ffffff;
+  color: #0b141a;
+  font-size: 13px;
+  font-weight: 800;
+  padding: 8px 12px;
+  border-radius: 14px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+}
+
+.bubble-install-steps {
+  background: #202c33;
+  border-radius: 18px;
+  padding: 16px;
+}
+
+.install-title {
+  font-size: 16px;
+  font-weight: 800;
+  color: #ffffff;
+  margin-bottom: 8px;
+}
+
+.install-ol {
+  padding-left: 20px;
+  font-size: 14.5px;
+  line-height: 1.6;
+  color: var(--text-secondary);
+}
+
+/* ==========================================================================
+   Senior High-Contrast Light Theme Overrides for All 6 Modals
+   ========================================================================== */
+body.light-theme .elder-modal-dialog {
+  background: #ffffff;
+  border-color: #cbd5e1;
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.2);
+}
+
+body.light-theme .modal-header {
+  border-color: #e2e8f0;
+}
+
+body.light-theme .modal-main-title {
+  color: #0f172a;
+}
+
+body.light-theme .modal-sub-title {
+  color: #475569;
+}
+
+body.light-theme .modal-close-btn {
+  background: #f1f5f9;
+  color: #475569;
+}
+
+body.light-theme .modal-label {
+  color: #0f172a;
+}
+
+body.light-theme .preset-chip-btn {
+  background: #f1f5f9;
+  border-color: #cbd5e1;
+  color: #0f172a;
+}
+
+body.light-theme .scam-textarea {
+  background: #ffffff;
+  border-color: #cbd5e1;
+  color: #0f172a;
+}
+
+body.light-theme .verdict-explanation {
+  color: #0f172a;
+}
+
+body.light-theme .sandbox-phone-card {
+  background: #f8fafc;
+  border-color: #cbd5e1;
+}
+
+body.light-theme .payee-name {
+  color: #0f172a;
+}
+
+body.light-theme .keypad-btn {
+  background: #ffffff;
+  border-color: #cbd5e1;
+  color: #0f172a;
+}
+
+body.light-theme .success-title {
+  color: #0f172a;
+}
+
+body.light-theme .success-desc {
+  color: #1e293b;
+}
+
+body.light-theme .family-config-card {
+  background: #f1f5f9;
+}
+
+body.light-theme .family-text-input {
+  background: #ffffff;
+  border-color: #cbd5e1;
+  color: #0f172a;
+}
+
+body.light-theme .doc-result-card {
+  background: #f8fafc;
+  border-color: #cbd5e1;
+}
+
+body.light-theme .doc-result-title {
+  color: #0f172a;
+}
+
+body.light-theme .doc-detail-row {
+  background: #ffffff;
+}
+
+body.light-theme .doc-detail-value {
+  color: #0f172a;
+}
+
+body.light-theme .bubble-install-steps {
+  background: #f1f5f9;
+}
+
+body.light-theme .install-title {
+  color: #0f172a;
+}
+
+body.light-theme .install-ol {
+  color: #334155;
+}

@@ -71,3 +71,4 @@
   <circle cx="330" cy="690" r="28" fill="#00a884" filter="drop-shadow(0 4px 10px rgba(0,0,0,0.5))"/>
   <text x="330" y="698" font-size="24" text-anchor="middle">🔢</text>
 </svg>
+

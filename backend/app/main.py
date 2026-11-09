@@ -13,8 +13,14 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse
 
 from app.config import HOST, PORT, SUPPORTED_LANGUAGES
-from app.schemas import QueryRequest, QueryResponse
+from app.schemas import (
+    QueryRequest, QueryResponse,
+    ScamCheckRequest, ScamCheckResponse,
+    DocumentReadRequest, DocumentReadResponse,
+    VisionGuideRequest, VisionGuideResponse
+)
 from app.services.intent_parser import IntentParserService
+from app.services.elder_tools_service import elder_tools_service
 from app.data.preloaded_flows import PRELOADED_FLOWS
 
 app = FastAPI(
@@ -77,6 +83,30 @@ def process_user_query(request: QueryRequest):
         return response
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error processing query: {str(e)}")
+
+@app.post("/api/check-scam", response_model=ScamCheckResponse)
+def check_scam_message(request: ScamCheckRequest):
+    """Checks SMS/WhatsApp messages or threats for cyber scam patterns."""
+    try:
+        return elder_tools_service.check_scam(request)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error checking scam: {str(e)}")
+
+@app.post("/api/read-document", response_model=DocumentReadResponse)
+def read_elder_document(request: DocumentReadRequest):
+    """OCR Reader for medicine strips and utility bills in Gujarati/Hindi/English."""
+    try:
+        return elder_tools_service.read_document(request)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error reading document: {str(e)}")
+
+@app.post("/api/vision-guide", response_model=VisionGuideResponse)
+def live_camera_vision_guide(request: VisionGuideRequest):
+    """Live Camera Screen Vision guidance for physical smartphone screens."""
+    try:
+        return elder_tools_service.guide_vision(request)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error in vision guide: {str(e)}")
 
 # Mount Frontend static files for full-stack 1-click execution
 frontend_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", "frontend"))

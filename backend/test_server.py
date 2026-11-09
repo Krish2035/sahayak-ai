@@ -57,8 +57,8 @@ def run_integration_tests():
     assert guide["success"] is True
     assert guide["intent_info"]["app_name"] == "WhatsApp"
     assert guide["intent_info"]["intent"] == "share_contact_number"
-    assert guide["total_steps"] == 4
-    assert len(guide["steps"]) == 4
+    assert guide["total_steps"] == 6
+    assert len(guide["steps"]) == 6
 
     # Verify coordinates for step 2 (paperclip)
     step2 = guide["steps"][1]

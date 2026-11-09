@@ -43,9 +43,12 @@ intent_service = IntentParserService()
 # API Endpoints
 @app.get("/api/health")
 def health_check():
+    api_key_set = bool(os.getenv("GEMINI_API_KEY", "").strip())
     return {
         "app": "Sahayak AI",
         "status": "online",
+        "gemini_live_enabled": api_key_set,
+        "mode": "gemini_live" if api_key_set else "curated_flows_offline",
         "version": "1.0.0"
     }
 

@@ -1,8 +1,10 @@
 import json
+import re
+import os
 import logging
 from typing import Optional, Dict, Any
 
-from app.config import GEMINI_API_KEY
+from app.config import get_gemini_api_key
 from app.schemas import QueryResponse, IntentResult, StepItem, TargetCoordinate
 from app.services.language_detector import detect_language_and_script
 from app.services.prompts import SENIOR_GUIDE_SYSTEM_PROMPT, build_user_prompt
@@ -12,29 +14,39 @@ logger = logging.getLogger(__name__)
 
 class IntentParserService:
     def __init__(self):
-        self.api_key = GEMINI_API_KEY
+        self.api_key = get_gemini_api_key()
         self.gemini_client = None
+        self._sdk_type = None
         self._init_gemini()
 
     def _init_gemini(self):
         """Initializes Gemini API client if API key is present."""
+        self.api_key = get_gemini_api_key()
         if not self.api_key:
             logger.info("No GEMINI_API_KEY set. Operating in offline/curated flow mode.")
+            self.gemini_client = None
             return
 
+        # 1. Try google-genai Client (new SDK)
         try:
             from google import genai
             self.gemini_client = genai.Client(api_key=self.api_key)
+            self._sdk_type = "genai"
             logger.info("Initialized google-genai Client successfully.")
+            return
         except Exception as e:
-            logger.warning(f"Failed to initialize google-genai: {e}. Trying google.generativeai fallback.")
-            try:
-                import google.generativeai as gai
-                gai.configure(api_key=self.api_key)
-                self.gemini_client = gai.GenerativeModel("gemini-1.5-flash")
-                logger.info("Initialized google.generativeai fallback successfully.")
-            except Exception as e2:
-                logger.error(f"Could not initialize Gemini: {e2}")
+            logger.warning(f"Could not initialize google-genai: {e}. Trying google.generativeai fallback.")
+
+        # 2. Try google.generativeai (GenerativeModel)
+        try:
+            import google.generativeai as gai
+            gai.configure(api_key=self.api_key)
+            self.gemini_client = gai.GenerativeModel("gemini-1.5-flash")
+            self._sdk_type = "generativeai"
+            logger.info("Initialized google.generativeai fallback successfully.")
+        except Exception as e2:
+            logger.error(f"Could not initialize Gemini SDK: {e2}")
+            self.gemini_client = None
 
     def parse_query(self, query: str, preferred_lang: Optional[str] = "auto", platform: str = "android") -> QueryResponse:
         """
@@ -58,7 +70,10 @@ class IntentParserService:
         if matched_flow:
             return matched_flow
 
-        # Step 4: If Gemini client available, run dynamic LLM prompt pipeline
+        # Step 4: If Gemini client available (or newly configured), run dynamic LLM prompt pipeline
+        if not self.gemini_client:
+            self._init_gemini()
+
         if self.gemini_client:
             llm_response = self._call_gemini_pipeline(query_clean, active_lang, platform, target_recipient)
             if llm_response:
@@ -141,37 +156,74 @@ class IntentParserService:
     def _call_gemini_pipeline(self, query: str, lang: str, platform: str, recipient: Optional[str]) -> Optional[QueryResponse]:
         """Calls Google Gemini model with structured JSON prompting."""
         prompt = build_user_prompt(query, lang, platform)
+        raw_json = None
         try:
             # If using google-genai Client
-            if hasattr(self.gemini_client, "models"):
-                response = self.gemini_client.models.generate_content(
-                    model="gemini-2.5-flash",
-                    contents=[SENIOR_GUIDE_SYSTEM_PROMPT, prompt],
-                    config={"response_mime_type": "application/json"}
-                )
-                raw_json = response.text
+            if getattr(self, "_sdk_type", "") == "genai" or hasattr(self.gemini_client, "models"):
+                try:
+                    response = self.gemini_client.models.generate_content(
+                        model="gemini-1.5-flash",
+                        contents=[SENIOR_GUIDE_SYSTEM_PROMPT, prompt],
+                        config={"response_mime_type": "application/json"}
+                    )
+                    raw_json = response.text
+                except Exception as ex1:
+                    logger.warning(f"gemini-1.5-flash attempt returned: {ex1}. Trying gemini-2.0-flash.")
+                    response = self.gemini_client.models.generate_content(
+                        model="gemini-2.0-flash",
+                        contents=[SENIOR_GUIDE_SYSTEM_PROMPT, prompt],
+                        config={"response_mime_type": "application/json"}
+                    )
+                    raw_json = response.text
             else:
                 # If using google.generativeai GenerativeModel
-                response = self.gemini_client.generate_content(
-                    f"{SENIOR_GUIDE_SYSTEM_PROMPT}\n\n{prompt}",
-                    generation_config={"response_mime_type": "application/json"}
-                )
-                raw_json = response.text
+                try:
+                    response = self.gemini_client.generate_content(
+                        f"{SENIOR_GUIDE_SYSTEM_PROMPT}\n\n{prompt}",
+                        generation_config={"response_mime_type": "application/json"}
+                    )
+                    raw_json = response.text
+                except Exception as ex2:
+                    logger.warning(f"GenerativeModel generation error: {ex2}")
+                    raw_json = None
 
-            data = json.loads(raw_json)
-            steps = [
-                StepItem(
-                    step_number=idx + 1,
-                    title=s["title"],
-                    instruction=s["instruction"],
-                    target_ui_element=s.get("target_ui_element", "Screen Button"),
-                    target_coordinates=TargetCoordinate(**s["target_coordinates"]) if s.get("target_coordinates") else None,
-                    audio_text=s.get("audio_text", s["instruction"]),
-                    screen_type=s.get("screen_type", "app_screen"),
-                    reassurance=s.get("reassurance")
+            if not raw_json:
+                return None
+
+            # Clean potential Markdown code fences like ```json ... ```
+            raw_clean = raw_json.strip()
+            if raw_clean.startswith("```"):
+                raw_clean = re.sub(r"^```(?:json)?\s*", "", raw_clean)
+                raw_clean = re.sub(r"\s*```$", "", raw_clean)
+
+            data = json.loads(raw_clean)
+            steps = []
+            for idx, s in enumerate(data.get("steps", [])):
+                coords = s.get("target_coordinates")
+                target_coord = None
+                if coords and isinstance(coords, dict):
+                    target_coord = TargetCoordinate(
+                        x_percent=float(coords.get("x_percent", 50.0)),
+                        y_percent=float(coords.get("y_percent", 50.0)),
+                        radius_percent=float(coords.get("radius_percent", 7.0)),
+                        description=str(coords.get("description", "Target button"))
+                    )
+
+                steps.append(
+                    StepItem(
+                        step_number=idx + 1,
+                        title=s.get("title", f"Step {idx + 1}"),
+                        instruction=s.get("instruction", ""),
+                        target_ui_element=s.get("target_ui_element", "Screen Button"),
+                        target_coordinates=target_coord,
+                        audio_text=s.get("audio_text", s.get("instruction", "")),
+                        screen_type=s.get("screen_type", "generic_screen"),
+                        reassurance=s.get("reassurance")
+                    )
                 )
-                for idx, s in enumerate(data.get("steps", []))
-            ]
+
+            if not steps:
+                return None
 
             return QueryResponse(
                 success=True,

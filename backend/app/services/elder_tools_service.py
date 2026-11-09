@@ -6,8 +6,10 @@ Elder Super-Tools Service for Sahayak AI:
 """
 
 import re
+import json
 import logging
-from typing import Dict, Any, List
+from typing import Dict, Any, List, Optional
+from app.config import get_gemini_api_key
 from app.schemas import (
     ScamCheckRequest, ScamCheckResponse,
     DocumentReadRequest, DocumentReadResponse,
@@ -17,6 +19,67 @@ from app.schemas import (
 logger = logging.getLogger(__name__)
 
 class ElderToolsService:
+
+    def _analyze_scam_with_gemini(self, text: str, lang: str) -> Optional[ScamCheckResponse]:
+        """Calls Gemini API for deep semantic analysis of suspicious scam messages."""
+        api_key = get_gemini_api_key()
+        if not api_key:
+            return None
+
+        prompt = f"""You are an Anti-Fraud and Cyber Scam Detection expert for elderly Indian citizens.
+Analyze this message received by a senior on WhatsApp or SMS:
+"{text}"
+
+Language required: {lang} (gu: Gujarati, hi: Hindi, en: English).
+
+Provide a valid JSON response strictly matching:
+{{
+  "is_scam": boolean,
+  "risk_score": integer between 0 and 100,
+  "verdict_title": short bold title in {lang} (e.g. ❌ ૧૦૦% છેતરપિંડી if scam, or ✅ સુરક્ષિત મેસેજ if safe),
+  "verdict_audio": comforting spoken audio warning in {lang} suitable for senior Text-To-Speech,
+  "explanation": 1-2 sentence simple explanation in {lang} of why it is dangerous or safe,
+  "action_steps": [2-3 short action advice strings in {lang}]
+}}"""
+
+        try:
+            raw_text = None
+            try:
+                from google import genai
+                client = genai.Client(api_key=api_key)
+                resp = client.models.generate_content(
+                    model="gemini-1.5-flash",
+                    contents=[prompt],
+                    config={"response_mime_type": "application/json"}
+                )
+                raw_text = resp.text
+            except Exception:
+                import google.generativeai as gai
+                gai.configure(api_key=api_key)
+                model = gai.GenerativeModel("gemini-1.5-flash")
+                resp = model.generate_content(prompt, generation_config={"response_mime_type": "application/json"})
+                raw_text = resp.text
+
+            if not raw_text:
+                return None
+
+            clean = raw_text.strip()
+            if clean.startswith("```"):
+                clean = re.sub(r"^```(?:json)?\s*", "", clean)
+                clean = re.sub(r"\s*```$", "", clean)
+
+            data = json.loads(clean)
+            return ScamCheckResponse(
+                is_scam=bool(data.get("is_scam", False)),
+                risk_score=int(data.get("risk_score", 5)),
+                verdict_title=str(data.get("verdict_title", "તપાસ પૂર્ણ")),
+                verdict_audio=str(data.get("verdict_audio", "")),
+                explanation=str(data.get("explanation", "")),
+                action_steps=list(data.get("action_steps", []))
+            )
+        except Exception as e:
+            logger.warning(f"Gemini scam analysis error: {e}")
+            return None
 
     def check_scam(self, req: ScamCheckRequest) -> ScamCheckResponse:
         text = (req.text or "").strip().lower()
@@ -68,6 +131,12 @@ class ElderToolsService:
                     "Block and report this sender immediately on your phone."
                 ]
         else:
+            # If not detected by keywords, and Gemini API key is present, run deep LLM check
+            if text and get_gemini_api_key():
+                ai_verdict = self._analyze_scam_with_gemini(req.text or text, lang)
+                if ai_verdict is not None:
+                    return ai_verdict
+
             risk_score = 5
             if lang == "gu":
                 title = "✅ સુરક્ષિત સામાન્ય મેસેજ"

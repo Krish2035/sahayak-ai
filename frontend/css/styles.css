@@ -71,6 +71,8 @@ body.light-theme {
 html {
   scroll-behavior: smooth;
   width: 100%;
+  max-width: 100vw;
+  overflow-x: hidden;
 }
 
 body {
@@ -82,6 +84,7 @@ body {
   color: var(--text-primary);
   min-height: 100vh;
   width: 100%;
+  max-width: 100vw;
   margin: 0;
   padding: 0;
   font-size: 18px;
@@ -95,6 +98,7 @@ body {
    ========================================================================== */
 .app-viewport {
   width: 100%;
+  max-width: 100vw;
   min-height: 100vh;
   background-color: var(--bg-body);
   display: flex;
@@ -102,6 +106,7 @@ body {
   position: relative;
   margin: 0;
   padding: 0;
+  overflow-x: hidden;
 }
 
 /* ==========================================================================
@@ -133,6 +138,8 @@ body {
   display: flex;
   align-items: center;
   gap: 12px;
+  flex-shrink: 0;
+  white-space: nowrap;
 }
 
 .logo-badge {
@@ -164,6 +171,7 @@ body {
   font-weight: 800;
   color: var(--text-primary);
   letter-spacing: -0.2px;
+  white-space: nowrap;
 }
 
 .app-subtitle {
@@ -893,6 +901,7 @@ body.light-theme .btn-theme-toggle:hover {
 
 .chat-input-field {
   flex: 1;
+  min-width: 0;
   background: none;
   border: none;
   color: var(--text-primary);
@@ -1039,38 +1048,54 @@ body.light-theme .btn-theme-toggle:hover {
 /* 4. Mobile Phones (481px - 767px, e.g. iPhone Plus, Modern Android) */
 @media (max-width: 767px) {
   .top-nav {
-    padding: 10px 16px;
+    padding: 10px 14px;
+  }
+  .logo-area {
+    gap: 8px;
+    flex-shrink: 0;
+    white-space: nowrap;
   }
   .logo-badge {
-    width: 38px;
-    height: 38px;
-    font-size: 20px;
+    width: 36px;
+    height: 36px;
+    font-size: 19px;
   }
   .app-title {
-    font-size: 18px;
+    font-size: 17.5px;
+    white-space: nowrap;
   }
   .app-subtitle {
-    font-size: 12px;
+    font-size: 11.5px;
   }
   .nav-actions {
     gap: 6px;
   }
+  .btn-theme-toggle {
+    width: 36px;
+    height: 36px;
+    font-size: 16px;
+    flex-shrink: 0;
+  }
   .btn-font-zoom {
-    padding: 6px 10px;
-    font-size: 13px;
+    padding: 5px 9px;
+    font-size: 12.5px;
+    flex-shrink: 0;
   }
   .lang-select-btn {
-    padding: 6px 12px;
-    font-size: 13.5px;
+    padding: 5px 10px;
+    font-size: 13px;
+    gap: 4px;
+    flex-shrink: 0;
   }
   .btn-icon-clear {
     width: 36px;
     height: 36px;
-    font-size: 15px;
+    font-size: 14px;
+    flex-shrink: 0;
   }
   .reassurance-strip {
-    padding: 8px 14px;
-    font-size: 13.5px;
+    padding: 7px 12px;
+    font-size: 13px;
   }
   .chat-feed {
     padding: 16px 14px 130px 14px;
@@ -1080,7 +1105,7 @@ body.light-theme .btn-theme-toggle:hover {
     padding: 22px 14px;
   }
   .welcome-title {
-    font-size: 21px;
+    font-size: 20px;
   }
   .welcome-desc {
     font-size: 15.5px;
@@ -1089,19 +1114,19 @@ body.light-theme .btn-theme-toggle:hover {
     grid-template-columns: 1fr;
   }
   .query-chip-btn {
-    padding: 13px 14px;
-    font-size: 15px;
+    padding: 12px 14px;
+    font-size: 14.5px;
   }
   .user-bubble {
     max-width: 88%;
-    font-size: 16px;
+    font-size: 15.5px;
     padding: 12px 16px;
   }
   .step-title-text {
-    font-size: 19px;
+    font-size: 18.5px;
   }
   .step-instruction-text {
-    font-size: 16px;
+    font-size: 15.5px;
   }
   .step-photo-container {
     width: 100%;
@@ -1109,14 +1134,33 @@ body.light-theme .btn-theme-toggle:hover {
     margin: 12px auto;
   }
   .chat-input-wrapper {
-    padding: 10px 14px max(14px, env(safe-area-inset-bottom)) 14px;
+    padding: 8px 12px max(12px, env(safe-area-inset-bottom)) 12px;
+    width: 100%;
+    max-width: 100vw;
+    box-sizing: border-box;
+  }
+  .chat-input-inner {
+    width: 100%;
+    max-width: 100%;
+  }
+  .input-container {
+    gap: 8px;
+    padding: 5px 8px 5px 10px;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
   }
   .chat-input-field {
-    font-size: 16px; /* Prevents auto-zoom in iOS Safari */
+    font-size: 15px;
+    min-width: 0;
+    width: 0;
+    flex: 1 1 0%;
+    padding: 8px 4px;
   }
   .btn-input-mic, .btn-input-send {
-    width: 44px;
-    height: 44px;
+    width: 42px;
+    height: 42px;
+    flex-shrink: 0;
   }
   .desktop-input-hint {
     display: none;
@@ -1126,56 +1170,168 @@ body.light-theme .btn-theme-toggle:hover {
 /* 5. Extra Small Compact Mobile (<= 480px, e.g. iPhone SE, 360px Android) */
 @media (max-width: 480px) {
   .top-nav {
-    padding: 8px 12px;
+    padding: 8px 10px;
+  }
+  .logo-area {
+    gap: 6px;
+    flex-shrink: 0;
+    white-space: nowrap;
   }
   .logo-badge {
-    width: 34px;
-    height: 34px;
-    font-size: 17px;
+    width: 32px;
+    height: 32px;
+    font-size: 16px;
+    border-radius: 9px;
   }
   .app-title { 
-    font-size: 16.5px; 
+    font-size: 15.5px; 
+    white-space: nowrap;
+    letter-spacing: -0.2px;
   }
   .app-subtitle { 
     display: none; /* Hide subtitle on very small screens to fit buttons */
   }
+  .nav-actions {
+    gap: 4px;
+  }
+  .btn-theme-toggle {
+    width: 34px;
+    height: 34px;
+    font-size: 15px;
+    flex-shrink: 0;
+  }
+  .btn-font-zoom {
+    padding: 4px 7px;
+    font-size: 12px;
+    border-radius: 14px;
+    flex-shrink: 0;
+  }
+  .lang-select-btn {
+    padding: 4px 7px;
+    font-size: 12px;
+    gap: 3px;
+    border-radius: 16px;
+    flex-shrink: 0;
+  }
+  .btn-icon-clear {
+    width: 34px;
+    height: 34px;
+    font-size: 13px;
+    flex-shrink: 0;
+  }
+  .reassurance-strip {
+    padding: 6px 10px;
+  }
+  .reassurance-inner {
+    font-size: 12.5px;
+    line-height: 1.35;
+    gap: 6px;
+  }
   .welcome-title { 
-    font-size: 19px; 
+    font-size: 18.5px; 
   }
   .welcome-desc { 
-    font-size: 15px; 
+    font-size: 14.5px; 
   }
   .step-title-text { 
-    font-size: 17.5px; 
+    font-size: 17px; 
   }
   .step-instruction-text { 
-    font-size: 15px; 
+    font-size: 14.5px; 
   }
   .query-chip-btn { 
-    font-size: 14px; 
-    padding: 11px 12px; 
+    font-size: 13.5px; 
+    padding: 10px 12px; 
   }
   .target-badge {
-    font-size: 12.5px;
-    padding: 4px 10px;
+    font-size: 12px;
+    padding: 4px 8px;
   }
   .step-speaker-btn {
-    font-size: 12.5px;
-    padding: 4px 12px;
+    font-size: 12px;
+    padding: 4px 10px;
   }
   .step-photo-container {
     max-width: 310px;
+  }
+  .chat-input-wrapper {
+    padding: 6px 8px max(10px, env(safe-area-inset-bottom)) 8px;
+  }
+  .input-container {
+    gap: 6px;
+    padding: 4px 6px 4px 8px;
+  }
+  .chat-input-field {
+    font-size: 14.5px;
+    min-width: 0;
+    width: 0;
+    flex: 1 1 0%;
+    padding: 6px 2px;
+  }
+  .btn-input-mic, .btn-input-send {
+    width: 40px;
+    height: 40px;
   }
 }
 
 /* 6. Ultra-Compact Mobile (<= 420px) */
 @media (max-width: 420px) {
-  .app-title { font-size: 16px; }
-  .welcome-title { font-size: 18.5px; }
-  .step-title-text { font-size: 17px; }
-  .step-instruction-text { font-size: 14.5px; }
-  .query-chip-btn { font-size: 13.5px; padding: 10px; }
+  .app-title { font-size: 15px; }
+  .welcome-title { font-size: 18px; }
+  .step-title-text { font-size: 16.5px; }
+  .step-instruction-text { font-size: 14px; }
+  .query-chip-btn { font-size: 13px; padding: 10px; }
   .step-photo-container { max-width: 290px; }
+}
+
+/* 7. Micro Mobile (<= 380px) */
+@media (max-width: 380px) {
+  .top-nav {
+    padding: 6px 8px;
+  }
+  .logo-area {
+    gap: 5px;
+  }
+  .logo-badge {
+    width: 28px;
+    height: 28px;
+    font-size: 14px;
+    border-radius: 7px;
+  }
+  .app-title {
+    font-size: 14px;
+  }
+  .nav-actions {
+    gap: 3px;
+  }
+  .btn-theme-toggle {
+    width: 30px;
+    height: 30px;
+    font-size: 13.5px;
+  }
+  .btn-font-zoom {
+    padding: 3px 5px;
+    font-size: 11px;
+  }
+  .lang-select-btn {
+    padding: 3px 5px;
+    font-size: 11.5px;
+    gap: 2px;
+  }
+  .btn-icon-clear {
+    width: 30px;
+    height: 30px;
+    font-size: 12px;
+  }
+  .welcome-title { font-size: 17px; }
+  .step-title-text { font-size: 15.5px; }
+  .step-instruction-text { font-size: 13.5px; }
+  .query-chip-btn { font-size: 12.5px; padding: 8px; }
+  .step-photo-container { max-width: 275px; }
+  .btn-input-mic, .btn-input-send {
+    width: 38px;
+    height: 38px;
+  }
 }
 
 /* Accessibility Font Zoom Modes */
@@ -1386,10 +1542,50 @@ body.light-theme .btn-icon-clear:hover {
 }
 
 @media (max-width: 640px) {
+  .elder-tools-bar {
+    width: 100%;
+    max-width: 100%;
+    padding: 6px 10px 10px 10px;
+    overflow-x: visible;
+  }
   .elder-tools-scroll {
-    justify-content: flex-start;
-    flex-wrap: nowrap;
-    width: max-content;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+    width: 100%;
+  }
+  .elder-tool-pill {
+    width: 100%;
+    min-width: 0;
+    justify-content: center;
+    padding: 8px 6px;
+    font-size: 12.5px;
+    border-radius: 20px;
+    gap: 6px;
+    box-sizing: border-box;
+  }
+  .elder-tool-pill .tool-icon {
+    font-size: 15px;
+    flex-shrink: 0;
+  }
+  .elder-tool-pill .tool-label {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
+
+@media (max-width: 380px) {
+  .elder-tools-scroll {
+    gap: 6px;
+  }
+  .elder-tool-pill {
+    padding: 7px 4px;
+    font-size: 11.5px;
+    gap: 4px;
+  }
+  .elder-tool-pill .tool-icon {
+    font-size: 13.5px;
   }
 }
 
@@ -1464,6 +1660,30 @@ body.light-theme .btn-icon-clear:hover {
   cursor: pointer;
   z-index: 999;
   transition: transform 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@media (max-width: 640px) {
+  .floating-grandma-bubble {
+    width: 46px;
+    height: 46px;
+    bottom: 92px;
+    right: 12px;
+  }
+  .bubble-avatar {
+    font-size: 24px;
+  }
+}
+
+@media (max-width: 380px) {
+  .floating-grandma-bubble {
+    width: 42px;
+    height: 42px;
+    bottom: 88px;
+    right: 10px;
+  }
+  .bubble-avatar {
+    font-size: 22px;
+  }
 }
 
 .floating-grandma-bubble:hover {

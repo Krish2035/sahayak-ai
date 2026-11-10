@@ -25,3 +25,4 @@ class ScamReportLog(Base):
     risk_score = Column(Integer, default=0)
     verdict_title = Column(String(255), default="")
     created_at = Column(DateTime, default=datetime.datetime.utcnow)
+

@@ -43,3 +43,4 @@ def init_db():
         logger.info("Database tables initialized successfully.")
     except Exception as e:
         logger.error(f"Error initializing database: {e}")
+

@@ -1472,15 +1472,6 @@ function setupEvents() {
   const btnFootCare = document.getElementById('btnFooterCaregiver');
   if (btnFootCare) btnFootCare.addEventListener('click', () => openModal('modalFamilyBridge'));
 
-  const btnSaveFam = document.getElementById('btnSaveFamilyContact');
-  if (btnSaveFam) btnSaveFam.addEventListener('click', () => saveFamilyContact());
-
-  const btnAskChild = document.getElementById('btnAskChildWhatsApp');
-  if (btnAskChild) btnAskChild.addEventListener('click', () => askChildOnWhatsApp());
-
-  const btnCallChild = document.getElementById('btnCallChildDirect');
-  if (btnCallChild) btnCallChild.addEventListener('click', () => callChildDirect());
-
   // Close modals on clicking backdrop
   document.querySelectorAll('.elder-modal-backdrop').forEach(backdrop => {
     backdrop.addEventListener('click', (e) => {

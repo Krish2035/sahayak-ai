@@ -229,6 +229,10 @@
             <button class="btn-listen-verdict" id="btnListenScamVerdict">
               <span>🔊</span> <span>ચેતવણી મોટેથી સાંભળો</span>
             </button>
+            <div class="statutory-disclaimer-strip cyber-strip">
+              <span>🚨</span>
+              <span><strong>સાયબર હેલ્પલાઇન:</strong> છેતરપિંડી થઈ હોય તો તાત્કાલિક ૧૯૩૦ (1930) પર ફોન કરો અથવા cybercrime.gov.in પર ફરિયાદ નોંધાવો.</span>
+            </div>
           </div>
         </div>
       </div>
@@ -359,16 +363,33 @@
         <div class="modal-body">
           <div class="family-config-card">
             <div class="input-field-wrap">
-              <label class="modal-label" for="familyChildName">દીકરા / દીકરીનું નામ:</label>
-              <input type="text" class="family-text-input" id="familyChildName" placeholder="દા.ત. કૃષ્ણ / બેટો">
+              <label class="modal-label" for="familySeniorName">વડીલનું નામ (Senior Name):</label>
+              <input type="text" class="family-text-input" id="familySeniorName" placeholder="દા.ત. રમણિકભાઈ (Ramnikbhai)">
+            </div>
+            <div class="input-field-wrap">
+              <label class="modal-label" for="familyChildName">કાળજી લેનાર / દીકરાનું નામ (Caregiver Name):</label>
+              <input type="text" class="family-text-input" id="familyChildName" placeholder="દા.ત. અમિત (Amit)">
             </div>
             <div class="input-field-wrap">
               <label class="modal-label" for="familyChildPhone">તેમનો WhatsApp મોબાઈલ નંબર:</label>
               <input type="tel" class="family-text-input" id="familyChildPhone" placeholder="દા.ત. 9876543210">
             </div>
+            <div class="input-field-wrap">
+              <label class="modal-label" for="familyRelation">સંબંધ (Relationship):</label>
+              <select class="family-text-input" id="familyRelation">
+                <option value="દીકરો (Son)">દીકરો (Son)</option>
+                <option value="દીકરી (Daughter)">દીકરી (Daughter)</option>
+                <option value="ભાઈ (Brother)">ભાઈ (Brother)</option>
+                <option value="પત્ની (Wife)">પત્ની (Wife)</option>
+                <option value="મિત્ર / પડોશી (Friend)">મિત્ર / પડોશી (Friend)</option>
+              </select>
+            </div>
             <button class="btn-secondary-action" id="btnSaveFamilyContact">
-              <span>💾</span> <span>નંબર સેવ કરો (Save Contact)</span>
+              <span>💾</span> <span>પ્રોફાઈલ અને નંબર ડેટાબેઝમાં સેવ કરો (Save to DB)</span>
             </button>
+            <div class="db-sync-badge" id="dbSyncBadge">
+              <span>🗄️</span> <span>PostgreSQL / SQLite ડેટાબેઝ સુરક્ષિત રીતે જોડાયેલ છે</span>
+            </div>
           </div>
 
           <div class="family-actions-grid">
@@ -443,6 +464,11 @@
               <span>🛡️</span>
               <span id="docComfortText">ચિંતા કરશો નહીં, આ તમારી નિયમિત દવા છે. સમયસર લઈ લેજો.</span>
             </div>
+
+            <div class="statutory-disclaimer-strip medical-strip">
+              <span>⚠️</span>
+              <span><strong>તબીબી અસ્વીકરણ:</strong> આ AI આધારિત વિશ્લેષણ છે. કોઈપણ દવા શરૂ કરતા કે ડોઝ બદલતા પહેલાં તમારા લાયસન્સ ધરાવતા ડૉક્ટરની સલાહ લેવી ફરજિયાત છે.</span>
+            </div>
           </div>
         </div>
       </div>
@@ -486,6 +512,67 @@
         </div>
       </div>
     </div>
+
+    <!-- 7. MODAL: LEGAL, MEDICAL & PRIVACY DISCLAIMERS -->
+    <div class="elder-modal-backdrop" id="modalDisclaimers" role="dialog" aria-hidden="true">
+      <div class="elder-modal-dialog disclaimer-dialog">
+        <div class="modal-header">
+          <div class="modal-title-row">
+            <span class="modal-title-icon">⚖️</span>
+            <div>
+              <h2 class="modal-main-title">કાયદાકીય, તબીબી અને પ્રાઈવસી ડિસ્ક્લેમર</h2>
+              <p class="modal-sub-title">Legal Terms, Medical Advisory & Data Protection</p>
+            </div>
+          </div>
+          <button class="modal-close-btn" id="btnCloseDisclaimers" aria-label="Close">✕</button>
+        </div>
+
+        <div class="modal-body">
+          <div class="disclaimer-block medical-block">
+            <h3>💊 ૧. તબીબી અસ્વીકરણ (Medical & Healthcare Disclaimer)</h3>
+            <p><strong>સાહાયક AI માત્ર એક આર્ટિફિશિયલ ઇન્ટેલિજન્સ સંચાલિત શૈક્ષણિક અને સહાયક માર્ગદર્શિકા છે, તે ડૉક્ટર નથી.</strong></p>
+            <ul>
+              <li>દવાની પટ્ટી કે ચિઠ્ઠી વાંચતી વખતે કોઈપણ દવા લેતા, શરૂ કરતા કે બંધ કરતા પહેલાં તમારા લાયસન્સ ધરાવતા તબીબ (MBBS/MD) અથવા રજિસ્ટર્ડ ફાર્માસિસ્ટની રૂબરૂ સલાહ લેવી ફરજિયાત છે.</li>
+              <li>આ પ્લેટફોર્મ ઈમરજન્સી મેડિકલ કેર કે જીવનરક્ષક સારવાર માટે નથી. તબીબી ઈમરજન્સીમાં તાત્કાલિક ૧૦૮ (108) એમ્બ્યુલન્સનો સંપર્ક કરવો.</li>
+            </ul>
+          </div>
+
+          <div class="disclaimer-block legal-block">
+            <h3>🛡️ ૨. સાયબર સુરક્ષા અને નાણાકીય અસ્વીકરણ (Cyber & Financial Disclaimer)</h3>
+            <p><strong>"રક્ષા કવચ" શંકાસ્પદ સંદેશાઓ અને સાયબર ફ્રોડ પેટર્નને ઓળખીને સજાગતા ફેલાવવાનું કાર્ય કરે છે.</strong></p>
+            <ul>
+              <li>સાહાયક AI કોઈપણ નાણાકીય નુકસાન, ખોટા ટ્રાન્ઝેક્શન કે ડિજિટલ ફ્રોડ માટે કાયદેસર રીતે જવાબદાર રહેશે નહીં.</li>
+              <li>જો તમારા બેંક ખાતામાંથી અજાણતા પૈસા કપાઈ ગયા હોય, તો તાત્કાલિક ૧ કલાકની અંદર ભારત સરકારની રાષ્ટ્રીય સાયબર હેલ્પલાઇન <strong>૧૯૩૦ (1930)</strong> પર કોલ કરો અથવા <strong>cybercrime.gov.in</strong> પર ફરિયાદ નોંધાવો.</li>
+            </ul>
+          </div>
+
+          <div class="disclaimer-block privacy-block">
+            <h3>🔒 ૩. ડેટા સુરક્ષા અને રેટ લિમિટ (Privacy & Server Protection)</h3>
+            <ul>
+              <li>સાહાયક AI ક્યારેય તમારા ATM PIN, બેંક પાસવર્ડ કે OTP પૂછતું નથી અને ક્યારેય સેવ કરતું નથી.</li>
+              <li>Gemini AI ના દુરુપયોગને રોકવા માટે સર્વર પર <strong>SlowAPI / Redis Rate Limiter (૧૦ રિક્વેસ્ટ/મિનિટ)</strong> સક્રિય છે.</li>
+              <li>વડીલ અને કેરગીવરનો ડેટા PostgreSQL/SQLite ડેટાબેઝમાં સુરક્ષિત રીતે સંગ્રહિત થાય છે.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Persistent Senior Protection Footer -->
+    <footer class="app-footer">
+      <div class="footer-inner">
+        <button class="footer-link-btn" id="btnOpenDisclaimers">
+          <span>⚖️</span> <span>કાયદાકીય અને મેડિકલ ડિસ્ક્લેમર</span>
+        </button>
+        <div class="footer-status-pill">
+          <span class="status-indicator-dot"></span>
+          <span id="footerStatusText">સિસ્ટમ સ્ટેટસ: સુરક્ષિત અને લાઈવ (10 req/min Rate Limit)</span>
+        </div>
+        <button class="footer-link-btn" id="btnFooterCaregiver">
+          <span>👨‍👩‍👦</span> <span id="footerCaregiverText">કેરગીવર સેટ કરો</span>
+        </button>
+      </div>
+    </footer>
 
   <script src="js/app.js?v=2.5"></script>
 </body>

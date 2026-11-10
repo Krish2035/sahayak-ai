@@ -25,6 +25,9 @@ ENV/
 *.log
 logs/
 *.pid
+*.db
+*.sqlite
+*.sqlite3
 
 # 4. IDE & Editor Artifacts
 .vscode/

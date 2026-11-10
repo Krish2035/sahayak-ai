@@ -431,6 +431,13 @@ async function submitQuery(queryText, wasVoice = false) {
 
     removeThinkingIndicator(thinkingId);
 
+    if (res.status === 429) {
+      const errJson = await res.json().catch(() => ({}));
+      const limitMsg = errJson.message || "કૃપા કરીને ૧ મિનિટ રાહ જુઓ. વડીલોની સુરક્ષા માટે પ્રતિ મિનિટે ૧૦ સવાલોની મર્યાદા છે.";
+      alert(limitMsg);
+      return;
+    }
+
     if (!res.ok) throw new Error("API call failed");
     const flowData = await res.json();
     state.latestFlow = flowData;
@@ -1146,33 +1153,116 @@ function resetSandbox() {
   if (successBanner) successBanner.style.display = 'none';
 }
 
-// 4. Family Bridge (Ask Child & SOS) Logic
-function initFamilyBridge() {
-  const childNameInput = document.getElementById('familyChildName');
-  const childPhoneInput = document.getElementById('familyChildPhone');
-
-  const savedName = localStorage.getItem('sahayak_child_name') || 'કૃષ્ણ (Krish)';
-  const savedPhone = localStorage.getItem('sahayak_child_phone') || '919876543210';
-
-  if (childNameInput) childNameInput.value = savedName;
-  if (childPhoneInput) childPhoneInput.value = savedPhone;
+// 4. Family Bridge & Caregiver Persistent Profile Logic (PostgreSQL/SQLite + LocalStorage)
+function getUserUid() {
+  let uid = localStorage.getItem('sahayak_user_uid');
+  if (!uid) {
+    uid = 'user_' + Math.random().toString(36).substring(2, 11) + '_' + Date.now();
+    localStorage.setItem('sahayak_user_uid', uid);
+  }
+  return uid;
 }
 
-function saveFamilyContact() {
+async function initFamilyBridge() {
+  const uid = getUserUid();
+  const seniorNameInput = document.getElementById('familySeniorName');
   const childNameInput = document.getElementById('familyChildName');
   const childPhoneInput = document.getElementById('familyChildPhone');
+  const relationSelect = document.getElementById('familyRelation');
+  const footerCaregiverText = document.getElementById('footerCaregiverText');
 
-  const name = childNameInput ? childNameInput.value.trim() : '';
+  // Fill instantly from localStorage
+  const savedSenior = localStorage.getItem('sahayak_senior_name') || 'રમણિકભાઈ (Ramnikbhai)';
+  const savedName = localStorage.getItem('sahayak_child_name') || 'અમિત (દીકરો)';
+  const savedPhone = localStorage.getItem('sahayak_child_phone') || '';
+  const savedRelation = localStorage.getItem('sahayak_relation') || 'દીકરો (Son)';
+
+  if (seniorNameInput) seniorNameInput.value = savedSenior;
+  if (childNameInput) childNameInput.value = savedName;
+  if (childPhoneInput) childPhoneInput.value = savedPhone;
+  if (relationSelect) relationSelect.value = savedRelation;
+
+  if (footerCaregiverText) {
+    footerCaregiverText.textContent = savedPhone ? `કેરગીવર: ${savedName}` : 'કેરગીવર સેટ કરો';
+  }
+
+  // Sync with persistent backend database
+  if (state.apiBaseUrl) {
+    try {
+      const res = await fetch(`${state.apiBaseUrl}/api/profile/${uid}`);
+      if (res.ok) {
+        const data = await res.json();
+        if (data && data.success && data.caregiver_phone) {
+          if (seniorNameInput && data.senior_name) seniorNameInput.value = data.senior_name;
+          if (childNameInput && data.caregiver_name) childNameInput.value = data.caregiver_name;
+          if (childPhoneInput && data.caregiver_phone) childPhoneInput.value = data.caregiver_phone;
+          if (relationSelect && data.caregiver_relation) relationSelect.value = data.caregiver_relation;
+
+          localStorage.setItem('sahayak_senior_name', data.senior_name || savedSenior);
+          localStorage.setItem('sahayak_child_name', data.caregiver_name || savedName);
+          localStorage.setItem('sahayak_child_phone', data.caregiver_phone || savedPhone);
+          localStorage.setItem('sahayak_relation', data.caregiver_relation || savedRelation);
+
+          if (footerCaregiverText) {
+            footerCaregiverText.textContent = `કેરગીવર: ${data.caregiver_name}`;
+          }
+        }
+      }
+    } catch (e) {
+      console.warn("Could not sync profile from database:", e);
+    }
+  }
+}
+
+async function saveFamilyContact() {
+  const uid = getUserUid();
+  const seniorNameInput = document.getElementById('familySeniorName');
+  const childNameInput = document.getElementById('familyChildName');
+  const childPhoneInput = document.getElementById('familyChildPhone');
+  const relationSelect = document.getElementById('familyRelation');
+  const footerCaregiverText = document.getElementById('footerCaregiverText');
+
+  const seniorName = seniorNameInput ? seniorNameInput.value.trim() : 'વડીલ';
+  const name = childNameInput ? childNameInput.value.trim() : 'દીકરો';
   const phone = childPhoneInput ? childPhoneInput.value.trim() : '';
+  const relation = relationSelect ? relationSelect.value : 'દીકરો (Son)';
 
   if (!phone) {
     alert("કૃપા કરીને દીકરા/દીકરીનો WhatsApp નંબર લખો.");
     return;
   }
 
+  localStorage.setItem('sahayak_senior_name', seniorName);
   localStorage.setItem('sahayak_child_name', name);
   localStorage.setItem('sahayak_child_phone', phone);
-  alert("સંપર્ક સફળતાપૂર્વક સેવ થઈ ગયો છે! ✅");
+  localStorage.setItem('sahayak_relation', relation);
+
+  if (footerCaregiverText) {
+    footerCaregiverText.textContent = `કેરગીવર: ${name}`;
+  }
+
+  // Persist to PostgreSQL / SQLite database
+  try {
+    const res = await fetch(`${state.apiBaseUrl}/api/profile`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        user_uid: uid,
+        senior_name: seniorName,
+        preferred_language: state.currentLanguage,
+        caregiver_name: name,
+        caregiver_phone: phone,
+        caregiver_relation: relation
+      })
+    });
+    if (res.ok) {
+      alert("✅ પ્રોફાઈલ અને દીકરાનો નંબર PostgreSQL/SQLite ડેટાબેઝમાં સાચવી લેવાયો છે!");
+    } else {
+      alert("સંપર્ક સફળતાપૂર્વક સેવ થઈ ગયો છે! ✅");
+    }
+  } catch (e) {
+    alert("સંપર્ક લોકલમાં સેવ થઈ ગયો છે! ✅");
+  }
 }
 
 function askChildOnWhatsApp() {
@@ -1371,6 +1461,25 @@ function setupEvents() {
 
   const closeBub = document.getElementById('btnCloseBubbleGuide');
   if (closeBub) closeBub.addEventListener('click', () => closeModal('modalBubbleGuide'));
+
+  // Disclaimers and Footer Caregiver Listeners
+  const btnOpenDisc = document.getElementById('btnOpenDisclaimers');
+  if (btnOpenDisc) btnOpenDisc.addEventListener('click', () => openModal('modalDisclaimers'));
+
+  const closeDisc = document.getElementById('btnCloseDisclaimers');
+  if (closeDisc) closeDisc.addEventListener('click', () => closeModal('modalDisclaimers'));
+
+  const btnFootCare = document.getElementById('btnFooterCaregiver');
+  if (btnFootCare) btnFootCare.addEventListener('click', () => openModal('modalFamilyBridge'));
+
+  const btnSaveFam = document.getElementById('btnSaveFamilyContact');
+  if (btnSaveFam) btnSaveFam.addEventListener('click', () => saveFamilyContact());
+
+  const btnAskChild = document.getElementById('btnAskChildWhatsApp');
+  if (btnAskChild) btnAskChild.addEventListener('click', () => askChildOnWhatsApp());
+
+  const btnCallChild = document.getElementById('btnCallChildDirect');
+  if (btnCallChild) btnCallChild.addEventListener('click', () => callChildDirect());
 
   // Close modals on clicking backdrop
   document.querySelectorAll('.elder-modal-backdrop').forEach(backdrop => {

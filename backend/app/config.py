@@ -29,6 +29,14 @@ HOST = os.getenv("HOST", "0.0.0.0")
 PORT = int(os.getenv("PORT", "8000"))
 DEBUG = os.getenv("DEBUG", "True").lower() in ("true", "1", "yes")
 
+# Database & Redis Settings
+DATABASE_URL = os.getenv("DATABASE_URL", "").strip()
+if DATABASE_URL.startswith("postgres://"):
+    DATABASE_URL = DATABASE_URL.replace("postgres://", "postgresql://", 1)
+
+REDIS_URL = os.getenv("REDIS_URL", "").strip()
+RATE_LIMIT_DEFAULT = os.getenv("RATE_LIMIT_DEFAULT", "10/minute")
+
 # Supported Languages Mapping
 SUPPORTED_LANGUAGES = {
     "gu": {"name": "Gujarati", "native": "ગુજરાતી", "stt_code": "gu-IN", "tts_lang": "gu-IN"},

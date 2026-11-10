@@ -83,4 +83,25 @@ class VisionGuideResponse(BaseModel):
     highlight_y_percent: float
     target_element_name: str
 
+# --- Persistent Caregiver & Senior Profile Schemas ---
+
+class CaregiverProfileRequest(BaseModel):
+    user_uid: str = Field(..., description="Unique client device or senior token")
+    senior_name: Optional[str] = Field("વડીલ", description="Name of senior citizen")
+    preferred_language: Optional[str] = Field("gu", description="gu, hi, en")
+    caregiver_name: Optional[str] = Field("દીકરો / દીકરી", description="Name of family caregiver")
+    caregiver_phone: Optional[str] = Field("", description="WhatsApp number of family caregiver")
+    caregiver_relation: Optional[str] = Field("દીકરો (Son)", description="Relationship to senior")
+
+class CaregiverProfileResponse(BaseModel):
+    success: bool = True
+    user_uid: str
+    senior_name: str
+    preferred_language: str
+    caregiver_name: str
+    caregiver_phone: str
+    caregiver_relation: str
+    message: str
+
+
 

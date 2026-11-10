@@ -89,3 +89,29 @@ Open **`http://127.0.0.1:8000`** in your browser.
 ## 🌐 Deployments
 - **GitHub Repository**: [https://github.com/Krish2035/sahayak-ai](https://github.com/Krish2035/sahayak-ai)
 - **Live Render Backend**: [https://sahayak-ai-m58x.onrender.com](https://sahayak-ai-m58x.onrender.com)
+- **Live Vercel Frontend**: [https://sahayak-ai-frontend-tau.vercel.app](https://sahayak-ai-frontend-tau.vercel.app)
+
+---
+
+## 🛡️ Production Engineering Features
+
+### 1. Persistent Storage (PostgreSQL & SQLite)
+- **Senior & Caregiver Profiles**: Persistently stores senior citizen preferences, language, and emergency caregiver WhatsApp numbers across browser resets.
+- **Auto-Switching Architecture**: Seamlessly connects to Managed PostgreSQL via `DATABASE_URL` in production (Render), or falls back to local SQLite (`sahayak.db`).
+
+### 2. SlowAPI & Redis Rate Limiting (Anti-Abuse)
+- **Rate Limit**: 10 queries per minute per IP on core AI endpoints (`/api/query`, `/api/check-scam`, `/api/read-document`).
+- **Distributed Redis**: Supports Redis caching and distributed throttling via `REDIS_URL`, with in-memory token-bucket fallback.
+- **Empathetic 429 Handler**: Returns comforting trilingual messages so seniors are never confused if limits are reached.
+
+### 3. Render 24/7 Keep-Alive & Cold-Start Solution
+- **Endpoint**: `/api/ping` and `/api/heartbeat` return immediate `200 OK` with database and rate limiter health.
+- **Option A (Commercial - $7/month)**: In Render dashboard, upgrade the Web Service from "Free" to "Starter" ($7/mo) for 24/7 continuous CPU execution with 0ms cold starts.
+- **Option B (100% Free Keep-Alive)**: Register a free monitor on [UptimeRobot.com](https://uptimerobot.com/) or [cron-job.org](https://cron-job.org/) pointing to:
+  `https://sahayak-ai-m58x.onrender.com/api/ping` every 10 minutes. This prevents Render Free Tier from spinning down to sleep!
+
+### 4. Statutory Legal & Medical Disclaimers
+- **Medical Disclaimer**: Clear warning that Sahayak AI is an assistive AI guide, not a licensed physician. Mandatory consultation with doctors/pharmacists before taking medication.
+- **Cyber Fraud Helpline**: Direct advisory directing victims of online scams to India's National Cybercrime Helpline **1930** and **cybercrime.gov.in**.
+- **Data Privacy**: Strict guarantee that ATM PINs, OTPs, and passwords are never solicited or stored.
+

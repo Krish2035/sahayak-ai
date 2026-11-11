@@ -1,5 +1,5 @@
 // Sahayak AI Offline Service Worker
-const CACHE_NAME = 'sahayak-ai-v2';
+const CACHE_NAME = 'sahayak-ai-v3';
 const ASSETS_TO_CACHE = [
   '/',
   '/index.html',

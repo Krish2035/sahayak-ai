@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
   <title>Sahayak AI - Systematic Visual Smartphone Guide for Seniors</title>
-  <link rel="stylesheet" href="css/styles.css?v=2.7">
+  <link rel="stylesheet" href="css/styles.css?v=2.8">
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <link rel="alternate icon" type="image/png" href="assets/icons/icon-192.png">
   <link rel="apple-touch-icon" href="assets/icons/apple-touch-icon.png">
@@ -29,6 +29,11 @@
         </div>
         
         <div class="nav-actions">
+          <!-- PWA Install Button (Mobile & Desktop) -->
+          <button class="btn-pwa-install" id="btnPwaInstall" title="Download & Install App / એપ ડાઉનલોડ કરો">
+            <span class="pwa-install-icon">📲</span>
+            <span class="pwa-install-badge-text" id="pwaInstallBadgeText">ઇન્સ્ટોલ</span>
+          </button>
           <!-- Senior High Contrast Daylight Theme Toggle -->
           <button class="btn-theme-toggle" id="btnThemeToggle" title="Daylight High Contrast Mode / લાઈટ મોડ">
             <span id="themeIcon">☀️</span>
@@ -48,6 +53,27 @@
         </div>
       </div>
     </header>
+
+    <!-- PWA Smart Install Banner (Mobile & Desktop) -->
+    <div class="pwa-install-banner" id="pwaInstallBanner" style="display: none;">
+      <div class="pwa-banner-inner">
+        <div class="pwa-banner-left">
+          <div class="pwa-banner-logo" aria-hidden="true">
+            <span class="logo-letter-sm">S</span>
+          </div>
+          <div class="pwa-banner-info">
+            <div class="pwa-banner-title" id="pwaBannerTitle">📲 સહાયક AI એપ ડાઉનલોડ કરો</div>
+            <div class="pwa-banner-desc" id="pwaBannerDesc">હોમ સ્ક્રીન પર ૧-ટચમાં ખોલો • ઝડપી & ઑફલાઇન</div>
+          </div>
+        </div>
+        <div class="pwa-banner-actions">
+          <button class="btn-pwa-banner-install" id="btnPwaBannerInstall">
+            <span id="pwaBannerBtnText">ડાઉનલોડ / ઇન્સ્ટોલ</span>
+          </button>
+          <button class="btn-pwa-banner-close" id="btnPwaBannerClose" aria-label="Close install banner">✕</button>
+        </div>
+      </div>
+    </div>
 
     <!-- Calming Reassurance Strip -->
     <div class="reassurance-strip">
@@ -558,9 +584,72 @@
       </div>
     </div>
 
+    <!-- 8. MODAL: PWA DOWNLOAD & INSTALLATION GUIDE -->
+    <div class="elder-modal-backdrop" id="modalPwaInstall" role="dialog" aria-hidden="true">
+      <div class="elder-modal-dialog">
+        <div class="modal-header">
+          <div class="modal-title-row">
+            <span class="modal-title-icon">📲</span>
+            <div>
+              <h2 class="modal-main-title" id="pwaModalTitle">સહાયક AI એપ ડાઉનલોડ & ઇન્સ્ટોલ કરો</h2>
+              <p class="modal-sub-title" id="pwaModalSub">કોઈપણ પ્લે સ્ટોર વગર સીધા તમારા ફોનમાં ૧ સેકન્ડમાં ડાઉનલોડ કરો</p>
+            </div>
+          </div>
+          <button class="modal-close-btn" id="btnClosePwaInstall" aria-label="Close">✕</button>
+        </div>
+
+        <div class="modal-body">
+          <!-- 1-Click Instant Install Action -->
+          <div class="pwa-modal-action-box">
+            <button class="btn-primary-action btn-install-large" id="btnPwaModalAction">
+              <span>📥</span> <span id="pwaModalBtnText">સીધું ફોનમાં ઇન્સ્ટોલ કરો 📲</span>
+            </button>
+            <p class="pwa-modal-hint" id="pwaModalHint">ઉપરના બટન પર ક્લિક કરીને 'Install' પસંદ કરો</p>
+          </div>
+
+          <!-- Step-by-Step Guide for Android and iPhone -->
+          <div class="pwa-steps-section">
+            <div class="pwa-os-card android-card">
+              <div class="pwa-os-header">
+                <span class="os-icon">🤖</span>
+                <span class="os-title">Android ફોન (Samsung, Redmi, Vivo, Oppo, Realme):</span>
+              </div>
+              <ol class="pwa-os-steps">
+                <li>બ્રાઉઝરમાં ઉપર જમણી બાજુ આવેલ <strong>૩ ટપકાં (⋮)</strong> પર ટચ કરો.</li>
+                <li>યાદીમાંથી <strong>"Install app"</strong> અથવા <strong>"Add to Home screen"</strong> (હોમ સ્ક્રીન પર ઉમેરો) પસંદ કરો.</li>
+                <li><strong>"Install"</strong> પર ક્લિક કરો. એપ તમારા ફોનમાં ઇન્સ્ટોલ થઈ જશે!</li>
+              </ol>
+            </div>
+
+            <div class="pwa-os-card apple-card">
+              <div class="pwa-os-header">
+                <span class="os-icon">🍎</span>
+                <span class="os-title">Apple iPhone (Safari Browser):</span>
+              </div>
+              <ol class="pwa-os-steps">
+                <li>સફારી બ્રાઉઝરમાં નીચે આપેલ શેર બટન <strong>⎋ (Share)</strong> પર ટચ કરો.</li>
+                <li>નીચે સ્ક્રોલ કરીને <strong>"Add to Home Screen" (➕)</strong> પર ટચ કરો.</li>
+                <li>ઉપર જમણી બાજુ <strong>"Add" (ઉમેરો)</strong> પર ક્લિક કરો.</li>
+              </ol>
+            </div>
+          </div>
+
+          <!-- Why Install Callout -->
+          <div class="pwa-features-box">
+            <div class="pwa-feature-item">⚡ <strong>સુપરફાસ્ટ સ્પીડ:</strong> ઇન્ટરનેટ ધીમું હોય તો પણ તરત ખુલશે.</div>
+            <div class="pwa-feature-item">🏠 <strong>સરળ એક્સેસ:</strong> દર વખતે લિંક શોધવી નહીં પડે, સીધા હોમ સ્ક્રીનથી ૧-ટચમાં ખુલશે.</div>
+            <div class="pwa-feature-item">💾 <strong>ઓછી મેમરી:</strong> તમારા ફોનમાં માત્ર ૨ MB જગ્યા રોકશે.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <!-- Persistent Senior Protection Footer -->
     <footer class="app-footer">
       <div class="footer-inner">
+        <button class="footer-link-btn" id="btnFooterInstall">
+          <span>📲</span> <span id="footerInstallText">એપ ડાઉનલોડ કરો (PWA)</span>
+        </button>
         <button class="footer-link-btn" id="btnOpenDisclaimers">
           <span>⚖️</span> <span>કાયદાકીય અને મેડિકલ ડિસ્ક્લેમર</span>
         </button>
@@ -574,6 +663,6 @@
       </div>
     </footer>
 
-  <script src="js/app.js?v=2.7"></script>
+  <script src="js/app.js?v=2.8"></script>
 </body>
 </html>

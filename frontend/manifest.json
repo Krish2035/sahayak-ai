@@ -3,6 +3,9 @@
   "short_name": "સહાયક AI",
   "description": "Systematic step-by-step smartphone guide with photos below every step in Gujarati, Hindi, and English",
   "start_url": "/",
+  "scope": "/",
+  "id": "/",
+  "lang": "gu",
   "display": "standalone",
   "orientation": "portrait",
   "background_color": "#0b141a",
@@ -34,4 +37,3 @@
     }
   ]
 }
-

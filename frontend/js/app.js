@@ -31,7 +31,8 @@ const state = {
   latestFlow: null,
   fontSizeLevel: 0, // 0: normal, 1: large (A++), 2: xlarge (A-)
   isVoiceNavActive: false,
-  voiceNavRecognition: null
+  voiceNavRecognition: null,
+  deferredPrompt: null
 };
 
 // Trilingual UI Translations
@@ -67,7 +68,16 @@ const UI_STRINGS = {
     stepDoneCompleted: "પૂર્ણ થયું! ✅",
     voiceNavActive: "🎙️ બોલો 'Next' અથવા 'આગળ' આગળ વધવા માટે",
     voiceNavNextHeard: "આગળનું પગલું ખોલ્યું",
-    voiceNavBackHeard: "પાછલું પગલું ખોલ્યું"
+    voiceNavBackHeard: "પાછલું પગલું ખોલ્યું",
+    pwaInstallBadge: "ઇન્સ્ટોલ",
+    pwaBannerTitle: "📲 સહાયક AI એપ ડાઉનલોડ કરો",
+    pwaBannerDesc: "હોમ સ્ક્રીન પર ૧-ટચમાં ખોલો • ઝડપી & ઑફલાઇન",
+    pwaBannerBtn: "ડાઉનલોડ / ઇન્સ્ટોલ",
+    pwaModalTitle: "સહાયક AI એપ ઇન્સ્ટોલ કરો",
+    pwaModalSub: "પ્લે સ્ટોર વગર સીધા તમારા ફોનમાં ૧ સેકન્ડમાં ડાઉનલોડ કરો",
+    pwaModalBtn: "સીધું ફોનમાં ઇન્સ્ટોલ કરો 📲",
+    footerInstallText: "એપ ડાઉનલોડ કરો (PWA)",
+    appInstalledToast: "🎉 સહાયક AI એપ તમારા ફોનમાં ઇન્સ્ટોલ થઈ ગઈ છે!"
   },
   hi: {
     appTitle: "सहायक AI",
@@ -100,7 +110,16 @@ const UI_STRINGS = {
     stepDoneCompleted: "पूरा हुआ! ✅",
     voiceNavActive: "🎙️ बोलिए 'Next' या 'आगे' अगले कदम पर जाने के लिए",
     voiceNavNextHeard: "अगले कदम पर आ गए",
-    voiceNavBackHeard: "पिछले कदम पर आ गए"
+    voiceNavBackHeard: "पिछले कदम पर आ गए",
+    pwaInstallBadge: "इंस्टॉल",
+    pwaBannerTitle: "📲 सहायक AI ऐप डाउनलोड करें",
+    pwaBannerDesc: "होम स्क्रीन पर १-टच में खोलें • तेज़ और ऑफ़लाइन",
+    pwaBannerBtn: "डाउनलोड / इंस्टॉल",
+    pwaModalTitle: "सहायक AI ऐप इंस्टॉल करें",
+    pwaModalSub: "प्ले स्टोर के बिना सीधे अपने फोन में १ सेकंड में डाउनलोड करें",
+    pwaModalBtn: "सीधा फोन में इंस्टॉल करें 📲",
+    footerInstallText: "ऐप डाउनलोड करें (PWA)",
+    appInstalledToast: "🎉 सहायक AI ऐप आपके फोन में इंस्टॉल हो गई है!"
   },
   en: {
     appTitle: "Sahayak AI",
@@ -133,7 +152,16 @@ const UI_STRINGS = {
     stepDoneCompleted: "Completed! ✅",
     voiceNavActive: "🎙️ Say 'Next' or 'Back' to navigate hands-free",
     voiceNavNextHeard: "Next step",
-    voiceNavBackHeard: "Previous step"
+    voiceNavBackHeard: "Previous step",
+    pwaInstallBadge: "Install",
+    pwaBannerTitle: "📲 Download Sahayak AI App",
+    pwaBannerDesc: "Open with 1-tap from Home Screen • Fast & Offline",
+    pwaBannerBtn: "Download / Install",
+    pwaModalTitle: "Install Sahayak AI App",
+    pwaModalSub: "Download directly to your phone in 1 second without Play Store",
+    pwaModalBtn: "Direct 1-Click Install 📲",
+    footerInstallText: "Download App (PWA)",
+    appInstalledToast: "🎉 Sahayak AI app installed successfully on your phone!"
   }
 };
 
@@ -891,6 +919,25 @@ function applyLanguage(langCode) {
   if (el.chipQ8Text) el.chipQ8Text.textContent = s.q8;
   if (el.chatInput) el.chatInput.placeholder = s.inputPlaceholder;
   if (el.micActiveBanner) el.micActiveBanner.textContent = s.micListening;
+
+  // PWA UI Strings
+  const pwaBadge = document.getElementById('pwaInstallBadgeText');
+  const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
+  if (pwaBadge && !isStandalone) pwaBadge.textContent = s.pwaInstallBadge;
+  const pwaBTitle = document.getElementById('pwaBannerTitle');
+  if (pwaBTitle) pwaBTitle.textContent = s.pwaBannerTitle;
+  const pwaBDesc = document.getElementById('pwaBannerDesc');
+  if (pwaBDesc) pwaBDesc.textContent = s.pwaBannerDesc;
+  const pwaBBtn = document.getElementById('pwaBannerBtnText');
+  if (pwaBBtn) pwaBBtn.textContent = s.pwaBannerBtn;
+  const pwaMTitle = document.getElementById('pwaModalTitle');
+  if (pwaMTitle) pwaMTitle.textContent = s.pwaModalTitle;
+  const pwaMSub = document.getElementById('pwaModalSub');
+  if (pwaMSub) pwaMSub.textContent = s.pwaModalSub;
+  const pwaMBtn = document.getElementById('pwaModalBtnText');
+  if (pwaMBtn) pwaMBtn.textContent = s.pwaModalBtn;
+  const footInst = document.getElementById('footerInstallText');
+  if (footInst) footInst.textContent = s.footerInstallText;
 }
 
 // Reset Chat
@@ -1572,6 +1619,88 @@ function setupEvents() {
     if (latestDocAudioText) speakText(latestDocAudioText);
   });
 
+  // PWA Install Listeners
+  const btnPwa = document.getElementById('btnPwaInstall');
+  if (btnPwa) btnPwa.addEventListener('click', triggerPwaInstall);
+
+  const btnBannerInst = document.getElementById('btnPwaBannerInstall');
+  if (btnBannerInst) btnBannerInst.addEventListener('click', triggerPwaInstall);
+
+  const btnBannerClose = document.getElementById('btnPwaBannerClose');
+  if (btnBannerClose) {
+    btnBannerClose.addEventListener('click', () => {
+      const banner = document.getElementById('pwaInstallBanner');
+      if (banner) banner.style.display = 'none';
+      sessionStorage.setItem('pwa_banner_dismissed', 'true');
+    });
+  }
+
+  const btnFootInst = document.getElementById('btnFooterInstall');
+  if (btnFootInst) btnFootInst.addEventListener('click', () => openModal('modalPwaInstall'));
+
+  const btnClosePwa = document.getElementById('btnClosePwaInstall');
+  if (btnClosePwa) btnClosePwa.addEventListener('click', () => closeModal('modalPwaInstall'));
+
+  const btnPwaAct = document.getElementById('btnPwaModalAction');
+  if (btnPwaAct) btnPwaAct.addEventListener('click', triggerPwaInstall);
+
+}
+
+// ==========================================================================
+// PWA INSTALLATION ENGINE (Android, iOS Safari, Desktop Chrome/Edge)
+// ==========================================================================
+function initPwaInstall() {
+  const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
+  const banner = document.getElementById('pwaInstallBanner');
+  const badgeText = document.getElementById('pwaInstallBadgeText');
+
+  if (isStandalone) {
+    if (banner) banner.style.display = 'none';
+    if (badgeText) badgeText.textContent = '✓ ઇન્સ્ટોલ';
+    return;
+  }
+
+  // Catch the native browser beforeinstallprompt
+  window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();
+    state.deferredPrompt = e;
+    console.log("PWA beforeinstallprompt captured.");
+    if (banner && sessionStorage.getItem('pwa_banner_dismissed') !== 'true') {
+      banner.style.display = 'block';
+    }
+  });
+
+  // Automatically show the smart banner on mobile if not standalone and not dismissed
+  const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+  if (isMobile && banner && sessionStorage.getItem('pwa_banner_dismissed') !== 'true') {
+    banner.style.display = 'block';
+  }
+
+  // If user installs app
+  window.addEventListener('appinstalled', () => {
+    console.log("Sahayak AI App installed successfully!");
+    state.deferredPrompt = null;
+    if (banner) banner.style.display = 'none';
+    if (badgeText) badgeText.textContent = '✓ ઇન્સ્ટોલ';
+    alert(UI_STRINGS[state.currentLanguage].appInstalledToast || "🎉 સહાયક AI એપ સફળતાપૂર્વક ઇન્સ્ટોલ થઈ ગઈ છે!");
+  });
+}
+
+function triggerPwaInstall() {
+  if (state.deferredPrompt) {
+    state.deferredPrompt.prompt();
+    state.deferredPrompt.userChoice.then((choiceResult) => {
+      if (choiceResult.outcome === 'accepted') {
+        console.log('User accepted the PWA install prompt');
+        const banner = document.getElementById('pwaInstallBanner');
+        if (banner) banner.style.display = 'none';
+      }
+      state.deferredPrompt = null;
+    });
+  } else {
+    // If native prompt is not available (e.g. iOS Safari or browser already fired it), show the modal guide
+    openModal('modalPwaInstall');
+  }
 }
 
 // App Bootstrap
@@ -1581,6 +1710,7 @@ document.addEventListener('DOMContentLoaded', () => {
   setupEvents();
   applyLanguage('gu');
   initSpeechRecognition();
+  initPwaInstall();
 
   // Register PWA Service Worker for Mobile & Desktop Offline Capability
   if ('serviceWorker' in navigator) {

@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
   <title>Sahayak AI - Systematic Visual Smartphone Guide for Seniors</title>
-  <link rel="stylesheet" href="css/styles.css?v=2.8">
+  <link rel="stylesheet" href="css/styles.css?v=2.9">
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <link rel="alternate icon" type="image/png" href="assets/icons/icon-192.png">
   <link rel="apple-touch-icon" href="assets/icons/apple-touch-icon.png">
@@ -500,39 +500,98 @@
       </div>
     </div>
 
-    <!-- 6. MODAL: ANDROID FLOATING BUBBLE PREVIEW -->
+    <!-- 6. MODAL: LIVE FLOATING COMPANION & STEP HELPER -->
     <div class="elder-modal-backdrop" id="modalBubbleGuide" role="dialog" aria-hidden="true">
       <div class="elder-modal-dialog">
         <div class="modal-header">
           <div class="modal-title-row">
-            <span class="modal-title-icon">🎈</span>
+            <span class="modal-title-icon">👵</span>
             <div>
-              <h2 class="modal-main-title">Android ફ્લોટિંગ બબલ (Floating Companion)</h2>
-              <p class="modal-sub-title">WhatsApp કે YouTube ની અંદર પણ સાહાયક AI નો અવતાર તરતો રહેશે</p>
+              <h2 class="modal-main-title" id="bubbleModalTitle">સહાયક AI ફ્લોટિંગ સાથી (Live Companion)</h2>
+              <p class="modal-sub-title" id="bubbleModalSub">તમે જ્યાં પણ અટવાઓ, આ બબલ તમને આગળનું પગલું બતાવશે</p>
             </div>
           </div>
           <button class="modal-close-btn" id="btnCloseBubbleGuide" aria-label="Close">✕</button>
         </div>
 
         <div class="modal-body">
-          <div class="bubble-demo-card">
-            <div class="bubble-preview-screen">
-              <img src="assets/screens/whatsapp_chat_screen.svg" alt="WhatsApp with floating bubble" class="bubble-preview-img">
-              <div class="floating-grandma-bubble preview-bubble">
-                <span class="bubble-avatar">👵</span>
-              </div>
-              <div class="bubble-callout-box">
-                "દાદા, હું વોટ્સએપ પર જ છું! પેપરક્લિપ પર અડો."
+          <!-- Active Step Help Box (Visible when a guide is active and user is stuck) -->
+          <div class="bubble-active-step-box" id="bubbleActiveStepBox" style="display: none;">
+            <div class="bubble-step-badge-row">
+              <span class="bubble-step-pill" id="bubbleStepNumText">પગલું ૧</span>
+              <span class="bubble-step-status">👉 હાલનું પગલું</span>
+            </div>
+            <h3 class="bubble-step-title" id="bubbleStepTitle">વૉટ્સએપ ખોલો</h3>
+            <p class="bubble-step-desc" id="bubbleStepInstruction">સ્ક્રીન પર લીલા રંગનું વૉટ્સએપનું ગોળ નિશાન શોધો અને તેના પર એક વાર ટચ કરો.</p>
+            <div class="bubble-target-box" id="bubbleTargetBox">
+              <span class="bubble-target-label">લક્ષ્ય (Target):</span>
+              <span class="bubble-target-value" id="bubbleStepTarget">વૉટ્સએપ એપનું લીલું નિશાન</span>
+            </div>
+            
+            <div class="bubble-actions-row">
+              <button class="btn-bubble-action btn-bubble-speak" id="btnBubbleSpeakStep">
+                <span>🔊</span> <span>મોટેથી સાંભળો</span>
+              </button>
+              <button class="btn-bubble-action btn-bubble-done" id="btnBubbleDoneStep">
+                <span>✓</span> <span>આ થઈ ગયું! આગળ વધો</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- No Active Guide Box (When user opens bubble from home screen) -->
+          <div class="bubble-no-guide-box" id="bubbleNoGuideBox">
+            <div class="bubble-greeting-row">
+              <div class="bubble-big-avatar">👵</div>
+              <div class="bubble-greeting-text">
+                <div class="bubble-hello-title" id="bubbleHelloTitle">નમસ્તે! હું તમારી સાથે જ છું.</div>
+                <div class="bubble-hello-desc" id="bubbleHelloDesc">તમે ફોનમાં ક્યાં અટવાયા છો? નીચેનામાંથી જે મદદ જોઈતી હોય તે પસંદ કરો:</div>
               </div>
             </div>
 
-            <div class="bubble-install-steps">
-              <h4 class="install-title">📱 ફોનમાં ૧-ક્લિક શોર્ટકટ કેવી રીતે રાખવો?</h4>
-              <ol class="install-ol">
-                <li>બ્રાઉઝરના ઉપરના ત્રણ ટપકાં (⋮) પર ટચ કરો.</li>
-                <li><strong>'Add to Home screen' (હોમ સ્ક્રીન પર ઉમેરો)</strong> પસંદ કરો.</li>
-                <li>હવે તમારા ફોનની સ્ક્રીન પર સાહાયક AI ની એપ આવી જશે!</li>
-              </ol>
+            <div class="bubble-quick-actions-grid">
+              <button class="bubble-action-card" id="btnBubbleActionMic">
+                <span class="b-card-icon">🎙️</span>
+                <span class="b-card-title">બોલીને પૂછો</span>
+                <span class="b-card-sub">માઇકથી પ્રશ્ન બોલો</span>
+              </button>
+              <button class="bubble-action-card" id="btnBubbleActionCam">
+                <span class="b-card-icon">👁️</span>
+                <span class="b-card-title">લાઈવ કેમેરા ગાઈડ</span>
+                <span class="b-card-sub">સ્ક્રીન સામે કેમેરો ધરો</span>
+              </button>
+              <button class="bubble-action-card" id="btnBubbleActionScam">
+                <span class="b-card-icon">🛡️</span>
+                <span class="b-card-title">સ્કેમ ચેક કરો</span>
+                <span class="b-card-sub">શંકાસ્પદ મેસેજ તપાસો</span>
+              </button>
+              <button class="bubble-action-card" id="btnBubbleActionFam">
+                <span class="b-card-icon">👨‍👩‍👧</span>
+                <span class="b-card-title">દીકરાને કૉલ કરો</span>
+                <span class="b-card-sub">૧-ટૅપમાં મદદ મેળવો</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- OS Floating / Pop-up Window Guide Section -->
+          <div class="bubble-os-guide-card">
+            <h4 class="os-guide-title">
+              <span>📲</span> <span>વોટ્સએપ કે યુટ્યુબ પર આ બબલને તરતું રાખવાની રીત:</span>
+            </h4>
+            <div class="os-guide-methods">
+              <div class="os-method-item">
+                <div class="os-method-num">૧</div>
+                <div class="os-method-content">
+                  <strong>Android Pop-up View (પોપ-અપ વિન્ડો):</strong><br>
+                  તમારા ફોનના Recent Apps (બધા ખુલ્લા એપ્સવાળું મેનૂ) માં જાઓ ➔ 'સહાયક AI' ના આઇકન પર લાંબો સમય દબાવો ➔ <strong>'Open in Pop-up view' (અથવા Floating Window)</strong> પસંદ કરો. આ કરવાથી આ બબલ અને સહાયક AI વોટ્સએપની ઉપર પણ તરતી રહેશે!
+                </div>
+              </div>
+              <div class="os-method-item">
+                <div class="os-method-num">૨</div>
+                <div class="os-method-content">
+                  <strong>Android System Overlay (Native APK):</strong><br>
+                  જ્યારે સહાયક AI ને નેટિવ Android APK એપ તરીકે ઇન્સ્ટોલ કરવામાં આવે, ત્યારે Android ની 'Display over other apps' (SYSTEM_ALERT_WINDOW) પરમિશનથી આ બબલ ફેસબુક મેસેન્જર હેડની જેમ ૨૪ કલાક સ્ક્રીન પર ફ્લોટિંગ રહી શકે છે.
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -663,6 +722,6 @@
       </div>
     </footer>
 
-  <script src="js/app.js?v=2.8"></script>
+  <script src="js/app.js?v=2.9"></script>
 </body>
 </html>

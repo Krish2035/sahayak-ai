@@ -1028,6 +1028,78 @@ function closeModal(modalId) {
   stopSpeaking();
 }
 
+// Live Floating Companion & Step Helper Logic
+function getCurrentActiveStep() {
+  const stepCards = document.querySelectorAll('.systematic-step-card');
+  if (!stepCards || stepCards.length === 0) return null;
+
+  for (let card of stepCards) {
+    const doneBtn = card.querySelector('.step-done-btn');
+    if (doneBtn && !doneBtn.classList.contains('completed')) {
+      const stepNum = card.querySelector('.step-num-pill')?.textContent?.replace(/\D/g, '') || '1';
+      const title = card.querySelector('.step-title-text')?.textContent || '';
+      const instruction = card.querySelector('.step-instruction-text')?.textContent || '';
+      const target = card.querySelector('.target-badge')?.textContent || '';
+      
+      return {
+        step_number: stepNum,
+        title: title,
+        instruction: instruction,
+        target_ui_element: target,
+        audio_text: instruction,
+        cardElement: card,
+        doneButton: doneBtn
+      };
+    }
+  }
+  return null;
+}
+
+function openCompanionHelpModal() {
+  const activeStep = getCurrentActiveStep();
+  const stepContainer = document.getElementById('bubbleActiveStepBox');
+  const noGuideContainer = document.getElementById('bubbleNoGuideBox');
+
+  if (activeStep) {
+    if (stepContainer) stepContainer.style.display = 'block';
+    if (noGuideContainer) noGuideContainer.style.display = 'none';
+
+    const numEl = document.getElementById('bubbleStepNumText');
+    if (numEl) numEl.textContent = `${UI_STRINGS[state.currentLanguage].stepLabel} ${activeStep.step_number}`;
+
+    const titleEl = document.getElementById('bubbleStepTitle');
+    if (titleEl) titleEl.textContent = activeStep.title;
+
+    const descEl = document.getElementById('bubbleStepInstruction');
+    if (descEl) descEl.textContent = activeStep.instruction;
+
+    const targetEl = document.getElementById('bubbleStepTarget');
+    if (targetEl) targetEl.textContent = activeStep.target_ui_element || 'સ્ક્રીન પર દર્શાવેલ બટન';
+
+    const btnSpeak = document.getElementById('btnBubbleSpeakStep');
+    if (btnSpeak) {
+      btnSpeak.onclick = () => {
+        speakText(activeStep.audio_text || activeStep.instruction);
+      };
+    }
+
+    const btnDone = document.getElementById('btnBubbleDoneStep');
+    if (btnDone) {
+      btnDone.onclick = () => {
+        if (activeStep.doneButton) {
+          activeStep.doneButton.click();
+        }
+        closeModal('modalBubbleGuide');
+      };
+    }
+  } else {
+    if (stepContainer) stepContainer.style.display = 'none';
+    if (noGuideContainer) noGuideContainer.style.display = 'block';
+  }
+
+  openModal('modalBubbleGuide');
+}
+
 // 1. Anti-Scam Radar Logic
 async function runScamCheck(customText) {
   const textInput = document.getElementById('scamInputText');
@@ -1485,10 +1557,36 @@ function setupEvents() {
   });
 
   const btnOpenBub = document.getElementById('btnOpenBubble');
-  if (btnOpenBub) btnOpenBub.addEventListener('click', () => openModal('modalBubbleGuide'));
+  if (btnOpenBub) btnOpenBub.addEventListener('click', openCompanionHelpModal);
 
   const floatBub = document.getElementById('floatingBubble');
-  if (floatBub) floatBub.addEventListener('click', () => openModal('modalBubbleGuide'));
+  if (floatBub) floatBub.addEventListener('click', openCompanionHelpModal);
+
+  // Floating Companion Quick Action Card Listeners
+  const bMic = document.getElementById('btnBubbleActionMic');
+  if (bMic) bMic.addEventListener('click', () => {
+    closeModal('modalBubbleGuide');
+    if (el.chatInput) el.chatInput.focus();
+    startListening();
+  });
+
+  const bCam = document.getElementById('btnBubbleActionCam');
+  if (bCam) bCam.addEventListener('click', () => {
+    closeModal('modalBubbleGuide');
+    openModal('modalCameraVision');
+  });
+
+  const bScam = document.getElementById('btnBubbleActionScam');
+  if (bScam) bScam.addEventListener('click', () => {
+    closeModal('modalBubbleGuide');
+    openModal('modalScamRadar');
+  });
+
+  const bFam = document.getElementById('btnBubbleActionFam');
+  if (bFam) bFam.addEventListener('click', () => {
+    closeModal('modalBubbleGuide');
+    openModal('modalFamilyBridge');
+  });
 
   // Modals Close Buttons
   const closeScam = document.getElementById('btnCloseScamRadar');

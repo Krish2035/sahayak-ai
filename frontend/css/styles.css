@@ -2521,66 +2521,293 @@ body.light-theme .btn-icon-clear:hover {
   gap: 8px;
 }
 
-/* Android Bubble Preview */
-.bubble-demo-card {
+/* ==========================================================================
+   Interactive Floating Companion & Step Helper Modal Styles
+   ========================================================================== */
+.bubble-active-step-box {
+  background: linear-gradient(135deg, #18282e, #132227);
+  border: 1.5px solid var(--wa-green);
+  border-radius: 20px;
+  padding: 20px;
+  margin-bottom: 16px;
+  box-shadow: 0 4px 20px rgba(0, 168, 132, 0.2);
+}
+
+.bubble-step-badge-row {
   display: flex;
-  flex-direction: column;
-  gap: 16px;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
 }
 
-.bubble-preview-screen {
-  position: relative;
-  width: 100%;
-  max-width: 320px;
-  margin: 0 auto;
-  border-radius: 24px;
-  overflow: hidden;
-  border: 2px solid var(--border-light);
-}
-
-.bubble-preview-img {
-  width: 100%;
-  display: block;
-}
-
-.preview-bubble {
-  position: absolute;
-  bottom: 60px;
-  right: 16px;
-  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.4);
-}
-
-.bubble-callout-box {
-  position: absolute;
-  bottom: 128px;
-  right: 12px;
-  background: #ffffff;
+.bubble-step-pill {
+  background: var(--wa-green);
   color: #0b141a;
-  font-size: 13px;
   font-weight: 800;
-  padding: 8px 12px;
+  font-size: 13px;
+  padding: 4px 12px;
   border-radius: 14px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
 }
 
-.bubble-install-steps {
-  background: #202c33;
-  border-radius: 18px;
-  padding: 16px;
+.bubble-step-status {
+  font-size: 12.5px;
+  color: #34d399;
+  font-weight: 700;
 }
 
-.install-title {
-  font-size: 16px;
+.bubble-step-title {
+  font-size: 19px;
   font-weight: 800;
   color: #ffffff;
-  margin-bottom: 8px;
+  margin-bottom: 6px;
 }
 
-.install-ol {
-  padding-left: 20px;
-  font-size: 14.5px;
-  line-height: 1.6;
+.bubble-step-desc {
+  font-size: 15px;
   color: var(--text-secondary);
+  line-height: 1.55;
+  margin-bottom: 12px;
+}
+
+.bubble-target-box {
+  background: rgba(245, 158, 11, 0.15);
+  border: 1px solid rgba(245, 158, 11, 0.4);
+  border-radius: 12px;
+  padding: 8px 12px;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13.5px;
+  color: #fde68a;
+}
+
+.bubble-target-label {
+  font-weight: 700;
+  color: #fbbf24;
+}
+
+.bubble-actions-row {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.btn-bubble-action {
+  flex: 1;
+  min-width: 130px;
+  padding: 11px 16px;
+  border-radius: 16px;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border: none;
+  transition: all 0.2s ease;
+}
+
+.btn-bubble-action:hover {
+  transform: translateY(-1px);
+}
+
+.btn-bubble-speak {
+  background: #202d36;
+  color: #ffffff;
+  border: 1.5px solid var(--border-subtle);
+}
+
+.btn-bubble-speak:hover {
+  background: #283742;
+  border-color: var(--wa-green);
+}
+
+.btn-bubble-done {
+  background: linear-gradient(135deg, var(--wa-green), #059669);
+  color: #ffffff;
+}
+
+.btn-bubble-done:hover {
+  filter: brightness(1.1);
+  box-shadow: 0 4px 14px rgba(0, 168, 132, 0.4);
+}
+
+.bubble-greeting-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 16px;
+  background: rgba(0, 168, 132, 0.08);
+  border: 1px solid rgba(0, 168, 132, 0.3);
+  border-radius: 18px;
+  padding: 14px 16px;
+}
+
+.bubble-big-avatar {
+  font-size: 44px;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.bubble-hello-title {
+  font-size: 17.5px;
+  font-weight: 800;
+  color: #ffffff;
+}
+
+.bubble-hello-desc {
+  font-size: 13.5px;
+  color: var(--text-secondary);
+  margin-top: 3px;
+  line-height: 1.45;
+}
+
+.bubble-quick-actions-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  margin-bottom: 18px;
+}
+
+.bubble-action-card {
+  background: #182229;
+  border: 1.5px solid var(--border-subtle);
+  border-radius: 16px;
+  padding: 14px 10px;
+  text-align: center;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  transition: all 0.2s ease;
+}
+
+.bubble-action-card:hover {
+  border-color: var(--wa-green);
+  background: #1f2c34;
+  transform: translateY(-2px);
+}
+
+.b-card-icon {
+  font-size: 26px;
+}
+
+.b-card-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.b-card-sub {
+  font-size: 11.5px;
+  color: var(--text-muted);
+}
+
+.bubble-os-guide-card {
+  background: #111b21;
+  border: 1.5px solid var(--border-subtle);
+  border-radius: 16px;
+  padding: 14px 16px;
+}
+
+.os-guide-title {
+  font-size: 14px;
+  font-weight: 800;
+  color: #34d399;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.os-guide-methods {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.os-method-item {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  font-size: 12.5px;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+.os-method-num {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--wa-green);
+  color: #0b141a;
+  font-weight: 800;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+body.light-theme .bubble-active-step-box {
+  background: linear-gradient(135deg, #ecfdf5, #f0fdf4);
+  border-color: #059669;
+}
+
+body.light-theme .bubble-step-title {
+  color: #0f172a;
+}
+
+body.light-theme .bubble-step-desc {
+  color: #334155;
+}
+
+body.light-theme .bubble-greeting-row {
+  background: #f0fdf4;
+  border-color: #86efac;
+}
+
+body.light-theme .bubble-hello-title {
+  color: #0f172a;
+}
+
+body.light-theme .bubble-hello-desc {
+  color: #334155;
+}
+
+body.light-theme .bubble-action-card {
+  background: #f8fafc;
+  border-color: #cbd5e1;
+}
+
+body.light-theme .bubble-action-card:hover {
+  background: #f1f5f9;
+  border-color: #059669;
+}
+
+body.light-theme .b-card-title {
+  color: #0f172a;
+}
+
+body.light-theme .b-card-sub {
+  color: #64748b;
+}
+
+body.light-theme .bubble-os-guide-card {
+  background: #f8fafc;
+  border-color: #cbd5e1;
+}
+
+body.light-theme .os-guide-title {
+  color: #047857;
+}
+
+body.light-theme .os-method-item {
+  color: #334155;
 }
 
 /* ==========================================================================

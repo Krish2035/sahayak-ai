@@ -2706,6 +2706,41 @@ body.light-theme .btn-icon-clear:hover {
   color: var(--text-muted);
 }
 
+.native-overlay-action-box {
+  margin-bottom: 18px;
+  text-align: center;
+}
+
+.btn-start-native-bubble {
+  width: 100%;
+  padding: 13px 18px;
+  font-size: 15px;
+  font-weight: 800;
+  border-radius: 18px;
+  background: linear-gradient(135deg, #00a884 0%, #059669 100%);
+  color: #ffffff;
+  box-shadow: 0 4px 16px rgba(0, 168, 132, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  cursor: pointer;
+  border: none;
+  transition: all 0.2s ease;
+}
+
+.btn-start-native-bubble:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.1);
+}
+
+.native-overlay-hint {
+  font-size: 12.5px;
+  color: var(--text-muted);
+  margin-top: 6px;
+  line-height: 1.4;
+}
+
 .bubble-os-guide-card {
   background: #111b21;
   border: 1.5px solid var(--border-subtle);

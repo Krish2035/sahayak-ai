@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/bubbleRoot"
+    android:layout_width="64dp"
+    android:layout_height="64dp"
+    android:clipChildren="false"
+    android:clipToPadding="false">
+
+    <!-- Circle Container -->
+    <FrameLayout
+        android:id="@+id/bubbleCircle"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:layout_gravity="center"
+        android:background="@drawable/bubble_background"
+        android:elevation="8dp">
+
+        <TextView
+            android:id="@+id/bubbleEmoji"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="👵"
+            android:textSize="28sp"
+            android:includeFontPadding="false" />
+
+    </FrameLayout>
+
+    <!-- Red Alert / Active Ping Indicator -->
+    <View
+        android:id="@+id/bubblePing"
+        android:layout_width="14dp"
+        android:layout_height="14dp"
+        android:layout_gravity="top|end"
+        android:layout_marginTop="2dp"
+        android:layout_marginEnd="2dp"
+        android:background="@drawable/ping_circle"
+        android:elevation="10dp" />
+
+</FrameLayout>

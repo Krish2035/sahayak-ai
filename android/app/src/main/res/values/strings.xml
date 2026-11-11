@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">સહાયક AI</string>
+    <string name="app_name_en">Sahayak AI</string>
+    <string name="bubble_channel_name">Sahayak AI Companion</string>
+    <string name="bubble_channel_desc">Floating assistant for smartphone help over WhatsApp</string>
+    <string name="bubble_notification_title">👵 સહાયક AI તમારી સાથે છે</string>
+    <string name="bubble_notification_text">તમે કોઈપણ એપમાં અટવાઓ તો સ્ક્રીન પરના બબલને અડો.</string>
+</resources>

@@ -1092,6 +1092,11 @@ function openCompanionHelpModal() {
         closeModal('modalBubbleGuide');
       };
     }
+
+    // Sync active step to Native Android Floating Service if running inside APK
+    if (window.SahayakAndroid && typeof window.SahayakAndroid.updateActiveStep === 'function') {
+      window.SahayakAndroid.updateActiveStep(activeStep.title, activeStep.instruction, activeStep.audio_text || activeStep.instruction);
+    }
   } else {
     if (stepContainer) stepContainer.style.display = 'none';
     if (noGuideContainer) noGuideContainer.style.display = 'block';
@@ -1588,6 +1593,19 @@ function setupEvents() {
     openModal('modalFamilyBridge');
   });
 
+  // Native Android Floating Overlay Starter Button
+  const btnStartNative = document.getElementById('btnStartNativeBubble');
+  if (btnStartNative) {
+    btnStartNative.addEventListener('click', () => {
+      if (window.SahayakAndroid && typeof window.SahayakAndroid.startFloatingBubble === 'function') {
+        window.SahayakAndroid.startFloatingBubble();
+        closeModal('modalBubbleGuide');
+      } else {
+        alert("આ સુવિધા Android APK એપમાં સિસ્ટમ ઓવરલે તરીકે ૨૪ કલાક ચાલે છે. બ્રાઉઝરમાં ચલાવવા માટે નીચે દર્શાવેલ 'Recent Apps ➔ Pop-up view' પદ્ધતિ વાપરો.");
+      }
+    });
+  }
+
   // Modals Close Buttons
   const closeScam = document.getElementById('btnCloseScamRadar');
   if (closeScam) closeScam.addEventListener('click', () => closeModal('modalScamRadar'));
@@ -1819,3 +1837,24 @@ document.addEventListener('DOMContentLoaded', () => {
 
   console.log("Sahayak AI ChatGPT-Style Visual Guide ready.");
 });
+
+// Native Android Callbacks & Bridge Hooks
+window.handleNativeTrigger = function(action) {
+  console.log("Native Android overlay triggered action:", action);
+  if (action === 'mic') {
+    if (el.chatInput) el.chatInput.focus();
+    startListening();
+  } else if (action === 'camera') {
+    openModal('modalCameraVision');
+  } else if (action === 'scam') {
+    openModal('modalScamRadar');
+  } else if (action === 'family') {
+    openModal('modalFamilyBridge');
+  }
+};
+
+window.onNativeAndroidReady = function() {
+  console.log("Sahayak AI Native Android Bridge active!");
+  const btnText = document.getElementById('btnStartNativeBubbleText');
+  if (btnText) btnText.textContent = "🚀 વોટ્સએપ પર ફ્લોટિંગ બબલ શરૂ કરો";
+};

@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/menuRoot"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#88000000"
+    android:padding="20dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:background="@drawable/dialog_rounded_bg"
+        android:orientation="vertical"
+        android:padding="20dp"
+        android:elevation="16dp">
+
+        <!-- Header -->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="👵"
+                    android:textSize="32sp" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="12dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="સહાયક AI ફ્લોટિંગ સાથી"
+                        android:textColor="#FFFFFF"
+                        android:textSize="17sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="વોટ્સએપ પર લાઈવ સહાયક"
+                        android:textColor="#34D399"
+                        android:textSize="12.5sp" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <ImageButton
+                android:id="@+id/btnCloseMenu"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:src="@android:drawable/ic_menu_close_clear_cancel" />
+        </RelativeLayout>
+
+        <!-- Current Step Context Card (If user is in the middle of a guide) -->
+        <LinearLayout
+            android:id="@+id/stepContextCard"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#18282E"
+            android:orientation="vertical"
+            android:padding="14dp"
+            android:layout_marginBottom="16dp">
+
+            <TextView
+                android:id="@+id/txtCurrentStepTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="👉 હાલનું પગલું: વૉટ્સએપ ખોલો"
+                android:textColor="#34D399"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/txtCurrentStepDesc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="સ્ક્રીન પર લીલા રંગના વોટ્સએપ પર અડો."
+                android:textColor="#CBD5E1"
+                android:textSize="13sp" />
+
+            <Button
+                android:id="@+id/btnOverlaySpeakStep"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginTop="10dp"
+                android:backgroundTint="#00A884"
+                android:text="🔊 અવાજથી સાંભળો (Listen)"
+                android:textColor="#0B141A"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <!-- 4 Quick Actions Grid -->
+        <GridLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:columnCount="2"
+            android:rowCount="2"
+            android:alignmentMode="alignMargins"
+            android:useDefaultMargins="true"
+            android:layout_marginBottom="16dp">
+
+            <LinearLayout
+                android:id="@+id/btnQuickMic"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_columnWeight="1"
+                android:background="@drawable/btn_action_bg"
+                android:clickable="true"
+                android:focusable="true"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:padding="12dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="🎙️"
+                    android:textSize="24sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:text="બોલીને પૂછો"
+                    android:textColor="#FFFFFF"
+                    android:textSize="13sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/btnQuickCam"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_columnWeight="1"
+                android:background="@drawable/btn_action_bg"
+                android:clickable="true"
+                android:focusable="true"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:padding="12dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="👁️"
+                    android:textSize="24sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:text="કેમેરા ગાઈડ"
+                    android:textColor="#FFFFFF"
+                    android:textSize="13sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/btnQuickScam"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_columnWeight="1"
+                android:background="@drawable/btn_action_bg"
+                android:clickable="true"
+                android:focusable="true"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:padding="12dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="🛡️"
+                    android:textSize="24sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:text="સ્કેમ ચેક"
+                    android:textColor="#FFFFFF"
+                    android:textSize="13sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/btnQuickSos"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_columnWeight="1"
+                android:background="@drawable/btn_action_bg"
+                android:clickable="true"
+                android:focusable="true"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:padding="12dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="👨‍👩‍👧"
+                    android:textSize="24sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:text="દીકરાને કૉલ"
+                    android:textColor="#FFFFFF"
+                    android:textSize="13sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+        </GridLayout>
+
+        <!-- Open Full App Action -->
+        <Button
+            android:id="@+id/btnOpenFullApp"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:backgroundTint="#00A884"
+            android:text="📱 સહાયક AI પૂરી એપ ખોલો"
+            android:textColor="#0B141A"
+            android:textSize="14.5sp"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
+</FrameLayout>

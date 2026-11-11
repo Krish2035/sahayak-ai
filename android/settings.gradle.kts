@@ -21,3 +21,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "SahayakAI"
 include(":app")
+

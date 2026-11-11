@@ -304,3 +304,4 @@ class FloatingBubbleService : Service(), TextToSpeech.OnInitListener {
         }
     }
 }
+

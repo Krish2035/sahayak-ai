@@ -27,3 +27,4 @@ if %ERRORLEVEL% EQU 0 (
     echo directly in Android Studio and click 'Build -> Build APK'.
 )
 pause
+

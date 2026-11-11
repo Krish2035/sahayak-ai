@@ -81,3 +81,4 @@ The compiled APK will be generated at:
 3. When prompted, tap **"Allow"** on **"Display over other apps"** (SYSTEM_ALERT_WINDOW).
 4. Tap the **"વોટ્સએપ પર ફ્લોટિંગ બબલ શરૂ કરો (Start Overlay)"** button.
 5. The green grandma bubble 👵 will now float on your screen 24/7! Open WhatsApp or any other app and tap the bubble anytime you get stuck!
+
